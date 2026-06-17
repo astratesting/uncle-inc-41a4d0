@@ -1,56 +1,59 @@
-import Link from 'next/link';
+import Link from "next/link";
+import { Check } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
-const tiers = [
+const plans = [
   {
-    name: 'Free',
-    price: '$0',
-    period: 'forever',
-    description: 'Perfect for exploring and validating your first idea.',
+    name: "Starter",
+    price: "Free",
+    period: "forever",
+    description: "Perfect for validating your first idea.",
     features: [
-      '1 active project',
-      '5 testers per project',
-      'Basic analytics',
-      'Community support',
-      'AI prototyping (10 credits/mo)',
+      "1 MVP prototype",
+      "Up to 10 testers",
+      "Basic analytics",
+      "AI idea analysis",
+      "Community support",
     ],
-    cta: 'Get Started',
-    href: '/sign-up',
+    cta: "Get Started",
+    href: "/sign-up",
     highlighted: false,
   },
   {
-    name: 'Pro',
-    price: '$29',
-    period: '/month',
-    description: 'For serious founders validating multiple ideas.',
+    name: "Pro",
+    price: "$29",
+    period: "/month",
+    description: "For serious founders shipping multiple MVPs.",
     features: [
-      'Unlimited projects',
-      '100 testers per project',
-      'Advanced analytics & heatmaps',
-      'Priority support',
-      'AI prototyping (unlimited)',
-      'Custom domains',
-      'Session recordings',
+      "Unlimited MVPs",
+      "Up to 100 testers per project",
+      "Advanced analytics & heatmaps",
+      "Custom domain deployment",
+      "Priority AI processing",
+      "Export to code (React/Next.js)",
+      "Email support",
     ],
-    cta: 'Start Pro Trial',
-    href: '/sign-up',
+    cta: "Start Pro",
+    href: "/sign-up",
     highlighted: true,
   },
   {
-    name: 'Team',
-    price: '$79',
-    period: '/month',
-    description: 'For founding teams moving fast together.',
+    name: "Team",
+    price: "$99",
+    period: "/month",
+    description: "For teams and agencies validating at scale.",
     features: [
-      'Everything in Pro',
-      'Up to 5 team members',
-      '500 testers per project',
-      'Team collaboration',
-      'Custom branding',
-      'API access',
-      'Dedicated support',
+      "Everything in Pro",
+      "Up to 5 team members",
+      "500 testers per project",
+      "White-label reports",
+      "API access",
+      "Priority support",
+      "Custom integrations",
     ],
-    cta: 'Contact Sales',
-    href: '/sign-up',
+    cta: "Start Team",
+    href: "/sign-up",
     highlighted: false,
   },
 ];
@@ -58,58 +61,63 @@ const tiers = [
 export function Pricing() {
   return (
     <section id="pricing" className="py-24 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white font-display">
-            Simple,{' '}
-            <span className="gradient-text">transparent</span> pricing
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Simple, Transparent{" "}
+            <span className="gradient-text">Pricing</span>
           </h2>
-          <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-            Start free and upgrade as you grow. No hidden fees, no surprises.
+          <p className="text-gray-400 max-w-xl mx-auto">
+            Start free, upgrade when you need more. No hidden fees, no surprise bills.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {tiers.map((tier) => (
-            <div
-              key={tier.name}
-              className={`relative rounded-2xl border p-8 ${
-                tier.highlighted
-                  ? 'border-[#4f46e5] bg-[#111118] ring-1 ring-[#4f46e5]'
-                  : 'border-gray-800 bg-[#111118]'
-              }`}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {plans.map((plan) => (
+            <Card
+              key={plan.name}
+              glow
+              className={
+                plan.highlighted
+                  ? "border-indigo-500/50 shadow-[0_0_30px_rgba(79,70,229,0.1)] relative"
+                  : ""
+              }
             >
-              {tier.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#4f46e5] text-white text-xs font-medium rounded-full">
-                  Most Popular
+              {plan.highlighted && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center rounded-full bg-indigo-600 px-3 py-0.5 text-xs font-medium text-white">
+                    Most Popular
+                  </span>
                 </div>
               )}
-              <h3 className="text-xl font-bold text-white font-display">{tier.name}</h3>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-white font-display">
-                  {tier.price}
-                </span>
-                <span className="text-gray-400">{tier.period}</span>
+
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
+                <div className="mt-3 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">{plan.price}</span>
+                  <span className="text-sm text-gray-400">{plan.period}</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-400">{plan.description}</p>
               </div>
-              <p className="mt-3 text-sm text-gray-400">{tier.description}</p>
-              <ul className="mt-6 space-y-3">
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                    <span className="text-[#14b8a6]">✓</span>
+
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-sm text-gray-300">
+                    <Check className="h-4 w-4 text-teal-400 mt-0.5 flex-shrink-0" />
                     {feature}
                   </li>
                 ))}
               </ul>
-              <Link
-                href={tier.href}
-                className={`mt-8 block w-full text-center py-3 rounded-lg font-medium transition-colors ${
-                  tier.highlighted
-                    ? 'bg-[#4f46e5] hover:bg-[#4338ca] text-white'
-                    : 'border border-gray-700 hover:border-gray-500 text-white'
-                }`}
-              >
-                {tier.cta}
+
+              <Link href={plan.href}>
+                <Button
+                  variant={plan.highlighted ? "primary" : "outline"}
+                  className="w-full"
+                >
+                  {plan.cta}
+                </Button>
               </Link>
-            </div>
+            </Card>
           ))}
         </div>
       </div>

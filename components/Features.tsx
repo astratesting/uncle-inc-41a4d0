@@ -1,71 +1,73 @@
+import { Rocket, Users, BarChart3, Brain, RefreshCw, LayoutDashboard } from "lucide-react";
+import { Card } from "@/components/ui/Card";
+
 const features = [
   {
-    title: 'AI Rapid Prototyping',
+    icon: Rocket,
+    title: "AI Prototyping",
     description:
-      'Turn your idea into a clickable prototype in minutes with our AI-powered builder. No code needed.',
-    icon: '⊞',
+      "Turn your idea into a clickable prototype in minutes, not months. Our AI generates interactive UI from natural language.",
   },
   {
-    title: 'Built-in User Testing',
+    icon: Users,
+    title: "User Testing",
     description:
-      'Get real feedback from your target audience with integrated user testing panels and session recordings.',
-    icon: '⊕',
+      "Get real feedback from your target audience with built-in testing panels and structured feedback collection.",
   },
   {
-    title: 'Launch Analytics',
+    icon: BarChart3,
+    title: "Launch Analytics",
     description:
-      'Track engagement, conversion funnels, and user behavior with built-in analytics from day one.',
-    icon: '◉',
+      "Track engagement, drop-offs, and conversion with actionable dashboards that tell you what to fix next.",
   },
   {
-    title: 'Guided Validation',
+    icon: Brain,
+    title: "Smart Validation",
     description:
-      'Follow our proven validation framework that helps you test assumptions before writing a single line of code.',
-    icon: '✓',
+      "AI-powered market analysis helps you validate assumptions before building, using real market signals.",
   },
   {
-    title: 'No Code Required',
+    icon: RefreshCw,
+    title: "Rapid Iteration",
     description:
-      'Ship functional MVPs without writing code. Perfect for non-technical founders with big ideas.',
-    icon: '⚡',
+      "Pivot fast with instant prototype updates based on user feedback. Ship changes in hours, not weeks.",
   },
   {
-    title: 'Iterate with Data',
+    icon: LayoutDashboard,
+    title: "Founder Dashboard",
     description:
-      'Use heatmaps, session replays, and user interviews to iterate based on evidence, not gut feelings.',
-    icon: '↻',
+      "One place to manage your entire validation workflow. From idea to validated MVP, all in one view.",
   },
 ];
 
 export function Features() {
   return (
     <section id="features" className="py-24 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white font-display">
-            Everything you need to{' '}
-            <span className="gradient-text">validate & launch</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Everything You Need to{" "}
+            <span className="gradient-text">Validate</span> Your Startup
           </h2>
-          <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-            Stop building in the dark. Our integrated platform gives you the tools to test,
-            learn, and iterate — all in one place.
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            From idea to validated prototype, Uncle Inc. provides every tool you need
+            to make sure you&apos;re building something people actually want.
           </p>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="bg-[#111118] border border-gray-800 rounded-xl p-8 hover:border-[#4f46e5]/50 transition-colors"
-            >
-              <span className="text-3xl">{feature.icon}</span>
-              <h3 className="mt-4 text-xl font-bold text-white font-display">
-                {feature.title}
-              </h3>
-              <p className="mt-2 text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <Card key={feature.title} glow className="group">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-500/10 border border-indigo-500/20 mb-4 group-hover:bg-indigo-500/20 transition-colors">
+                  <Icon className="h-6 w-6 text-indigo-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>
