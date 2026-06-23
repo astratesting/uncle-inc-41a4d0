@@ -30,13 +30,13 @@ export function trackPageview(url: string) {
 export function trackSignup(email: string) {
   if (typeof window !== "undefined") {
     if (initialized) {
-      posthog.capture("signup", { email });
+      posthog.capture("waitlist_signup", { email });
     }
     // Also track via local analytics
     fetch("/api/analytics/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "signup", url: window.location.pathname, email }),
+      body: JSON.stringify({ name: "waitlist_signup", url: window.location.pathname, email }),
     }).catch(() => {});
   }
 }

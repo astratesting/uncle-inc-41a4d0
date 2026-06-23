@@ -30,7 +30,7 @@ export function Hero() {
 
         {/* Tagline */}
         <p className="text-2xl sm:text-3xl font-heading font-semibold text-cobalt mb-8 animate-slide-up">
-          Building Digital Solutions for Modern Problems
+          Technological Solutions for Modern Problems
         </p>
 
         {/* Value prop */}

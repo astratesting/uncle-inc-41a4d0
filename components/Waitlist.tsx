@@ -154,7 +154,7 @@ export function Waitlist() {
                     Joining...
                   </>
                 ) : (
-                  "Get Early Access"
+                  "Join the Waitlist"
                 )}
               </button>
             </form>
