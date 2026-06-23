@@ -1,5 +1,6 @@
+import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { WhatWereBuilding } from "@/components/WhatWereBuilding";
+import { Features } from "@/components/Features";
 import { Waitlist } from "@/components/Waitlist";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
@@ -8,9 +9,10 @@ import { FeedbackWidget } from "@/components/FeedbackWidget";
 export default function HomePage() {
   return (
     <>
+      <Navbar />
       <main>
         <Hero />
-        <WhatWereBuilding />
+        <Features />
         <Waitlist />
         <FAQ />
       </main>

@@ -8,6 +8,60 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Signal Lab palette
+        ink: {
+          DEFAULT: "#0a0a0f",
+          50: "#1a1a2e",
+          100: "#16161f",
+          200: "#12121a",
+          300: "#0e0e14",
+          400: "#0a0a0f",
+          500: "#08080c",
+          600: "#060609",
+          700: "#040406",
+          800: "#020203",
+          900: "#000000",
+        },
+        indigo: {
+          DEFAULT: "#4f46e5",
+          50: "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
+        },
+        cyan: {
+          DEFAULT: "#06b6d4",
+          50: "#ecfeff",
+          100: "#cffafe",
+          200: "#a5f3fc",
+          300: "#67e8f9",
+          400: "#22d3ee",
+          500: "#06b6d4",
+          600: "#0891b2",
+          700: "#0e7490",
+          800: "#155e75",
+          900: "#164e63",
+        },
+        teal: {
+          DEFAULT: "#14b8a6",
+          50: "#f0fdfa",
+          100: "#ccfbf1",
+          200: "#99f6e4",
+          300: "#5eead4",
+          400: "#2dd4bf",
+          500: "#14b8a6",
+          600: "#0d9488",
+          700: "#0f766e",
+          800: "#115e59",
+          900: "#134e4a",
+        },
+        // Keep original palette for backward compatibility
         charcoal: {
           DEFAULT: "#2D2D2D",
           50: "#F5F5F5",
@@ -56,14 +110,16 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["Playfair Display", "Georgia", "serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        heading: ["Space Grotesk", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+        body: ["Space Grotesk", "system-ui", "sans-serif"],
       },
       animation: {
         "fade-in": "fade-in 0.8s ease-out forwards",
         "slide-up": "slide-up 0.8s ease-out forwards",
         float: "float 6s ease-in-out infinite",
         "spin-slow": "spin 20s linear infinite",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
       },
       keyframes: {
         "fade-in": {
@@ -71,22 +127,20 @@ const config: Config = {
           "100%": { opacity: "1" },
         },
         "slide-up": {
-          "0%": { opacity: "0", transform: "translateY(30px)" },
+          "0%": { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         float: {
-          "0%, 100%": { transform: "translateY(0px)" },
+          "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
-      },
-      backgroundImage: {
-        "lattice":
-          "linear-gradient(to right, rgba(201,169,110,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(201,169,110,0.06) 1px, transparent 1px)",
-        "lattice-dense":
-          "linear-gradient(to right, rgba(201,169,110,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(201,169,110,0.1) 1px, transparent 1px)",
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "1" },
+        },
       },
       backgroundSize: {
-        "lattice": "60px 60px",
+        lattice: "60px 60px",
         "lattice-dense": "40px 40px",
       },
     },

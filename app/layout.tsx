@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Analytics } from "@/components/Analytics";
+import { PlausibleScript } from "@/components/PlausibleScript";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Uncle Inc. — Where Ideas Meet Execution",
+  title: "Uncle Inc. — Build Your Next Digital Platform",
   description:
-    "Uncle Inc. is a software development company building digital products and platforms that solve modern problems for businesses and consumers.",
+    "Uncle Inc. is a software development company building digital products and platforms for businesses and consumers.",
   keywords: ["software development", "digital products", "technology solutions", "Uncle Inc."],
   openGraph: {
-    title: "Uncle Inc. — Where Ideas Meet Execution",
-    description: "Building digital products and platforms that solve modern problems.",
+    title: "Uncle Inc. — Build Your Next Digital Platform",
+    description: "Building digital products and platforms for businesses and consumers.",
     type: "website",
   },
 };
@@ -21,9 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-ivory text-charcoal antialiased font-body">
+      <body className="min-h-screen bg-ink text-white antialiased font-body">
         {children}
-        <Analytics />
+        <PlausibleScript />
       </body>
     </html>
   );
