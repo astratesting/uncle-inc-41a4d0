@@ -1,0 +1,4 @@
+{"event":"user_registered","distinctId":"test@example.com","timestamp":"2026-06-23T07:17:48.084Z"}
+{"event":"email_verified","distinctId":"test@example.com","timestamp":"2026-06-23T07:17:54.074Z"}
+{"event":"user_login","distinctId":"test@example.com","timestamp":"2026-06-23T07:18:13.937Z"}
+{"event":"user_registered","distinctId":"unverified@example.com","timestamp":"2026-06-23T07:18:14.443Z"}
