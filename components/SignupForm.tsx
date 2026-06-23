@@ -25,7 +25,7 @@ export function SignupForm() {
     setStatus("loading");
 
     try {
-      const res = await fetch("/api/signup", {
+      const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name, company }),

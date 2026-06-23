@@ -9,6 +9,7 @@ const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
 interface Signup {
   name?: string;
   email: string;
+  company?: string;
   token: string;
   verified: boolean;
   createdAt: string;
@@ -29,7 +30,7 @@ async function writeSignups(signups: Signup[]) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, name } = await request.json();
+    const { email, name, company } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -71,6 +72,7 @@ export async function POST(request: NextRequest) {
     signups.push({
       name: typeof name === "string" ? name.trim() : undefined,
       email: normalizedEmail,
+      company: typeof company === "string" ? company.trim() : undefined,
       token,
       verified: false,
       createdAt: new Date().toISOString(),
