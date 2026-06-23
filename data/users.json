@@ -1,19 +1,12 @@
 [
-  {
-    "id": "f91c9b0b-8dfe-4ec3-85a1-bff982fc7e60",
-    "name": "Test User",
-    "email": "testuser456@example.com",
-    "passwordHash": "645a871f320ca8a09bbf8c923bf1447a:e9fcf5a032e257679cae856edc7f45537fbceafc1ddc73f033c65324b7dcd80cad5a26bc28682c8b16d1328ed985ed6315f6c82ff2e49f7597e54004d3f718be",
-    "emailVerified": false,
-    "verificationToken": "4850b4fea4b35fcad0a774a79d72dbf75ae8c10463d05e0cefe5a01d91d35d20",
-    "createdAt": "2026-06-23T07:25:11.691Z"
-  },
-  {
-    "id": "e8d43099-4e6e-4c2a-85b9-c115fdba2461",
-    "name": "VerifyTest",
-    "email": "verify-test-2@example.com",
-    "passwordHash": "f7eb279c0b2c86855d88c2a7fd672cc95195fb879eda7fb80120a5c744978baa",
-    "emailVerified": true,
-    "createdAt": "2026-06-23T09:09:24.294Z"
-  }
+  {"id":"user_001","email":"alex@founderhub.io","name":"Alex Chen","company":"FounderHub","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-20T10:30:00Z"},
+  {"id":"user_002","email":"sarah@productly.com","name":"Sarah Kim","company":"Productly","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-20T14:15:00Z"},
+  {"id":"user_003","email":"marcus@shipfast.io","name":"Marcus Jones","company":"ShipFast","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-21T09:00:00Z"},
+  {"id":"user_004","email":"priya@buildstack.io","name":"Priya Patel","company":"BuildStack","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-21T11:45:00Z"},
+  {"id":"user_005","email":"david@launchpad.dev","name":"David Park","company":"Launchpad","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-21T16:20:00Z"},
+  {"id":"user_006","email":"emma@scaleup.co","name":"Emma Wilson","company":"ScaleUp","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-22T08:10:00Z"},
+  {"id":"user_007","email":"james@foundry.io","name":"James Lee","company":"Foundry","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-22T12:30:00Z"},
+  {"id":"user_008","email":"nina@earlystage.vc","name":"Nina Gupta","company":"EarlyStage VC","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-22T15:00:00Z"},
+  {"id":"user_009","email":"frank@zerotoone.dev","name":"Frank Torres","company":"ZeroToOne","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-23T07:30:00Z"},
+  {"id":"user_010","email":"lisa@mvpkit.io","name":"Lisa Chang","company":"MVPKit","password":"$2b$10$hashed","verified":true,"createdAt":"2026-06-23T09:00:00Z"}
 ]
