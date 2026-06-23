@@ -8,6 +8,46 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Uncle Inc. product palette
+        navy: {
+          DEFAULT: "#1A3A5C",
+          50: "#EEF3F8",
+          100: "#D5E2F0",
+          200: "#ABC5E0",
+          300: "#81A9D1",
+          400: "#5B8FC1",
+          500: "#4A90D9",
+          600: "#3A73B5",
+          700: "#2D5A8E",
+          800: "#1A3A5C",
+          900: "#0F2440",
+        },
+        cobalt: {
+          DEFAULT: "#4A90D9",
+          50: "#EBF3FB",
+          100: "#D0E4F7",
+          200: "#A2C9EF",
+          300: "#74AEE7",
+          400: "#4A90D9",
+          500: "#3578C0",
+          600: "#2B61A0",
+          700: "#214A7D",
+          800: "#18345A",
+          900: "#0E1E37",
+        },
+        "green-accent": {
+          DEFAULT: "#22C55E",
+          50: "#F0FDF4",
+          100: "#DCFCE7",
+          200: "#BBF7D0",
+          300: "#86EFAC",
+          400: "#4ADE80",
+          500: "#22C55E",
+          600: "#16A34A",
+          700: "#15803D",
+          800: "#166534",
+          900: "#14532D",
+        },
         // Bold Frontier palette
         flame: {
           DEFAULT: "#FF4500",
