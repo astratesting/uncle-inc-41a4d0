@@ -1,14 +1,27 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { jwtVerify } from "jose";
+
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || "uncle-inc-dev-secret-change-in-production"
+);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect dashboard and admin routes — check cookie existence only
-  // Full session validation happens in the API routes (/api/auth/me, /api/admin/*)
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) {
-    const token = request.cookies.get("uncle_session")?.value;
+  if (pathname.startsWith("/dashboard")) {
+    const token = request.cookies.get("auth_token")?.value;
+
     if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    try {
+      await jwtVerify(token, JWT_SECRET);
+      return NextResponse.next();
+    } catch {
+      const response = NextResponse.redirect(new URL("/login", request.url));
+      response.cookies.delete("auth_token");
+      return response;
     }
   }
 
@@ -16,5 +29,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ["/dashboard/:path*"],
 };

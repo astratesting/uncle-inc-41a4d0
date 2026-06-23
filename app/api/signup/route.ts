@@ -1,35 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
-import crypto from "crypto";
+import {
+  createUser,
+  getUser,
+  storeVerificationCode,
+  getUserCount,
+} from "@/lib/store";
+import { generateVerificationCode } from "@/lib/auth";
 import { trackServerEvent } from "@/lib/analytics";
-
-const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
-
-interface Signup {
-  name?: string;
-  email: string;
-  token: string;
-  verified: boolean;
-  createdAt: string;
-}
-
-async function readSignups(): Promise<Signup[]> {
-  try {
-    const data = await fs.readFile(SIGNUPS_PATH, "utf-8");
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-async function writeSignups(signups: Signup[]) {
-  await fs.writeFile(SIGNUPS_PATH, JSON.stringify(signups, null, 2));
-}
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, name } = await request.json();
+    const { email, password, name } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -40,58 +21,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
-    const signups = await readSignups();
-    const normalizedEmail = email.toLowerCase().trim();
-
-    const existing = signups.find((s) => s.email === normalizedEmail);
-    if (existing) {
-      if (existing.verified) {
-        return NextResponse.json(
-          { error: "This email is already signed up" },
-          { status: 409 }
-        );
-      }
-      // Re-send verification
-      existing.token = crypto.randomBytes(32).toString("hex");
-      existing.createdAt = new Date().toISOString();
-      await writeSignups(signups);
-
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
-      const verifyUrl = `${baseUrl}/verify?token=${existing.token}`;
-
-      console.log(`[VERIFY LINK] ${normalizedEmail}: ${verifyUrl}`);
-      await trackServerEvent("signup_verification_resent", normalizedEmail);
-
-      return NextResponse.json({
-        message: "Verification email resent. Check your inbox.",
-        verifyUrl,
-      });
+    if (!password || typeof password !== "string" || password.length < 8) {
+      return NextResponse.json(
+        { error: "Password must be at least 8 characters" },
+        { status: 400 }
+      );
     }
 
-    const token = crypto.randomBytes(32).toString("hex");
-    signups.push({
-      name: typeof name === "string" ? name.trim() : undefined,
-      email: normalizedEmail,
-      token,
-      verified: false,
-      createdAt: new Date().toISOString(),
-    });
-    await writeSignups(signups);
+    if (!name || typeof name !== "string" || name.trim().length < 1) {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
-    const verifyUrl = `${baseUrl}/verify?token=${token}`;
+    const existing = await getUser(email);
+    if (existing && existing.emailVerified) {
+      return NextResponse.json(
+        { error: "An account with this email already exists" },
+        { status: 409 }
+      );
+    }
 
-    console.log(`[VERIFY LINK] ${normalizedEmail}: ${verifyUrl}`);
-    await trackServerEvent("signup_submitted", normalizedEmail);
+    if (!existing) {
+      await createUser(email, password, name);
+    }
+
+    const code = generateVerificationCode();
+    await storeVerificationCode(email, code);
+
+    const count = await getUserCount();
+
+    await trackServerEvent("signup", email.toLowerCase().trim(), { name });
 
     return NextResponse.json({
-      message: "Check your email to verify your signup.",
-      verifyUrl,
+      success: true,
+      message: "Account created. Use the verification code below to verify your email.",
+      verificationCode: code,
+      signupCount: count,
     });
   } catch (error) {
     console.error("Signup error:", error);
     return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
