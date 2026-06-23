@@ -48,12 +48,29 @@ export default function HomePage() {
       <FAQ />
 
       {/* Footer */}
-      <footer className="border-t border-charcoal-100 py-8 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-sm text-charcoal-400">
-            &copy; {new Date().getFullYear()} Uncle Inc. — AI-Assisted MVP
-            Development for Startup Founders
-          </p>
+      <footer className="border-t border-charcoal-100 py-12 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-2">
+              <span className="font-heading text-lg font-bold tracking-tight text-charcoal">
+                Uncle Inc.
+              </span>
+              <span className="text-xs text-charcoal-300 font-mono tracking-wider">
+                EST. 2025
+              </span>
+            </div>
+            <div className="flex items-center gap-6">
+              <a
+                href="mailto:hello@uncleinc.com"
+                className="text-sm text-charcoal-400 hover:text-charcoal transition-colors"
+              >
+                Contact
+              </a>
+            </div>
+            <p className="text-sm text-charcoal-300">
+              &copy; {new Date().getFullYear()} Uncle Inc. All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>

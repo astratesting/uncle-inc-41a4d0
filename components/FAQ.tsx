@@ -8,19 +8,19 @@ export function FAQ() {
   const faqs = [
     {
       q: "Who is Uncle Inc. for?",
-      a: "Early-stage startup founders — especially non-technical ones — who want to validate their ideas and build MVPs without hiring a development team or finding a technical co-founder.",
+      a: "Early-stage startup founders who need growth traction — not more advice. If you've got a product and need users, we're built for you.",
     },
     {
-      q: "Do I need to know how to code?",
-      a: "No. Our platform is designed so you can describe your idea in natural language and the AI handles the prototyping. You stay focused on your vision and your users.",
+      q: "What does your consulting actually look like?",
+      a: "We embed with your team for focused growth sprints: channel testing, funnel optimization, messaging experiments, and first-user acquisition. You get a clear strategy and measurable results — no fluff.",
     },
     {
       q: "What stage should my startup be at?",
-      a: "Ideation through early traction. If you have an idea, a rough concept, or even just a problem you want to solve — Uncle Inc. can help you move forward.",
+      a: "You should have a working product (even an early one) and be ready to acquire users. If you're pre-product, we'll help you get there — but our sweet spot is post-MVP growth.",
     },
     {
-      q: "When will the platform be available?",
-      a: "We're building in the open and will invite waitlist members in waves. Sign up to be among the first to get access.",
+      q: "When can I get started?",
+      a: "We're onboarding founders from the waitlist in waves. Sign up to be among the first to get access — priority goes to founders with an active product.",
     },
   ];
 

@@ -41,26 +41,26 @@ export function Hero() {
 
       <div className="relative max-w-3xl mx-auto text-center">
         {/* COMING SOON badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-charcoal text-ivory text-xs font-mono font-semibold tracking-widest uppercase mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-charcoal text-ivory text-xs font-mono font-semibold tracking-widest uppercase mb-8 animate-fade-in">
           <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
           Coming Soon
         </div>
 
-        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-charcoal leading-[1.1] mb-6">
+        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-charcoal leading-[1.1] mb-6 animate-slide-up">
           Uncle Inc.
         </h1>
 
-        <p className="font-heading text-xl sm:text-2xl text-charcoal-500 font-medium mb-4">
-          Build your MVP without a technical co-founder.
+        <p className="font-heading text-xl sm:text-2xl text-charcoal-500 font-medium mb-4 animate-slide-up [animation-delay:100ms]">
+          Data-driven growth for founders who move fast.
         </p>
 
-        <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-10 leading-relaxed">
-          We help early-stage founders validate startup ideas and ship working
-          MVPs using AI-assisted prototyping, built-in user testing, and launch
-          analytics — so you can go from concept to market-ready product, fast.
+        <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-10 leading-relaxed animate-slide-up [animation-delay:200ms]">
+          We help early-stage founders validate ideas, acquire first users, and
+          scale what works — powered by AI-assisted prototyping, built-in user
+          testing, and launch analytics. Go from concept to traction, fast.
         </p>
 
-        <div id="signup">
+        <div id="signup" className="animate-slide-up [animation-delay:300ms]">
           <Suspense fallback={null}>
             <SignupForm />
           </Suspense>

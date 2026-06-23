@@ -3,24 +3,24 @@
 export function WhatWereBuilding() {
   const benefits = [
     {
-      title: "AI-Assisted Prototyping",
+      title: "Growth Playbooks, Not Guesswork",
       description:
-        "Describe your idea in plain language and get a working prototype in hours, not weeks. No code required from you.",
+        "We build data-driven acquisition strategies tailored to your stage, audience, and budget — so every dollar moves the needle.",
     },
     {
-      title: "Built-In User Testing",
+      title: "Rapid Experimentation",
       description:
-        "Validate demand with real users before committing resources. Get structured feedback on your prototype automatically.",
+        "Test messaging, channels, and funnels in days instead of months. We run the experiments so you can focus on what's working.",
     },
     {
-      title: "Launch Analytics",
+      title: "First-User Acquisition",
       description:
-        "Track signups, engagement, and conversion from day one. Know exactly what's working and what to fix.",
+        "Get your first 100 paying users through targeted outreach, referral loops, and channel partnerships — not paid ads alone.",
     },
     {
-      title: "No Technical Co-Founder Needed",
+      title: "Founders Stay in Control",
       description:
-        "Skip the months-long search for a technical partner. Our AI tools give you the leverage to build and test independently.",
+        "We plug into your team as a growth partner, not a black box. You see the data, the strategy, and the results — in real time.",
     },
   ];
 
@@ -31,8 +31,8 @@ export function WhatWereBuilding() {
           What We&rsquo;re Building
         </h2>
         <p className="text-charcoal-400 text-center max-w-2xl mx-auto mb-14">
-          A platform that gives startup founders the tools to go from idea to
-          validated MVP — powered by AI, guided by real user data.
+          Growth marketing consulting built for startup founders — data-driven
+          strategies, rapid execution, and real traction from day one.
         </p>
 
         <div className="grid sm:grid-cols-2 gap-6">

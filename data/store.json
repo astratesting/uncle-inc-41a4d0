@@ -1,4 +1,24 @@
 {
-  "users": [],
-  "sessions": []
+  "users": [
+    {
+      "id": "cc8bcd8d-7b51-484f-8674-5e9cc375f938",
+      "email": "testfounder123@uncleinc.com",
+      "name": "Test Founder",
+      "companyName": "TestCo",
+      "passwordHash": "$2b$10$hhEwsuvOa4lwhQQHr/jqs.OCmzvW.BmW9UCQXvaEGdZ6uEN9lv1bu",
+      "verified": true,
+      "verificationToken": "ff7b754d-1f14-4894-ae88-15197dcb7c26",
+      "createdAt": "2026-06-23T10:07:17.508Z",
+      "verifiedAt": "2026-06-23T10:07:17.508Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "3ca3dde5-8560-4310-9d48-ce40c6c18a86",
+      "userId": "cc8bcd8d-7b51-484f-8674-5e9cc375f938",
+      "token": "91a1355b-81fe-4bb3-ae6d-80393d28e0a5",
+      "createdAt": "2026-06-23T10:07:17.508Z",
+      "expiresAt": "2026-06-30T10:07:17.508Z"
+    }
+  ]
 }

@@ -10,33 +10,33 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://uncle-inc.com"
   ),
-  title: "Uncle Inc. — Validate Startup Ideas Without a Technical Co-Founder",
+  title: "Uncle Inc. — Data-Driven Growth for Startup Founders",
   description:
-    "Uncle Inc. helps early-stage founders validate startup ideas and ship working MVPs using AI-assisted prototyping, built-in user testing, and launch analytics — no code required.",
+    "Uncle Inc. helps early-stage founders acquire users, optimize funnels, and scale what works through data-driven growth marketing consulting.",
   keywords: [
-    "MVP development",
+    "growth marketing",
     "startup founders",
-    "AI prototyping",
-    "user testing",
-    "launch analytics",
-    "no-code MVP",
-    "startup validation",
+    "user acquisition",
+    "startup growth",
+    "growth consulting",
+    "first users",
+    "startup marketing",
     "early-stage founders",
   ],
   authors: [{ name: "Uncle Inc." }],
   openGraph: {
-    title: "Uncle Inc. — Validate Startup Ideas Without a Technical Co-Founder",
+    title: "Uncle Inc. — Data-Driven Growth for Startup Founders",
     description:
-      "AI-assisted prototyping, built-in user testing, and launch analytics. Go from idea to validated MVP — no code required.",
+      "Growth marketing consulting for startup founders. Acquire users, optimize funnels, and scale what works — powered by data.",
     type: "website",
     siteName: "Uncle Inc.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Uncle Inc. — AI-Assisted MVP Development",
+    title: "Uncle Inc. — Data-Driven Growth for Startup Founders",
     description:
-      "Validate startup ideas and ship MVPs faster. AI prototyping, user testing, and analytics — no technical co-founder needed.",
+      "Growth marketing consulting for startup founders. Acquire users, optimize funnels, and scale what works.",
   },
   robots: {
     index: true,

@@ -15,3 +15,4 @@
 {"event":"signup_verified","distinctId":"verify-test-2@example.com","timestamp":"2026-06-23T09:09:24.291Z"}
 {"event":"signup_submitted","distinctId":"prodtest@example.com","timestamp":"2026-06-23T09:10:55.691Z"}
 {"event":"waitlist_signup_submitted","distinctId":"test-verify@example.com","timestamp":"2026-06-23T10:03:47.934Z"}
+{"event":"user_signup","distinctId":"testfounder123@uncleinc.com","properties":{"name":"Test Founder","company":"TestCo"},"timestamp":"2026-06-23T10:07:17.512Z"}
