@@ -29,27 +29,32 @@ export default function ResetPasswordPage() {
     }
 
     setLoading(true);
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.updateUser({
-      password,
-    });
+    try {
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.updateUser({
+        password,
+      });
 
-    if (authError) {
-      setError(authError.message);
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Authentication service unavailable. Please try again later.");
       setLoading(false);
-      return;
     }
-
-    router.push("/dashboard");
-    router.refresh();
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white text-center mb-1">
+      <h1 className="text-2xl font-bold text-ivory text-center mb-1">
         New Password
       </h1>
-      <p className="text-gray-400 text-sm text-center mb-6">
+      <p className="text-charcoal-400 text-sm text-center mb-6">
         Choose a strong password for your account
       </p>
 
@@ -74,12 +79,12 @@ export default function ResetPasswordPage() {
         />
 
         {error && (
-          <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-            {error}
+          <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-2">
+            <p className="text-xs text-red-400">{error}</p>
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" disabled={loading} className="w-full">
           <KeyRound className="h-4 w-4" />
           {loading ? "Updating..." : "Update Password"}
         </Button>

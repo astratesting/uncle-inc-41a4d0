@@ -1,82 +1,74 @@
-import { createClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui/Card";
-import { Users, TrendingUp, Activity, Zap } from "lucide-react";
+import { Users, TrendingUp, Activity, Zap, Lightbulb, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { projects, stats } from "@/lib/demo-data";
 
-export const dynamic = "force-dynamic";
-
-export default async function DashboardPage() {
-  const supabase = await createClient();
-
-  // Get real signup count from profiles table
-  const { count: signupCount } = await supabase
-    .from("profiles")
-    .select("*", { count: "exact", head: true });
-
-  // Get feedback count
-  const { count: feedbackCount } = await supabase
-    .from("feedback")
-    .select("*", { count: "exact", head: true });
-
-  const stats = [
+export default function DashboardPage() {
+  const statCards = [
     {
-      label: "Total Signups",
-      value: signupCount ?? 0,
-      icon: Users,
-      color: "text-indigo-400",
-      bg: "bg-indigo-600/10",
-      border: "border-indigo-500/20",
+      label: "Active Projects",
+      value: stats[0].value,
+      change: stats[0].change,
+      icon: Lightbulb,
+      color: "text-gold",
+      bg: "bg-gold/10",
+      border: "border-gold/20",
     },
     {
-      label: "Active Users",
-      value: signupCount ?? 0,
+      label: "In Development",
+      value: stats[1].value,
+      change: stats[1].change,
       icon: Activity,
-      color: "text-cyan-400",
-      bg: "bg-cyan-600/10",
-      border: "border-cyan-500/20",
+      color: "text-blue-400",
+      bg: "bg-blue-600/10",
+      border: "border-blue-500/20",
     },
     {
-      label: "Feedback Received",
-      value: feedbackCount ?? 0,
+      label: "Completed",
+      value: stats[2].value,
+      change: stats[2].change,
       icon: TrendingUp,
-      color: "text-teal-400",
-      bg: "bg-teal-600/10",
-      border: "border-teal-500/20",
+      color: "text-emerald-400",
+      bg: "bg-emerald-600/10",
+      border: "border-emerald-500/20",
     },
     {
-      label: "Growth Rate",
-      value: "—",
-      icon: Zap,
-      color: "text-yellow-400",
-      bg: "bg-yellow-600/10",
-      border: "border-yellow-500/20",
+      label: "Team Members",
+      value: stats[3].value,
+      change: stats[3].change,
+      icon: Users,
+      color: "text-purple-400",
+      bg: "bg-purple-600/10",
+      border: "border-purple-500/20",
     },
   ];
+
+  const recentProjects = projects.slice(0, 3);
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-        <p className="text-gray-400 text-sm mt-1">
-          Overview of your platform metrics
+        <h1 className="text-2xl font-serif font-bold text-ivory">Dashboard</h1>
+        <p className="text-charcoal-400 text-sm mt-1">
+          Overview of your validation projects
         </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
-          <Card key={stat.label} className="relative overflow-hidden">
+        {statCards.map((stat) => (
+          <Card key={stat.label}>
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <p className="text-xs font-medium text-charcoal-500 uppercase tracking-wider">
                   {stat.label}
                 </p>
-                <p className="text-3xl font-bold text-white mt-2 font-mono">
+                <p className="text-3xl font-bold text-ivory mt-2 font-mono">
                   {stat.value}
                 </p>
+                <p className="text-xs text-charcoal-500 mt-1">{stat.change}</p>
               </div>
-              <div
-                className={`${stat.bg} ${stat.border} border rounded-lg p-2.5`}
-              >
+              <div className={`${stat.bg} ${stat.border} border rounded-lg p-2.5`}>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
             </div>
@@ -84,42 +76,49 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {/* Recent Activity */}
+      {/* Recent Projects */}
       <Card>
-        <h3 className="text-lg font-semibold text-white mb-4">
-          Getting Started
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-ivory">Recent Projects</h3>
+          <Link
+            href="/dashboard/projects"
+            className="text-sm text-gold hover:text-gold-light transition-colors inline-flex items-center gap-1"
+          >
+            View all <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
         <div className="space-y-3">
-          {[
-            {
-              step: 1,
-              title: "Set up your Supabase tables",
-              desc: "Create 'profiles' and 'feedback' tables in your Supabase project",
-              done: false,
-            },
-            {
-              step: 2,
-              title: "Configure Row Level Security",
-              desc: "Enable RLS on your tables to protect user data",
-              done: false,
-            },
-            {
-              step: 3,
-              title: "Share your signup link",
-              desc: "Direct users to /sign-up to start collecting signups",
-              done: false,
-            },
-          ].map((item) => (
+          {recentProjects.map((project) => (
             <div
-              key={item.step}
-              className="flex items-start gap-3 p-3 rounded-lg border border-gray-800 bg-white/[0.02]"
+              key={project.id}
+              className="flex items-center justify-between p-3 rounded-lg border border-charcoal-800 bg-charcoal-900/30"
             >
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-600/20 border border-indigo-500/30 text-xs font-bold text-indigo-400">
-                {item.step}
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-1">
+                  {project.team.slice(0, 3).map((member) => (
+                    <span
+                      key={member}
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal-700 text-xs font-medium text-charcoal-300 ring-2 ring-charcoal-800"
+                    >
+                      {member}
+                    </span>
+                  ))}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-ivory">{project.name}</p>
+                  <p className="text-xs text-charcoal-500">{project.status}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-white">{item.title}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+              <div className="text-right">
+                <div className="w-24">
+                  <div className="h-2 rounded-full bg-charcoal-800 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gold"
+                      style={{ width: `${project.progress}%` }}
+                    />
+                  </div>
+                </div>
+                <span className="text-xs text-charcoal-500 mt-1 block">{project.progress}%</span>
               </div>
             </div>
           ))}

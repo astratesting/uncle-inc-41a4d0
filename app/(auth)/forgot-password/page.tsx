@@ -18,38 +18,43 @@ export default function ForgotPasswordPage() {
     setError("");
     setLoading(true);
 
-    const supabase = createClient();
-    const origin = window.location.origin;
-    const { error: authError } = await supabase.auth.resetPasswordForEmail(
-      email,
-      {
-        redirectTo: `${origin}/api/auth/callback?next=/reset-password`,
+    try {
+      const supabase = createClient();
+      const origin = window.location.origin;
+      const { error: authError } = await supabase.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: `${origin}/api/auth/callback?next=/reset-password`,
+        }
+      );
+
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
       }
-    );
 
-    if (authError) {
-      setError(authError.message);
+      setSent(true);
       setLoading(false);
-      return;
+    } catch {
+      setError("Authentication service unavailable. Please try again later.");
+      setLoading(false);
     }
-
-    setSent(true);
-    setLoading(false);
   }
 
   if (sent) {
     return (
       <div className="text-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600/20 border border-indigo-500/30 mx-auto mb-4">
-          <Mail className="h-6 w-6 text-indigo-400" />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 border border-gold/20 mx-auto mb-4">
+          <Mail className="h-6 w-6 text-gold" />
         </div>
-        <h1 className="text-2xl font-bold text-white mb-1">Check Your Email</h1>
-        <p className="text-gray-400 text-sm mb-6">
-          We sent a password reset link to <strong className="text-white">{email}</strong>
+        <h1 className="text-2xl font-bold text-ivory mb-1">Check Your Email</h1>
+        <p className="text-charcoal-400 text-sm mb-6">
+          We sent a password reset link to <strong className="text-ivory">{email}</strong>
         </p>
         <Link
           href="/sign-in"
-          className="inline-flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 font-medium"
+          className="inline-flex items-center gap-2 text-sm text-gold hover:text-gold-light font-medium"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to sign in
@@ -60,11 +65,11 @@ export default function ForgotPasswordPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white text-center mb-1">
+      <h1 className="text-2xl font-bold text-ivory text-center mb-1">
         Reset Password
       </h1>
-      <p className="text-gray-400 text-sm text-center mb-6">
-        Enter your email and we&apos;ll send you a reset link
+      <p className="text-charcoal-400 text-sm text-center mb-6">
+        Enter your email and we&apos;ll send a reset link
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -79,26 +84,24 @@ export default function ForgotPasswordPage() {
         />
 
         {error && (
-          <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-            {error}
+          <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-2">
+            <p className="text-xs text-red-400">{error}</p>
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" disabled={loading} className="w-full">
           <Mail className="h-4 w-4" />
           {loading ? "Sending..." : "Send Reset Link"}
         </Button>
       </form>
 
-      <p className="text-sm text-gray-400 text-center mt-6">
-        Remember your password?{" "}
-        <Link
-          href="/sign-in"
-          className="text-indigo-400 hover:text-indigo-300 font-medium"
-        >
-          Sign in
-        </Link>
-      </p>
+      <Link
+        href="/sign-in"
+        className="mt-6 inline-flex items-center gap-2 text-sm text-gold hover:text-gold-light font-medium"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to sign in
+      </Link>
     </div>
   );
 }

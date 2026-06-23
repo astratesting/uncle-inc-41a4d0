@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const benefits = [
@@ -39,7 +39,7 @@ export function Hero() {
           {benefits.map((benefit) => (
             <div key={benefit} className="flex items-start gap-3">
               <div className="mt-1 h-5 w-5 flex-shrink-0 rounded-full bg-gold/20 flex items-center justify-center">
-                <div className="h-1.5 w-1.5 rounded-full bg-gold" />
+                <ArrowRight className="h-3 w-3 text-gold" />
               </div>
               <span className="text-sm text-charcoal-300">{benefit}</span>
             </div>
@@ -48,12 +48,13 @@ export function Hero() {
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="/api/auth/demo-signin">
-            <Button size="lg" className="min-w-[200px] gap-2">
-              View Live Demo <ArrowRight className="h-4 w-4" />
+            <Button size="lg">
+              <Play className="h-4 w-4" />
+              Try Live Demo
             </Button>
           </a>
           <a href="#waitlist">
-            <Button variant="outline" size="lg" className="min-w-[200px]">
+            <Button variant="outline" size="lg">
               Join the Waitlist
             </Button>
           </a>

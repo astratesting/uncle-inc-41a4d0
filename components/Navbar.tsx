@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Play } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export function Navbar() {
@@ -36,6 +36,7 @@ export function Navbar() {
             </a>
             <a href="/api/auth/demo-signin">
               <Button variant="outline" size="sm">
+                <Play className="h-3.5 w-3.5" />
                 View Live Demo
               </Button>
             </a>
@@ -55,27 +56,28 @@ export function Navbar() {
         </div>
 
         {open && (
-          <div className="md:hidden pb-4 border-t border-charcoal-700/50 pt-4 animate-fade-in">
+          <div className="md:hidden pb-4 border-t border-charcoal-800 mt-2 pt-4">
             <div className="flex flex-col gap-3">
               <a
                 href="#features"
                 onClick={() => setOpen(false)}
-                className="text-sm text-charcoal-400 hover:text-ivory py-1"
+                className="text-sm text-charcoal-400 hover:text-ivory transition-colors py-2"
               >
                 Features
               </a>
               <a
                 href="#faq"
                 onClick={() => setOpen(false)}
-                className="text-sm text-charcoal-400 hover:text-ivory py-1"
+                className="text-sm text-charcoal-400 hover:text-ivory transition-colors py-2"
               >
                 FAQ
               </a>
               <a
                 href="/api/auth/demo-signin"
-                onClick={() => setOpen(false)}
+                className="mt-2"
               >
                 <Button variant="outline" size="sm" className="w-full">
+                  <Play className="h-3.5 w-3.5" />
                   View Live Demo
                 </Button>
               </a>
