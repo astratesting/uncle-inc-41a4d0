@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createUser, verifyUser } from '@/lib/store';
+import { createUser } from '@/lib/store';
 import { hashPassword, setSessionCookie } from '@/lib/auth';
 import { trackServerEvent } from '@/lib/analytics';
 
@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
     const user = createUser(email, name, company || '', passwordHash);
 
     // Auto-verify since we can't send real emails
+    const { verifyUser } = await import('@/lib/store');
     verifyUser(user.verificationToken);
 
     // Create session and set cookie
@@ -36,7 +37,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Account created! Redirecting to dashboard...',
       user: { id: user.id, email: user.email, name: user.name },
     });
   } catch (error: any) {

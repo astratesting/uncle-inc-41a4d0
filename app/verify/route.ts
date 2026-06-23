@@ -5,6 +5,7 @@ import crypto from "crypto";
 import { getUsers, saveUsers, createSession, setSessionCookie } from "@/lib/auth";
 import { generateToken } from "@/lib/password";
 import { trackServerEvent } from "@/lib/analytics";
+import type { User } from "@/lib/store";
 
 const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
 
@@ -61,24 +62,15 @@ export async function GET(request: NextRequest) {
       name: signup.name || "",
       email: signup.email,
       passwordHash: generateToken(32), // random placeholder — no password for waitlist signups
-      emailVerified: true,
+      companyName: "",
+      verified: true,
       createdAt: new Date().toISOString(),
     };
-    // First verified user becomes admin
-    const hasAdmin = users.some((u) => u.isAdmin);
-    if (!hasAdmin) {
-      user.isAdmin = true;
-    }
-    users.push(user);
+    users.push(user as User);
     await saveUsers(users);
     await trackServerEvent("user_created_from_signup", signup.email);
-  } else if (!user.emailVerified) {
-    user.emailVerified = true;
-    user.verificationToken = undefined;
-    const hasAdmin = users.some((u) => u.isAdmin);
-    if (!hasAdmin) {
-      user.isAdmin = true;
-    }
+  } else if (!user.verified) {
+    user.verified = true;
     await saveUsers(users);
   }
 

@@ -1,16 +1,10 @@
-import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import { NextResponse } from 'next/server';
+import { getVerifiedUserCount, getTotalUserCount } from '@/lib/store';
 
-const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  try {
-    const data = await fs.readFile(SIGNUPS_PATH, "utf-8");
-    const signups = JSON.parse(data) as { verified: boolean }[];
-    const verified = signups.filter((s) => s.verified).length;
-    return NextResponse.json({ count: signups.length, verified, target: 10 });
-  } catch {
-    return NextResponse.json({ count: 0, verified: 0, target: 10 });
-  }
+  const total = getTotalUserCount();
+  const verified = getVerifiedUserCount();
+  return NextResponse.json({ count: total, verified, target: 10 });
 }

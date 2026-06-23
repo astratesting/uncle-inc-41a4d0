@@ -1,15 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: '', password: '', name: '', companyName: '' });
+  const [form, setForm] = useState({ email: '', password: '', name: '', company: '' });
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [signupCount, setSignupCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('/api/signup-count')
+      .then((res) => res.json())
+      .then((data) => setSignupCount(data.count))
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +24,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/signup', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -30,40 +37,13 @@ export default function SignupPage() {
         return;
       }
 
-      setSuccess(true);
+      router.push('/dashboard');
     } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-
-  if (success) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FFFBF5' }}>
-        <div className="max-w-md w-full mx-4 p-8 rounded-2xl shadow-lg" style={{ backgroundColor: '#FFFFFF' }}>
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#C8A95120' }}>
-              <svg className="w-8 h-8" style={{ color: '#C8A951' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold mb-2" style={{ color: '#1a1a1a' }}>Check Your Email</h1>
-            <p className="mb-6" style={{ color: '#666' }}>
-              We sent a verification link to <strong>{form.email}</strong>. Click the link in the email to activate your account.
-            </p>
-            <Link
-              href="/login"
-              className="inline-block px-6 py-2 rounded-lg font-medium transition-colors"
-              style={{ backgroundColor: '#C8A951', color: '#1a1a1a' }}
-            >
-              Go to Login
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4" style={{ backgroundColor: '#FFFBF5' }}>
@@ -72,7 +52,12 @@ export default function SignupPage() {
           <Link href="/" className="text-2xl font-bold tracking-tight" style={{ color: '#1a1a1a', fontFamily: 'Georgia, serif' }}>
             Uncle Inc.
           </Link>
-          <p className="mt-2" style={{ color: '#666' }}>Create your account to get started</p>
+          <p className="mt-2" style={{ color: '#666' }}>Create your account</p>
+          {signupCount !== null && signupCount > 0 && (
+            <p className="mt-1 text-sm" style={{ color: '#C8A951' }}>
+              {signupCount} {signupCount === 1 ? 'founder has' : 'founders have'} already signed up
+            </p>
+          )}
         </div>
 
         <div className="rounded-2xl shadow-lg p-8" style={{ backgroundColor: '#FFFFFF' }}>
@@ -84,75 +69,85 @@ export default function SignupPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>Full Name</label>
+              <label htmlFor="name" className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>
+                Full Name
+              </label>
               <input
+                id="name"
                 type="text"
-                required
                 value={form.name}
-                onChange={e => setForm({ ...form, name: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 transition-colors"
-                style={{ borderColor: '#e2e0d8', backgroundColor: '#FFFBF5', color: '#1a1a1a' }}
-                placeholder="John Doe"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>Company Name</label>
-              <input
-                type="text"
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Jane Doe"
                 required
-                value={form.companyName}
-                onChange={e => setForm({ ...form, companyName: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 transition-colors"
-                style={{ borderColor: '#e2e0d8', backgroundColor: '#FFFBF5', color: '#1a1a1a' }}
-                placeholder="Acme Inc."
+                className="w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 transition-colors"
+                style={{ borderColor: '#e2e0d8', color: '#1a1a1a', backgroundColor: '#FFFBF5' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>Email</label>
+              <label htmlFor="email" className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>
+                Email Address
+              </label>
               <input
+                id="email"
                 type="email"
-                required
                 value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 transition-colors"
-                style={{ borderColor: '#e2e0d8', backgroundColor: '#FFFBF5', color: '#1a1a1a' }}
-                placeholder="john@acme.com"
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="you@company.com"
+                required
+                className="w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 transition-colors"
+                style={{ borderColor: '#e2e0d8', color: '#1a1a1a', backgroundColor: '#FFFBF5' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>Password</label>
+              <label htmlFor="company" className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>
+                Company <span style={{ color: '#999' }}>(optional)</span>
+              </label>
               <input
+                id="company"
+                type="text"
+                value={form.company}
+                onChange={(e) => setForm({ ...form, company: e.target.value })}
+                placeholder="Acme Inc."
+                className="w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 transition-colors"
+                style={{ borderColor: '#e2e0d8', color: '#1a1a1a', backgroundColor: '#FFFBF5' }}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>
+                Password
+              </label>
+              <input
+                id="password"
                 type="password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                placeholder="At least 6 characters"
                 required
                 minLength={6}
-                value={form.password}
-                onChange={e => setForm({ ...form, password: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 transition-colors"
-                style={{ borderColor: '#e2e0d8', backgroundColor: '#FFFBF5', color: '#1a1a1a' }}
-                placeholder="••••••••"
+                className="w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 transition-colors"
+                style={{ borderColor: '#e2e0d8', color: '#1a1a1a', backgroundColor: '#FFFBF5' }}
               />
-              <p className="text-xs mt-1" style={{ color: '#999' }}>At least 6 characters</p>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg font-semibold transition-all hover:opacity-90 disabled:opacity-50"
+              className="w-full py-3 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
               style={{ backgroundColor: '#C8A951', color: '#1a1a1a' }}
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm" style={{ color: '#666' }}>
+          <div className="mt-6 text-center text-sm" style={{ color: '#666' }}>
             Already have an account?{' '}
-            <Link href="/login" className="font-medium hover:underline" style={{ color: '#722F37' }}>
+            <Link href="/login" className="font-medium" style={{ color: '#C8A951' }}>
               Sign in
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

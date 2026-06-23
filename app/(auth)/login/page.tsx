@@ -16,7 +16,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -56,47 +56,53 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>Email</label>
+              <label htmlFor="email" className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>
+                Email Address
+              </label>
               <input
+                id="email"
                 type="email"
-                required
                 value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 transition-colors"
-                style={{ borderColor: '#e2e0d8', backgroundColor: '#FFFBF5', color: '#1a1a1a' }}
-                placeholder="john@acme.com"
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="you@company.com"
+                required
+                className="w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 transition-colors"
+                style={{ borderColor: '#e2e0d8', color: '#1a1a1a', backgroundColor: '#FFFBF5' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>Password</label>
+              <label htmlFor="password" className="block text-sm font-medium mb-1" style={{ color: '#1a1a1a' }}>
+                Password
+              </label>
               <input
+                id="password"
                 type="password"
-                required
                 value={form.password}
-                onChange={e => setForm({ ...form, password: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 transition-colors"
-                style={{ borderColor: '#e2e0d8', backgroundColor: '#FFFBF5', color: '#1a1a1a' }}
-                placeholder="••••••••"
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                placeholder="Your password"
+                required
+                className="w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 transition-colors"
+                style={{ borderColor: '#e2e0d8', color: '#1a1a1a', backgroundColor: '#FFFBF5' }}
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg font-semibold transition-all hover:opacity-90 disabled:opacity-50"
+              className="w-full py-3 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
               style={{ backgroundColor: '#C8A951', color: '#1a1a1a' }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm" style={{ color: '#666' }}>
-            Don't have an account?{' '}
-            <Link href="/signup" className="font-medium hover:underline" style={{ color: '#722F37' }}>
+          <div className="mt-6 text-center text-sm" style={{ color: '#666' }}>
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className="font-medium" style={{ color: '#C8A951' }}>
               Create one
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

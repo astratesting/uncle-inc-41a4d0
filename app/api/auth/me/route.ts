@@ -1,25 +1,24 @@
-import { NextResponse } from "next/server";
-import { getSessionUser, getUsers } from "@/lib/auth";
+import { NextResponse } from 'next/server';
+import { getCurrentUser } from '@/lib/auth';
+import { getTotalUserCount } from '@/lib/store';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const user = await getSessionUser();
+  const user = await getCurrentUser();
   if (!user) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
-
-  const users = await getUsers();
-  const verifiedCount = users.filter((u) => u.emailVerified).length;
 
   return NextResponse.json({
     user: {
       id: user.id,
       name: user.name,
       email: user.email,
-      createdAt: user.createdAt,
-      isAdmin: user.isAdmin || false,
+      companyName: user.companyName,
     },
     stats: {
-      totalSignups: verifiedCount,
+      totalSignups: getTotalUserCount(),
     },
   });
 }

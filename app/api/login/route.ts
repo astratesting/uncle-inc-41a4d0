@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserByEmail } from '@/lib/store';
 import { verifyPassword, setSessionCookie } from '@/lib/auth';
+import { trackServerEvent } from '@/lib/analytics';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,6 +32,8 @@ export async function POST(request: NextRequest) {
     }
 
     await setSessionCookie(user.id);
+
+    await trackServerEvent('user_login', user.email);
 
     return NextResponse.json({
       success: true,

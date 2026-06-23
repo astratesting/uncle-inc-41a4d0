@@ -9,7 +9,7 @@ export async function GET() {
 
   const users = await getUsers();
   const verifiedUsers = users
-    .filter((u) => u.emailVerified)
+    .filter((u) => u.verified)
     .map((u) => ({
       id: u.id,
       name: u.name,

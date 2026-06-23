@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const entries = await readJSON<FeedbackEntry>("feedback.json");
+    const entries = await readJSON<FeedbackEntry[]>("feedback.json", []);
 
     const entry: FeedbackEntry = {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const entries = await readJSON<FeedbackEntry>("feedback.json");
+    const entries = await readJSON<FeedbackEntry[]>("feedback.json", []);
     return NextResponse.json(entries);
   } catch (error) {
     console.error("Feedback read error:", error);

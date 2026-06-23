@@ -10,7 +10,7 @@ interface FeedbackEntry {
 
 export async function GET() {
   try {
-    const entries = await readJSON<FeedbackEntry>("feedback.json");
+    const entries = await readJSON<FeedbackEntry[]>("feedback.json", []);
 
     const counts: Record<string, number> = {
       "Account creation": 0,

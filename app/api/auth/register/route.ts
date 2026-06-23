@@ -1,67 +1,45 @@
-import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
-import { getUsers, saveUsers, type StoredUser } from "@/lib/auth";
-import { hashPassword } from "@/lib/password";
-import { trackServerEvent } from "@/lib/analytics";
+import { NextRequest, NextResponse } from 'next/server';
+import { createUser } from '@/lib/store';
+import { hashPassword } from '@/lib/auth';
+import { trackServerEvent } from '@/lib/analytics';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
     const { name, email, password } = await request.json();
 
-    if (!email || typeof email !== "string") {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    if (!email || typeof email !== 'string') {
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
-    if (!password || typeof password !== "string" || password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
-        { status: 400 }
-      );
+    if (!password || typeof password !== 'string' || password.length < 6) {
+      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
-    const users = await getUsers();
-    const normalizedEmail = email.toLowerCase().trim();
+    const passwordHash = await hashPassword(password);
+    const user = createUser(email, name || '', '', passwordHash);
 
-    if (users.find((u) => u.email === normalizedEmail)) {
-      return NextResponse.json(
-        { error: "An account with this email already exists" },
-        { status: 409 }
-      );
-    }
+    // Auto-verify
+    const { verifyUser } = await import('@/lib/store');
+    verifyUser(user.verificationToken);
 
-    const verificationToken = crypto.randomBytes(32).toString("hex");
-    const newUser: StoredUser = {
-      id: crypto.randomUUID(),
-      name: name || "",
-      email: normalizedEmail,
-      passwordHash: hashPassword(password),
-      emailVerified: false,
-      verificationToken,
-      createdAt: new Date().toISOString(),
-    };
-
-    users.push(newUser);
-    await saveUsers(users);
-
-    await trackServerEvent("user_registered", normalizedEmail, { name });
-
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
-    const verifyUrl = `${baseUrl}/api/auth/verify-email?token=${verificationToken}`;
+    await trackServerEvent('user_registered', email.toLowerCase(), { name });
 
     return NextResponse.json({
-      message: "Account created. Check your email for a verification link.",
-      // Dev mode: show the verification link directly
-      _dev_verifyUrl: verifyUrl,
+      success: true,
+      user: { id: user.id, name: user.name, email: user.email },
+      verifyUrl: `/api/auth/verify-email?token=${user.verificationToken}`,
     });
-  } catch (error) {
-    console.error("Registration error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+  } catch (error: any) {
+    if (error.message === 'User already exists') {
+      return NextResponse.json({ error: 'An account with this email already exists' }, { status: 409 });
+    }
+    console.error('Register error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

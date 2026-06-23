@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getVerifiedUserCount, getTotalUserCount, getRecentSignups } from '@/lib/store';
 import { getCurrentUser } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) {

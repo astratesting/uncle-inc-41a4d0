@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
-import { createSession, getSessionByToken, getUserById, deleteSession } from './store';
+import { createSession, getSessionByToken, getUserById, deleteSession, getAllUsers, saveUsers } from './store';
+import type { User } from './store';
 
 const SALT_ROUNDS = 10;
 const SESSION_COOKIE = 'uncle_session';
@@ -59,3 +60,13 @@ export async function isAuthenticated(): Promise<boolean> {
   const user = await getCurrentUser();
   return user !== null && user.verified;
 }
+
+export async function getSessionUser(): Promise<{ id: string; email: string; name: string; companyName: string; verified: boolean; isAdmin?: boolean } | null> {
+  return getCurrentUser();
+}
+
+export function getUsers(): User[] {
+  return getAllUsers();
+}
+
+export { createSession, saveUsers };

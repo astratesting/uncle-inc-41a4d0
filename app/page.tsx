@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SignupCounter } from '@/components/SignupCounter';
 
 export default function HomePage() {
   return (
@@ -24,8 +25,11 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-6 py-24 text-center">
-        <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-6" style={{ backgroundColor: '#C8A95115', color: '#C8A951' }}>
+        <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-4" style={{ backgroundColor: '#C8A95115', color: '#C8A951' }}>
           Now accepting early access signups
+        </div>
+        <div className="mb-6 flex justify-center">
+          <SignupCounter />
         </div>
         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ color: '#1a1a1a', fontFamily: 'Georgia, serif' }}>
           Validate Your Startup Idea Before You Build It

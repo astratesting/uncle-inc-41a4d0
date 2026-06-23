@@ -156,3 +156,54 @@ export function deleteSession(token: string): void {
   store.sessions = store.sessions.filter(s => s.token !== token);
   writeStore(store);
 }
+
+export function getAllUsers(): User[] {
+  return readStore().users;
+}
+
+export function saveUsers(users: User[]): void {
+  const store = readStore();
+  store.users = users;
+  writeStore(store);
+}
+
+export async function readJSONL<T>(filename: string): Promise<T[]> {
+  try {
+    const filePath = path.join(DATA_DIR, filename);
+    const raw = fs.readFileSync(filePath, 'utf-8');
+    return raw.trim().split('\n').filter(Boolean).map(line => JSON.parse(line) as T);
+  } catch {
+    return [];
+  }
+}
+
+export async function readJSON<T>(filename: string, defaultValue: T = [] as unknown as T): Promise<T> {
+  try {
+    const filePath = path.join(DATA_DIR, filename);
+    if (!fs.existsSync(filePath)) return defaultValue;
+    const raw = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(raw) as T;
+  } catch {
+    return defaultValue;
+  }
+}
+
+export async function writeJSON(filename: string, data: unknown): Promise<void> {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  const filePath = path.join(DATA_DIR, filename);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+export async function appendJSONL<T>(filename: string, data: T): Promise<void> {
+  try {
+    const filePath = path.join(DATA_DIR, filename);
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.appendFileSync(filePath, JSON.stringify(data) + '\n');
+  } catch {
+    // Silently fail — analytics should never break the app
+  }
+}

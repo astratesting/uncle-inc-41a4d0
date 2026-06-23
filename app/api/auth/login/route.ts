@@ -1,50 +1,41 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getUsers, createSession, setSessionCookie } from "@/lib/auth";
-import { verifyPassword } from "@/lib/password";
-import { trackServerEvent } from "@/lib/analytics";
+import { NextRequest, NextResponse } from 'next/server';
+import { getUserByEmail } from '@/lib/store';
+import { verifyPassword, setSessionCookie } from '@/lib/auth';
+import { trackServerEvent } from '@/lib/analytics';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: "Email and password are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    const users = await getUsers();
-    const normalizedEmail = email.toLowerCase().trim();
-    const user = users.find((u) => u.email === normalizedEmail);
-
-    if (!user || !verifyPassword(password, user.passwordHash)) {
-      return NextResponse.json(
-        { error: "Invalid email or password" },
-        { status: 401 }
-      );
+    const user = getUserByEmail(email);
+    if (!user) {
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    if (!user.emailVerified) {
-      return NextResponse.json(
-        { error: "Please verify your email before logging in" },
-        { status: 403 }
-      );
+    const valid = await verifyPassword(password, user.passwordHash);
+    if (!valid) {
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    const token = await createSession(user.id);
-    await setSessionCookie(token);
+    if (!user.verified) {
+      return NextResponse.json({ error: 'Please verify your email before logging in' }, { status: 403 });
+    }
 
-    await trackServerEvent("user_login", user.email);
+    await setSessionCookie(user.id);
+
+    await trackServerEvent('user_login', user.email);
 
     return NextResponse.json({
       user: { id: user.id, name: user.name, email: user.email },
     });
   } catch (error) {
-    console.error("Login error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    console.error('Login error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
