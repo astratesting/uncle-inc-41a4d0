@@ -3,6 +3,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import PostHogPageView from "@/components/PostHogPageView";
+import { SessionRecorder } from "@/components/SessionRecorder";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>
+          <SessionRecorder />
           {children}
           <Analytics />
         </PostHogProvider>

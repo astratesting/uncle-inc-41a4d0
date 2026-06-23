@@ -23,6 +23,11 @@ export async function GET(request: NextRequest) {
 
   user.emailVerified = true;
   user.verificationToken = undefined;
+  // First verified user becomes admin
+  const hasAdmin = users.some((u) => u.isAdmin);
+  if (!hasAdmin) {
+    user.isAdmin = true;
+  }
   await saveUsers(users);
 
   await trackServerEvent("email_verified", user.email);
