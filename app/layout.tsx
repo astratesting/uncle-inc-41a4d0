@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Suspense } from "react";
+import { PostHogProvider } from "@/components/PostHogProvider";
+import PostHogPageView from "@/components/PostHogPageView";
 
 export const metadata: Metadata = {
-  title: "Uncle Inc. — Validate Before You Build",
+  title: "Uncle Inc. — Data-Driven Marketing for Startup Founders",
   description:
-    "AI-assisted MVP platform that helps founders test ideas with real users before writing a single line of code.",
-  keywords: ["MVP", "startup", "validation", "AI", "prototyping", "user testing"],
+    "Data-driven marketing strategy for early-stage startup founders who struggle with inconsistent customer acquisition and wasted ad spend.",
+  keywords: [
+    "startup marketing",
+    "data-driven marketing",
+    "customer acquisition",
+    "startup founders",
+    "marketing strategy",
+  ],
   openGraph: {
-    title: "Uncle Inc. — Validate Before You Build",
+    title: "Uncle Inc. — Data-Driven Marketing for Startup Founders",
     description:
-      "AI-assisted MVP platform that helps founders test ideas with real users before writing code.",
+      "Data-driven marketing strategy for early-stage startup founders.",
     type: "website",
   },
 };
@@ -21,8 +30,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-ink text-gray-100 antialiased font-sans">
-        {children}
+      <body className="min-h-screen bg-cream text-gray-800 antialiased font-sans">
+        <PostHogProvider>
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          {children}
+        </PostHogProvider>
       </body>
     </html>
   );

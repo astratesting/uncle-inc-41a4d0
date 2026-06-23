@@ -24,6 +24,7 @@ export interface FeedbackEntry {
   userId: string;
   email: string;
   response: string;
+  rating: number;
   createdAt: string;
 }
 
@@ -163,13 +164,14 @@ export function getVerifiedUsers(): Omit<User, "token" | "passwordHash" | "verif
     .map(({ token: _token, passwordHash: _ph, verificationCode: _vc, verificationExpiry: _ve, ...rest }) => rest);
 }
 
-export function addFeedback(userId: string, email: string, response: string): FeedbackEntry {
+export function addFeedback(userId: string, email: string, response: string, rating: number): FeedbackEntry {
   const entries = readFeedback();
   const entry: FeedbackEntry = {
     id: randomUUID(),
     userId,
     email,
     response,
+    rating,
     createdAt: new Date().toISOString(),
   };
   entries.push(entry);

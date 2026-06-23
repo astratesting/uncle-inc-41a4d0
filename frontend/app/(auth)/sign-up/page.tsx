@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AuthFormCard } from "@/components/ui/AuthFormCard";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function SignUpPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    trackEvent("signup_start");
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -45,6 +47,7 @@ export default function SignUpPage() {
         return;
       }
 
+      trackEvent("signup_complete", { email });
       router.push(
         `/sign-up/confirm?email=${encodeURIComponent(email)}&code=${encodeURIComponent(data.verificationCode)}`
       );

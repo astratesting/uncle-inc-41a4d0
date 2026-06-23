@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { getUserByEmail, getStats, getVerifiedUsers, getFeedback } from "@/lib/store";
 import { Users, UserCheck, Shield, Zap, MessageSquare } from "lucide-react";
 import { FeedbackWidget } from "@/components/dashboard/FeedbackWidget";
+import { FeedbackDashboard } from "@/components/dashboard/FeedbackDashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -77,10 +78,14 @@ export default async function DashboardPage() {
           id: f.id,
           email: f.email,
           response: f.response,
+          rating: f.rating || 0,
           createdAt: f.createdAt,
         }))}
         feedbackCount={feedback.length}
       />
+
+      {/* Feedback Dashboard */}
+      <FeedbackDashboard />
 
       {/* Verified Users Table */}
       <div className="rounded-2xl border border-[#1e1e2e] bg-[#12121a]/80 p-6">
