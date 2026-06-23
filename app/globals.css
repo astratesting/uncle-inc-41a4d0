@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* === APPEND ONLY — these animation keyframes go AT THE END of the existing globals.css === */
 
 @keyframes fadeIn {

@@ -32,6 +32,28 @@
       "verificationToken": "f2f1b8b9-2b6d-4236-af31-2a4004971741",
       "createdAt": "2026-06-23T10:31:04.115Z",
       "verifiedAt": "2026-06-23T10:31:04.115Z"
+    },
+    {
+      "id": "e1492b74-3c86-426a-8bfa-e5a12d3a99d1",
+      "email": "fulluser@example.com",
+      "name": "Full User",
+      "companyName": "FullCo",
+      "passwordHash": "$2b$10$FjtCVDXLDciHlJM3xc6sf.wF5FPScFOK5Xh/3Z2lI7FQelMdqYrie",
+      "verified": true,
+      "verificationToken": "7f6792d0-8f9e-411b-b1ac-3a75dc2b1e6e",
+      "createdAt": "2026-06-23T11:30:29.007Z",
+      "verifiedAt": "2026-06-23T11:30:29.007Z"
+    },
+    {
+      "id": "d7d8b093-eaeb-4e62-bb3d-bc210709b38f",
+      "name": "Fresh Verify",
+      "email": "freshverify@example.com",
+      "passwordHash": "f889ae43f076e2248794477b9fb2ce27846bd9816530db547916f12468f48ceb",
+      "companyName": "",
+      "verified": true,
+      "verificationToken": "",
+      "createdAt": "2026-06-23T11:32:30.692Z",
+      "verifiedAt": "2026-06-23T11:32:30.692Z"
     }
   ],
   "sessions": [
@@ -62,6 +84,34 @@
       "token": "5c45a603-ed86-419c-9d43-b794d7138801",
       "createdAt": "2026-06-23T10:31:04.116Z",
       "expiresAt": "2026-06-30T10:31:04.116Z"
+    },
+    {
+      "id": "3d3e1681-8a96-40de-95e7-83b085bbe655",
+      "userId": "e1492b74-3c86-426a-8bfa-e5a12d3a99d1",
+      "token": "922f0e37-6f5d-4001-ab8b-48c29934816d",
+      "createdAt": "2026-06-23T11:30:29.008Z",
+      "expiresAt": "2026-06-30T11:30:29.008Z"
+    },
+    {
+      "id": "e626ed93-62f5-4e51-aa70-97c305b1a607",
+      "userId": "e6a32510-7f38-4c42-b98b-8f8469b79b1a",
+      "token": "26880a84-8967-4b49-8e93-d3fb8aefcc8f",
+      "createdAt": "2026-06-23T11:32:30.693Z",
+      "expiresAt": "2026-06-30T11:32:30.693Z"
+    },
+    {
+      "id": "8fb7d670-bf13-4664-a749-269c9742c436",
+      "userId": "d7d8b093-eaeb-4e62-bb3d-bc210709b38f",
+      "token": "e61fe417-3825-46dd-ae48-a0a6f16b0f13",
+      "createdAt": "2026-06-23T11:32:41.738Z",
+      "expiresAt": "2026-06-30T11:32:41.738Z"
+    },
+    {
+      "id": "4e7d90e6-cf71-4b2c-9099-17ba557c347b",
+      "userId": "e61fe417-3825-46dd-ae48-a0a6f16b0f13",
+      "token": "010e597f-4b32-455e-8a83-d9e7d3a2bc8a",
+      "createdAt": "2026-06-23T11:32:41.738Z",
+      "expiresAt": "2026-06-30T11:32:41.738Z"
     }
   ]
 }

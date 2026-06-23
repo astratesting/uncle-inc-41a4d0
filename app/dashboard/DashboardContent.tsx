@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import OnboardingWizard from '@/components/onboarding/OnboardingWizard';
+import { OnboardingWizard } from '@/components/onboarding/OnboardingWizard';
 
 interface DashboardContentProps {
   user: {

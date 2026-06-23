@@ -36,3 +36,27 @@ export function trackPageView(page: string) {
     }
   }
 }
+
+export async function trackServerEvent(
+  event: string,
+  distinctId: string,
+  properties?: Record<string, unknown>
+) {
+  try {
+    const token = process.env.POSTHOG_API_TOKEN;
+    if (!token) return;
+
+    await fetch('https://us.i.posthog.com/capture/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: token,
+        event,
+        distinct_id: distinctId,
+        properties: properties || {},
+      }),
+    });
+  } catch {
+    // silent
+  }
+}

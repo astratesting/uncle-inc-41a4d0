@@ -2,28 +2,6 @@
 
 import { Suspense } from "react";
 import { SignupForm } from "@/components/SignupForm";
-import { useSearchParams } from "next/navigation";
-
-function VerificationBanner() {
-  const searchParams = useSearchParams();
-  const verified = searchParams.get("verified");
-
-  if (verified === "true") {
-    return (
-      <div className="mt-8 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm">
-        Your email has been verified! You&rsquo;re on the list.
-      </div>
-    );
-  }
-  if (verified === "already") {
-    return (
-      <div className="mt-8 p-4 rounded-xl bg-gold-50 border border-gold-200 text-gold-700 text-sm">
-        You&rsquo;re already verified and on the list!
-      </div>
-    );
-  }
-  return null;
-}
 
 export function Hero() {
   return (
@@ -51,21 +29,19 @@ export function Hero() {
         </h1>
 
         <p className="font-heading text-xl sm:text-2xl text-charcoal-500 font-medium mb-4 animate-slide-up [animation-delay:100ms]">
-          Data-driven growth for founders who move fast.
+          Marketing Strategy, Rebuilt for Founders
         </p>
 
         <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-10 leading-relaxed animate-slide-up [animation-delay:200ms]">
-          Growth marketing consulting built for startup founders. We design
-          data-driven acquisition strategies, run rapid experiments across
-          channels, and deliver your first paying users — so every dollar
-          moves the needle.
+          Uncle Inc. helps early-stage startup founders build data-driven
+          marketing strategies using the Narrative Funnel model — turning
+          founder stories into measurable growth engines.
         </p>
 
         <div id="signup" className="animate-slide-up [animation-delay:300ms]">
           <Suspense fallback={null}>
             <SignupForm />
           </Suspense>
-          <VerificationBanner />
         </div>
       </div>
     </section>
