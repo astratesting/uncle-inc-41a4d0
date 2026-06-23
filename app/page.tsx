@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { WhatWereBuilding } from "@/components/WhatWereBuilding";
 import { Waitlist } from "@/components/Waitlist";
@@ -8,7 +7,6 @@ import { Footer } from "@/components/Footer";
 export default function HomePage() {
   return (
     <>
-      <Navbar />
       <main>
         <Hero />
         <WhatWereBuilding />

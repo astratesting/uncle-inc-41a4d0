@@ -1,7 +1,8 @@
-import { signOut } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 export async function GET() {
-  await signOut();
+  const supabase = await createClient();
+  await supabase.auth.signOut();
   redirect("/");
 }
