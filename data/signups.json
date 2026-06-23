@@ -52,5 +52,27 @@
     "token": "420805f16a9c3d2ee0a50b9fe991030b8c41301b5853b0a6ac25f46c9d7832f0",
     "verified": false,
     "createdAt": "2026-06-23T10:03:47.931Z"
+  },
+  {
+    "name": "Test Runner",
+    "email": "verify-test@example.com",
+    "company": "TestCo",
+    "token": "df1145284b3413cfd975f84360643ff5fbbb7171451938db594e4fa1cf237e3f",
+    "verified": true,
+    "createdAt": "2026-06-23T10:25:24.062Z"
+  },
+  {
+    "name": "Over Limit",
+    "email": "over-limit-test@example.com",
+    "company": "OverflowCo",
+    "token": "720ac587597149208d5a41d430b9bcae4409d649116cdf14de09899950265fb3",
+    "verified": false,
+    "createdAt": "2026-06-23T10:28:17.147Z"
+  },
+  {
+    "email": "test@example.com",
+    "token": "422ca65c7d669dc614732dec833c94b44ec490ed8c01dbdb0ec5c27517442445",
+    "verified": false,
+    "createdAt": "2026-06-23T10:31:12.227Z"
   }
 ]

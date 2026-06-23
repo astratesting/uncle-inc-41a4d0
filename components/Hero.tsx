@@ -55,9 +55,10 @@ export function Hero() {
         </p>
 
         <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-10 leading-relaxed animate-slide-up [animation-delay:200ms]">
-          We help early-stage founders validate ideas, acquire first users, and
-          scale what works — powered by AI-assisted prototyping, built-in user
-          testing, and launch analytics. Go from concept to traction, fast.
+          Growth marketing consulting built for startup founders. We design
+          data-driven acquisition strategies, run rapid experiments across
+          channels, and deliver your first paying users — so every dollar
+          moves the needle.
         </p>
 
         <div id="signup" className="animate-slide-up [animation-delay:300ms]">

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
+
+const SPOT_LIMIT = 10;
 
 export function SignupForm() {
   const [name, setName] = useState("");
@@ -9,6 +12,7 @@ export function SignupForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [signupCount, setSignupCount] = useState<number | null>(null);
+  const [target, setTarget] = useState<number>(SPOT_LIMIT);
   const [verifyUrl, setVerifyUrl] = useState<string>("");
 
   useEffect(() => {
@@ -16,6 +20,7 @@ export function SignupForm() {
       .then((res) => res.json())
       .then((data) => {
         setSignupCount(data.count);
+        if (data.target) setTarget(data.target);
       })
       .catch(() => {});
   }, []);
@@ -25,7 +30,7 @@ export function SignupForm() {
     setStatus("loading");
 
     try {
-      const res = await fetch("/api/waitlist", {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name, company }),
@@ -37,13 +42,18 @@ export function SignupForm() {
         setStatus("success");
         setMessage(data.message);
         if (data.verifyUrl) setVerifyUrl(data.verifyUrl);
+        // Track signup event
+        posthog.capture("waitlist_signup", { email, company });
         setEmail("");
         setName("");
         setCompany("");
         // Refresh count
         fetch("/api/signup-count")
           .then((r) => r.json())
-          .then((d) => setSignupCount(d.count))
+          .then((d) => {
+            setSignupCount(d.count);
+            if (d.target) setTarget(d.target);
+          })
           .catch(() => {});
       } else {
         setStatus("error");
@@ -103,7 +113,7 @@ export function SignupForm() {
               {signupCount}
             </span>
             <span className="text-sm text-charcoal-400">
-              {signupCount === 1 ? "person has" : "people have"} joined the waitlist
+              of {target} spots taken
             </span>
           </span>
         </div>

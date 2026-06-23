@@ -12,6 +12,7 @@ dist/
 
 # Data
 frontend/data/
+data/
 
 # Misc
 .DS_Store
