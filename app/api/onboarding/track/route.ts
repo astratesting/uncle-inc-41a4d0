@@ -1,19 +1,26 @@
-import { NextResponse } from 'next/server';
-import { trackServerEvent } from '@/lib/analytics';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { event, userId, properties } = body;
+    const { event, idea, metadata } = body;
 
-    if (!event || typeof event !== 'string') {
-      return NextResponse.json({ error: 'Event name is required' }, { status: 400 });
+    if (!event) {
+      return NextResponse.json({ success: false, error: 'Event name is required.' }, { status: 400 });
     }
 
-    await trackServerEvent(event, userId || 'anonymous', properties);
+    console.log(`[Onboarding Analytics] ${event}:`, {
+      idea: idea || null,
+      metadata: metadata || {},
+      timestamp: new Date().toISOString(),
+    });
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({
+      success: true,
+      event,
+      tracked: true,
+    });
   } catch {
-    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'Failed to track event.' }, { status: 500 });
   }
 }

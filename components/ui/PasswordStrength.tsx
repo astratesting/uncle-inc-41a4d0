@@ -4,42 +4,51 @@ interface PasswordStrengthProps {
   password: string;
 }
 
-function getStrength(password: string): { score: number; label: string; color: string } {
-  if (!password) return { score: 0, label: '', color: '#e7e5e4' };
+export function PasswordStrength({ password }: PasswordStrengthProps) {
+  const getStrength = (pwd: string): { score: number; label: string; color: string } => {
+    let score = 0;
+    if (pwd.length >= 8) score++;
+    if (pwd.length >= 12) score++;
+    if (/[A-Z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[^A-Za-z0-9]/.test(pwd)) score++;
 
-  let score = 0;
-  if (password.length >= 6) score++;
-  if (password.length >= 10) score++;
-  if (/[A-Z]/.test(password)) score++;
-  if (/[0-9]/.test(password)) score++;
-  if (/[^A-Za-z0-9]/.test(password)) score++;
-
-  if (score <= 1) return { score, label: 'Too weak', color: '#ef4444' };
-  if (score <= 2) return { score, label: 'Fair', color: '#f59e0b' };
-  if (score <= 3) return { score, label: 'Good', color: '#C8A951' };
-  return { score, label: 'Strong', color: '#22c55e' };
-}
-
-export default function PasswordStrength({ password }: PasswordStrengthProps) {
-  const { score, label, color } = getStrength(password);
-  const segments = 4;
+    if (score <= 1) return { score, label: 'Weak', color: '#EF4444' };
+    if (score <= 2) return { score, label: 'Fair', color: '#F59E0B' };
+    if (score <= 3) return { score, label: 'Good', color: '#4A90D9' };
+    return { score, label: 'Strong', color: '#22C55E' };
+  };
 
   if (!password) return null;
 
+  const strength = getStrength(password);
+  const percent = Math.min((strength.score / 5) * 100, 100);
+
   return (
-    <div className="mt-2">
-      <div className="flex gap-1 mb-1">
-        {Array.from({ length: segments }).map((_, i) => (
+    <div className="mt-2 animate-in fade-in duration-200">
+      <div className="flex items-center gap-2 mb-1">
+        <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
           <div
-            key={i}
-            className="h-1 flex-1 rounded-full transition-all duration-300"
+            className="h-full rounded-full transition-all duration-300"
             style={{
-              backgroundColor: i < Math.ceil(score * segments / 5) ? color : '#e7e5e4',
+              width: `${percent}%`,
+              backgroundColor: strength.color,
             }}
           />
-        ))}
+        </div>
+        <span
+          className="text-xs font-medium"
+          style={{ color: strength.color }}
+        >
+          {strength.label}
+        </span>
       </div>
-      <p className="text-xs" style={{ color }}>{label}</p>
+      {strength.score < 3 && (
+        <p className="text-xs text-gray-500">
+          {strength.score <= 1 && 'Add at least 8 characters with a mix of letters and numbers.'}
+          {strength.score === 2 && 'Almost there — add a number or special character for extra security.'}
+        </p>
+      )}
     </div>
   );
 }

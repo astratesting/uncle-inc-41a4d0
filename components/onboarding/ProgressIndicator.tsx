@@ -1,54 +1,66 @@
 'use client';
 
 interface ProgressIndicatorProps {
-  currentStep: number; // 0, 1, 2
-  steps?: string[];
+  currentStep: number;
 }
 
-const defaultSteps = ['Describe Idea', 'Generating Prototype', 'Review Results'];
+const steps = [
+  { label: 'Describe Idea', icon: '💡' },
+  { label: 'Generate Prototype', icon: '⚡' },
+  { label: 'Review & Share', icon: '🚀' },
+];
 
-export default function ProgressIndicator({ currentStep, steps = defaultSteps }: ProgressIndicatorProps) {
+export function ProgressIndicator({ currentStep }: ProgressIndicatorProps) {
   return (
-    <div className="flex items-center justify-center gap-2 w-full max-w-md mx-auto">
-      {steps.map((step, i) => {
-        const isActive = i === currentStep;
-        const isComplete = i < currentStep;
+    <div className="w-full max-w-xl mx-auto px-4">
+      <div className="flex items-center justify-between">
+        {steps.map((step, index) => {
+          const isCompleted = index < currentStep;
+          const isCurrent = index === currentStep;
 
-        return (
-          <div key={step} className="flex items-center gap-2 flex-1">
-            <div className="flex flex-col items-center flex-1">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500"
-                style={{
-                  backgroundColor: isComplete ? '#22c55e' : isActive ? '#C8A951' : '#e7e5e4',
-                  color: isComplete || isActive ? '#FFFFFF' : '#a8a29e',
-                  boxShadow: isActive ? '0 0 0 4px #C8A95120' : 'none',
-                }}
-              >
-                {isComplete ? (
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  i + 1
-                )}
+          return (
+            <div key={step.label} className="flex items-center flex-1">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`
+                    flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold transition-all duration-500
+                    ${isCompleted ? 'bg-[#22C55E] text-white scale-100' : ''}
+                    ${isCurrent ? 'bg-[#4A90D9] text-white scale-110 ring-4 ring-[#4A90D9]/20' : ''}
+                    ${!isCompleted && !isCurrent ? 'bg-gray-200 text-gray-400' : ''}
+                  `}
+                >
+                  {isCompleted ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : (
+                    <span>{step.icon}</span>
+                  )}
+                </div>
+                <span
+                  className={`mt-2 text-xs font-medium whitespace-nowrap transition-colors duration-300 ${
+                    isCompleted ? 'text-[#22C55E]' : isCurrent ? 'text-[#4A90D9]' : 'text-gray-400'
+                  }`}
+                >
+                  {step.label}
+                </span>
               </div>
-              <span
-                className="text-[10px] mt-1 font-medium text-center whitespace-nowrap"
-                style={{ color: isActive ? '#1a1a1a' : isComplete ? '#22c55e' : '#a8a29e' }}
-              >
-                {step}
-              </span>
+
+              {index < steps.length - 1 && (
+                <div className="flex-1 mx-2 mb-5">
+                  <div className="h-1 rounded-full bg-gray-200">
+                    <div
+                      className={`h-full rounded-full transition-all duration-700 ${
+                        isCompleted ? 'w-full bg-[#22C55E]' : isCurrent ? 'w-1/2 bg-[#4A90D9] animate-pulse' : 'w-0'
+                      }`}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-            {i < steps.length - 1 && (
-              <div
-                className="h-0.5 flex-1 rounded-full transition-all duration-500 mt-[-14px]"
-                style={{ backgroundColor: isComplete ? '#22c55e' : '#e7e5e4' }}
-              />
-            )}
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
