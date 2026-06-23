@@ -1,94 +1,61 @@
-import { cookies } from "next/headers";
-import { readJSON, writeJSON } from "./store";
-import { generateToken } from "./password";
+import bcrypt from 'bcryptjs';
+import { cookies } from 'next/headers';
+import { createSession, getSessionByToken, getUserById, deleteSession } from './store';
 
-const COOKIE_NAME = "uncle_session";
-const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const SALT_ROUNDS = 10;
+const SESSION_COOKIE = 'uncle_session';
 
-export interface StoredUser {
-  id: string;
-  name: string;
-  email: string;
-  passwordHash: string;
-  emailVerified: boolean;
-  verificationToken?: string;
-  createdAt: string;
-  isAdmin?: boolean;
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
 }
 
-export interface StoredSession {
-  token: string;
-  userId: string;
-  createdAt: string;
-  expiresAt: string;
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
 }
 
-export async function getUsers(): Promise<StoredUser[]> {
-  return readJSON<StoredUser>("users.json");
-}
-
-export async function saveUsers(users: StoredUser[]): Promise<void> {
-  await writeJSON("users.json", users);
-}
-
-export async function getSessions(): Promise<StoredSession[]> {
-  return readJSON<StoredSession>("sessions.json");
-}
-
-export async function saveSessions(sessions: StoredSession[]): Promise<void> {
-  await writeJSON("sessions.json", sessions);
-}
-
-export async function createSession(userId: string): Promise<string> {
-  const token = generateToken(48);
-  const now = new Date();
-  const session: StoredSession = {
-    token,
-    userId,
-    createdAt: now.toISOString(),
-    expiresAt: new Date(now.getTime() + SESSION_DURATION_MS).toISOString(),
-  };
-  const sessions = await getSessions();
-  sessions.push(session);
-  await saveSessions(sessions);
-  return token;
-}
-
-export async function getSessionUser(): Promise<StoredUser | null> {
+export async function setSessionCookie(userId: string): Promise<string> {
+  const session = createSession(userId);
   const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
-  if (!token) return null;
-
-  const sessions = await getSessions();
-  const session = sessions.find(
-    (s) => s.token === token && new Date(s.expiresAt) > new Date()
-  );
-  if (!session) return null;
-
-  const users = await getUsers();
-  return users.find((u) => u.id === session.userId) || null;
-}
-
-export async function setSessionCookie(token: string): Promise<void> {
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
+  cookieStore.set(SESSION_COOKIE, session.token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: SESSION_DURATION_MS / 1000,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   });
+  return session.token;
 }
 
 export async function clearSessionCookie(): Promise<void> {
   const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  if (token) {
+    deleteSession(token);
+  }
+  cookieStore.delete(SESSION_COOKIE);
 }
 
-export async function deleteSession(token: string): Promise<void> {
-  const sessions = await getSessions();
-  const filtered = sessions.filter((s) => s.token !== token);
-  await saveSessions(filtered);
+export async function getCurrentUser(): Promise<{ id: string; email: string; name: string; companyName: string; verified: boolean } | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  if (!token) return null;
+  
+  const session = getSessionByToken(token);
+  if (!session) return null;
+  
+  const user = getUserById(session.userId);
+  if (!user) return null;
+  
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    companyName: user.companyName,
+    verified: user.verified,
+  };
 }
 
-export const SESSION_COOKIE_NAME = COOKIE_NAME;
+export async function isAuthenticated(): Promise<boolean> {
+  const user = await getCurrentUser();
+  return user !== null && user.verified;
+}

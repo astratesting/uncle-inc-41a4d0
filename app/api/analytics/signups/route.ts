@@ -1,15 +1,22 @@
-import { NextResponse } from "next/server";
-import { getSessionUser, getUsers } from "@/lib/auth";
+import { NextResponse } from 'next/server';
+import { getVerifiedUserCount, getTotalUserCount, getRecentSignups } from '@/lib/store';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET() {
-  const user = await getSessionUser();
+  const user = await getCurrentUser();
   if (!user) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const users = await getUsers();
-  const verified = users.filter((u) => u.emailVerified).length;
-  const total = users.length;
+  const totalSignups = getTotalUserCount();
+  const verifiedSignups = getVerifiedUserCount();
+  const recentSignups = getRecentSignups(20);
 
-  return NextResponse.json({ total, verified });
+  return NextResponse.json({
+    totalSignups,
+    verifiedSignups,
+    target: 10,
+    progress: Math.min(Math.round((verifiedSignups / 10) * 100), 100),
+    recentSignups,
+  });
 }
