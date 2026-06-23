@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: "How can I get involved early?",
-    a: "Share your feedback through our widget on this page and join the waitlist. We read every submission and use it to shape what we build first.",
+    a: "Join the waitlist on this page and verify your email. Early supporters will get priority access when we launch and a direct line to shape what we build first.",
   },
 ];
 
@@ -26,53 +26,58 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="relative py-28 px-6">
-      <div className="absolute inset-0 bg-ink" />
-      <div className="absolute inset-0 lattice-overlay-flame opacity-30" />
+    <section id="faq" className="relative py-28 px-6 bg-navy">
+      <div className="absolute inset-0 lattice-overlay-navy opacity-30" />
 
       <div className="relative z-10 mx-auto max-w-3xl">
         {/* Section header */}
         <div className="text-center mb-20">
-          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-acid mb-4">
+          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-cobalt mb-4">
             Questions
           </p>
           <h2 className="text-4xl sm:text-5xl font-display font-black text-white mb-6">
             Frequently Asked
           </h2>
           <div className="mx-auto flex items-center justify-center gap-3">
-            <div className="h-px w-12 bg-flame/40" />
-            <div className="h-1 w-1 rotate-45 bg-flame" />
-            <div className="h-px w-12 bg-flame/40" />
+            <div className="h-px w-12 bg-cobalt/40" />
+            <div className="h-1 w-1 rotate-45 bg-cobalt" />
+            <div className="h-px w-12 bg-cobalt/40" />
           </div>
         </div>
 
         {/* Accordion */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="border border-white/5 bg-ink-50/30 transition-colors hover:border-flame/20"
+              className="border border-white/10 bg-navy-600/30 overflow-hidden"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between px-6 py-5 text-left"
+                className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/5 transition-colors"
               >
-                <span className="font-heading text-base font-bold text-white pr-4">
+                <span className="font-heading text-base font-semibold text-white pr-4">
                   {faq.q}
                 </span>
                 <ChevronDown
-                  className={`h-4 w-4 text-flame flex-shrink-0 transition-transform duration-200 ${
+                  className={`h-5 w-5 text-cobalt shrink-0 transition-transform duration-300 ${
                     openIndex === i ? "rotate-180" : ""
                   }`}
                 />
               </button>
-              {openIndex === i && (
+              <div
+                className={`transition-all duration-300 ${
+                  openIndex === i
+                    ? "max-h-40 opacity-100"
+                    : "max-h-0 opacity-0"
+                } overflow-hidden`}
+              >
                 <div className="px-6 pb-5">
-                  <p className="text-sm text-white/50 leading-relaxed">
+                  <p className="text-sm text-white/50 font-body leading-relaxed">
                     {faq.a}
                   </p>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { readStore, writeStore } from "@/lib/file-storage";
+import { withStoreLock } from "@/lib/file-storage";
 
 interface WaitlistEntry {
   id: string;
   email: string;
+  verified: boolean;
   createdAt: string;
 }
 
@@ -19,26 +20,33 @@ export async function POST(request: Request) {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
-    const store = await readStore<WaitlistEntry>("waitlist");
+    let alreadyExists = false;
 
-    const existing = store.find((e) => e.email === normalizedEmail);
-    if (existing) {
+    await withStoreLock<WaitlistEntry>("waitlist", (store) => {
+      const existing = store.find((e) => e.email === normalizedEmail);
+      if (existing) {
+        alreadyExists = true;
+        return store;
+      }
+
+      store.push({
+        id: crypto.randomUUID(),
+        email: normalizedEmail,
+        verified: false,
+        createdAt: new Date().toISOString(),
+      });
+      return store;
+    });
+
+    if (alreadyExists) {
       return NextResponse.json({
         message: "You're already on the list! We'll be in touch soon.",
       });
     }
 
-    const entry: WaitlistEntry = {
-      id: crypto.randomUUID(),
-      email: normalizedEmail,
-      createdAt: new Date().toISOString(),
-    };
-
-    store.push(entry);
-    await writeStore("waitlist", store);
-
     return NextResponse.json({
-      message: "You're on the list! We'll be in touch soon.",
+      message: "You're on the list! Please check your email to verify.",
+      verifyUrl: `/api/verify?email=${encodeURIComponent(normalizedEmail)}`,
     });
   } catch (error) {
     console.error("Waitlist error:", error);

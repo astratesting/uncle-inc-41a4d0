@@ -41,3 +41,17 @@ export async function appendToStore<T>(name: string, entry: T): Promise<void> {
   locks.set(name, current);
   await current;
 }
+
+export async function withStoreLock<T>(
+  name: string,
+  fn: (store: T[]) => T[] | Promise<T[]>
+): Promise<void> {
+  const previous = locks.get(name) ?? Promise.resolve();
+  const current = previous.then(async () => {
+    const store = await readStore<T>(name);
+    const updated = await fn(store);
+    await writeStore(name, updated);
+  });
+  locks.set(name, current);
+  await current;
+}

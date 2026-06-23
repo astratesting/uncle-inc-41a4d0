@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { readStore, writeStore } from "@/lib/file-storage";
+import { withStoreLock } from "@/lib/file-storage";
 
-interface SignupEntry {
+interface WaitlistEntry {
   id: string;
   email: string;
-  passwordHash: string;
   verified: boolean;
   createdAt: string;
 }
@@ -22,28 +21,34 @@ export async function GET(request: Request) {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
-    const store = await readStore<SignupEntry>("signups");
-    const index = store.findIndex((e) => e.email === normalizedEmail);
+    let result: "not_found" | "already_verified" | "verified" = "not_found";
 
-    if (index === -1) {
+    await withStoreLock<WaitlistEntry>("waitlist", (store) => {
+      const index = store.findIndex((e) => e.email === normalizedEmail);
+      if (index === -1) {
+        return store;
+      }
+      if (store[index].verified) {
+        result = "already_verified";
+        return store;
+      }
+      store[index].verified = true;
+      result = "verified";
+      return store;
+    });
+
+    if (result === "not_found") {
       return NextResponse.json(
-        { message: "No account found with this email." },
+        { message: "No entry found with this email." },
         { status: 404 }
       );
     }
 
-    if (store[index].verified) {
-      return NextResponse.json({
-        message: "Email is already verified.",
-      });
+    if (result === "already_verified") {
+      return NextResponse.json({ message: "Email is already verified." });
     }
 
-    store[index].verified = true;
-    await writeStore("signups", store);
-
-    return NextResponse.json({
-      message: "Email verified successfully!",
-    });
+    return NextResponse.json({ message: "Email verified successfully!" });
   } catch (error) {
     console.error("Verify error:", error);
     return NextResponse.json(

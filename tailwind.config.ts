@@ -190,10 +190,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["Satoshi", "Space Grotesk", "system-ui", "sans-serif"],
-        display: ["'Archivo Black'", "Satoshi", "Impact", "sans-serif"],
+        heading: ["Inter", "Satoshi", "Space Grotesk", "system-ui", "sans-serif"],
+        display: ["Inter", "'Archivo Black'", "Satoshi", "Impact", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
-        body: ["Satoshi", "Space Grotesk", "system-ui", "sans-serif"],
+        body: ["IBM Plex Sans", "Satoshi", "Space Grotesk", "system-ui", "sans-serif"],
       },
       animation: {
         "fade-in": "fade-in 0.8s ease-out forwards",

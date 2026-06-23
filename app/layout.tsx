@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { PlausibleScript } from "@/components/PlausibleScript";
-import { TrackerInit } from "@/components/TrackerInit";
+import { AnalyticsProvider } from "@/lib/analytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,10 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-ink text-white antialiased font-body">
-        {children}
-        <PlausibleScript />
-        <TrackerInit />
+      <body className="min-h-screen bg-navy text-white antialiased font-body">
+        <AnalyticsProvider>
+          {children}
+        </AnalyticsProvider>
       </body>
     </html>
   );
