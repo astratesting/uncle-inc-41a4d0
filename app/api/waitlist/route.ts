@@ -1,3 +1,5 @@
+import { createClient } from "@/lib/supabase/server";
+
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
@@ -9,8 +11,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // In production this would write to a database or email service.
-    // For now we acknowledge the signup.
+    const supabase = await createClient();
+
+    const { error } = await supabase.from("signups").upsert(
+      {
+        email: email.toLowerCase().trim(),
+        signup_source: "waitlist",
+        verified: false,
+      },
+      { onConflict: "email" }
+    );
+
+    if (error) {
+      console.error("Waitlist insert error:", error.message);
+      // Still return success to the user — don't leak DB errors
+    }
+
     return Response.json({
       message: "You're on the list! We'll be in touch soon.",
     });

@@ -5,28 +5,28 @@ export async function GET() {
   try {
     const supabase = await createClient();
 
-    // Try to get signup count from Supabase auth admin
-    // Falls back to counting from a signups table if available
-    const { count, error } = await supabase
-      .from("profiles")
+    // Total signups count
+    const { count: totalSignups, error: totalError } = await supabase
+      .from("signups")
       .select("*", { count: "exact", head: true });
 
-    if (error) {
-      // If profiles table doesn't exist, try auth.users count via a fallback
-      // Return 0 gracefully rather than crashing
-      console.error("Analytics query error:", error.message);
-      return NextResponse.json({
-        total: 0,
-        byDay: [],
-      });
+    if (totalError) {
+      console.error("Analytics query error:", totalError.message);
+      return NextResponse.json({ total: 0, verified: 0, byDay: [] });
     }
 
-    // Get signups from the last 7 days grouped by day
+    // Verified signups count
+    const { count: verifiedSignups } = await supabase
+      .from("signups")
+      .select("*", { count: "exact", head: true })
+      .eq("verified", true);
+
+    // Signups from the last 7 days grouped by day
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    const { data: recentProfiles, error: recentError } = await supabase
-      .from("profiles")
+    const { data: recentSignups, error: recentError } = await supabase
+      .from("signups")
       .select("created_at")
       .gte("created_at", sevenDaysAgo.toISOString())
       .order("created_at", { ascending: true });
@@ -34,9 +34,9 @@ export async function GET() {
     const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const byDayMap: Record<string, number> = {};
 
-    if (!recentError && recentProfiles) {
-      for (const profile of recentProfiles) {
-        const day = dayNames[new Date(profile.created_at).getDay()];
+    if (!recentError && recentSignups) {
+      for (const signup of recentSignups) {
+        const day = dayNames[new Date(signup.created_at).getDay()];
         byDayMap[day] = (byDayMap[day] || 0) + 1;
       }
     }
@@ -48,7 +48,8 @@ export async function GET() {
     }));
 
     return NextResponse.json({
-      total: count ?? 0,
+      total: totalSignups ?? 0,
+      verified: verifiedSignups ?? 0,
       byDay,
     });
   } catch {

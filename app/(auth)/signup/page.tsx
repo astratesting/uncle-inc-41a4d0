@@ -35,10 +35,12 @@ export default function SignUpPage() {
 
     const supabase = createClient();
 
+    // Capture signup source from URL or default
     const params = new URLSearchParams(window.location.search);
     const signupSource = params.get("source") || "organic";
 
-    const { data, error } = await supabase.auth.signUp({
+    // 1. Sign up with Supabase Auth
+    const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -49,12 +51,13 @@ export default function SignUpPage() {
       },
     });
 
-    if (error) {
-      setError(error.message);
+    if (authError) {
+      setError(authError.message);
       setLoading(false);
       return;
     }
 
+    // 2. Insert into signups table for analytics tracking
     if (data.user) {
       await supabase.from("signups").insert({
         email,
@@ -158,7 +161,7 @@ export default function SignUpPage() {
       <p className="text-center text-sm text-gray-400 mt-6">
         Already have an account?{" "}
         <Link
-          href="/sign-in"
+          href="/login"
           className="text-violet-600 hover:text-violet-700 font-medium"
         >
           Sign in

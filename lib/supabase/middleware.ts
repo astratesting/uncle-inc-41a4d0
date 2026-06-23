@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
   if (pathname.startsWith("/dashboard")) {
     if (!user) {
       const url = request.nextUrl.clone();
-      url.pathname = "/sign-in";
+      url.pathname = "/login";
       return NextResponse.redirect(url);
     }
   }
@@ -47,7 +47,10 @@ export async function updateSession(request: NextRequest) {
   // Redirect authenticated users away from auth pages
   if (
     user &&
-    (pathname === "/sign-in" || pathname === "/sign-up")
+    (pathname === "/login" ||
+      pathname === "/signup" ||
+      pathname === "/sign-in" ||
+      pathname === "/sign-up")
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
