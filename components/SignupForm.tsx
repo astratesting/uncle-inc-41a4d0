@@ -14,6 +14,7 @@ export function SignupForm() {
   const [signupCount, setSignupCount] = useState<number | null>(null);
   const [target, setTarget] = useState<number>(SPOT_LIMIT);
   const [verifyUrl, setVerifyUrl] = useState<string>("");
+  const [honeypot, setHoneypot] = useState("");
 
   useEffect(() => {
     fetch("/api/signup-count")
@@ -33,7 +34,7 @@ export function SignupForm() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, company }),
+        body: JSON.stringify({ email, name, company, website: honeypot }),
       });
 
       const data = await res.json();
@@ -120,6 +121,17 @@ export function SignupForm() {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        {/* Honeypot field — invisible to humans, bots will fill it */}
+        <div className="absolute -left-[9999px]" aria-hidden="true">
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
+        </div>
         <input
           type="text"
           value={name}

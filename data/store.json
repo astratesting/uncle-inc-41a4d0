@@ -54,6 +54,17 @@
       "verificationToken": "",
       "createdAt": "2026-06-23T11:32:30.692Z",
       "verifiedAt": "2026-06-23T11:32:30.692Z"
+    },
+    {
+      "id": "b1112aca-c66d-4f97-b207-dfce6ce71b0f",
+      "email": "qatest@uncleinc-test.com",
+      "name": "QA Tester",
+      "companyName": "TestCo",
+      "passwordHash": "$2b$10$UUlcozHtun5JpBtgIcnHA.fv32iNvo4ENf1oVOvjElNdhHmq9oKDW",
+      "verified": true,
+      "verificationToken": "e1b57481-71a4-4147-be38-7ef9490a8320",
+      "createdAt": "2026-06-23T12:29:16.908Z",
+      "verifiedAt": "2026-06-23T12:29:16.909Z"
     }
   ],
   "sessions": [
@@ -112,6 +123,13 @@
       "token": "010e597f-4b32-455e-8a83-d9e7d3a2bc8a",
       "createdAt": "2026-06-23T11:32:41.738Z",
       "expiresAt": "2026-06-30T11:32:41.738Z"
+    },
+    {
+      "id": "f144f460-01e7-44ec-a5c0-e972ed8850b4",
+      "userId": "b1112aca-c66d-4f97-b207-dfce6ce71b0f",
+      "token": "d8896764-68a4-480e-93ad-496ce7c06f36",
+      "createdAt": "2026-06-23T12:29:16.910Z",
+      "expiresAt": "2026-06-30T12:29:16.910Z"
     }
   ]
 }

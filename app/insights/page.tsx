@@ -6,12 +6,14 @@ export const metadata = {
     "Internal dashboard: Top 3 onboarding friction points, before/after analysis, implementation status, and success metrics.",
 };
 
-type Status = "IMPLEMENTED" | "PLANNED";
+type Status = "IMPLEMENTED" | "IN PROGRESS" | "PLANNED";
+type Severity = "critical" | "high" | "medium";
 
 const frictionPoints = [
   {
     number: "01",
-    title: "Cold Start (Empty Dashboard)",
+    title: "Cold Start — Empty Dashboard",
+    severity: "critical" as Severity,
     problem:
       "New users land on a blank dashboard with no guidance, no context, and no clear next step. Over 50% of new signups bounce before creating their first project — the empty state feels like a dead end.",
     before: {
@@ -38,10 +40,16 @@ const frictionPoints = [
       { label: "Target", value: ">70% wizard completion" },
       { label: "Current", value: "Phase 1 shipped" },
     ],
+    targetMetrics: [
+      { label: "Bounce Rate", before: ">50%", after: "<15%" },
+      { label: "Wizard Completion", before: "N/A", after: ">70%" },
+      { label: "Time to First Project", before: "N/A", after: "<60s" },
+    ],
   },
   {
     number: "02",
     title: "Value Proposition Clarity Gap",
+    severity: "high" as Severity,
     problem:
       "Abstract 'AI-Assisted MVP Development Platform' language doesn't communicate concrete value. Single-step signup skips goal segmentation. Technical labels alienate non-technical founders. Users sign up but don't understand what they'll get.",
     before: {
@@ -68,10 +76,16 @@ const frictionPoints = [
       { label: "Target", value: ">80% value prop clarity" },
       { label: "Current", value: "Phase 2 shipped" },
     ],
+    targetMetrics: [
+      { label: "Signup Completion", before: "~60%", after: ">85%" },
+      { label: "Value Prop Clarity", before: "Unknown", after: ">80%" },
+      { label: "Goal Segmentation", before: "None", after: "100% tagged" },
+    ],
   },
   {
     number: "03",
     title: "Time-to-First-Value Latency",
+    severity: "medium" as Severity,
     problem:
       "30+ minutes from signup to first prototype. No progress feedback during generation. Users see a blank screen and abandon before the product delivers anything useful. High drop-off between signup and first output.",
     before: {
@@ -98,24 +112,69 @@ const frictionPoints = [
       { label: "Target", value: "<5s to first output" },
       { label: "Target", value: ">60% generation completion" },
     ],
+    targetMetrics: [
+      { label: "Time to Skeleton", before: "N/A", after: "<3s" },
+      { label: "Time to Full Prototype", before: "30+ min", after: "<90s" },
+      { label: "Generation Abandonment", before: "High", after: "<40%" },
+    ],
   },
 ];
 
-function StatusBadge({ status }: { status: Status }) {
-  const isImplemented = status === "IMPLEMENTED";
+const severityConfig: Record<
+  Severity,
+  { bg: string; border: string; text: string; dot: string; label: string }
+> = {
+  critical: {
+    bg: "bg-[#722F37]/10",
+    border: "border-[#722F37]/30",
+    text: "text-[#722F37]",
+    dot: "bg-[#722F37]",
+    label: "Critical",
+  },
+  high: {
+    bg: "bg-[#C9A96E]/10",
+    border: "border-[#C9A96E]/30",
+    text: "text-[#8B7340]",
+    dot: "bg-[#C9A96E]",
+    label: "High",
+  },
+  medium: {
+    bg: "bg-[#2D2D2D]/5",
+    border: "border-[#2D2D2D]/20",
+    text: "text-[#2D2D2D]/70",
+    dot: "bg-[#2D2D2D]/50",
+    label: "Medium",
+  },
+};
+
+function SeverityBadge({ severity }: { severity: Severity }) {
+  const cfg = severityConfig[severity];
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${
-        isImplemented
-          ? "bg-gold-100 text-gold-700"
-          : "bg-charcoal-50 text-charcoal-400"
-      }`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide ${cfg.bg} ${cfg.border} border ${cfg.text}`}
     >
-      <span
-        className={`w-1.5 h-1.5 rounded-full ${
-          isImplemented ? "bg-gold" : "bg-charcoal-300"
-        }`}
-      />
+      <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
+      {cfg.label}
+    </span>
+  );
+}
+
+function StatusBadge({ status }: { status: Status }) {
+  const styles: Record<Status, string> = {
+    IMPLEMENTED: "bg-[#C9A96E]/15 text-[#7C590B] border-[#C9A96E]/30",
+    "IN PROGRESS": "bg-[#2D2D2D]/5 text-[#2D2D2D]/70 border-[#2D2D2D]/20",
+    PLANNED: "bg-[#2D2D2D]/5 text-[#2D2D2D]/50 border-[#2D2D2D]/10",
+  };
+  const dots: Record<Status, string> = {
+    IMPLEMENTED: "bg-[#C9A96E]",
+    "IN PROGRESS": "bg-[#2D2D2D]/60",
+    PLANNED: "bg-[#2D2D2D]/30",
+  };
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide border ${styles[status]}`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${dots[status]}`} />
       {status}
     </span>
   );
@@ -135,35 +194,46 @@ function StateBlock({
     <div className="flex-1 min-w-0">
       <div className="flex items-center gap-2 mb-3">
         <span
-          className={`inline-block w-2 h-2 rounded-full ${
-            isBefore ? "bg-burgundy" : "bg-gold"
-          }`}
+          className="w-2 h-2 rounded-full"
+          style={{
+            backgroundColor: isBefore ? "#722F37" : "#C9A96E",
+          }}
         />
         <span
-          className={`text-xs font-semibold uppercase tracking-widest ${
-            isBefore ? "text-burgundy" : "text-gold"
-          }`}
+          className="text-[11px] font-semibold uppercase tracking-[0.15em]"
+          style={{ color: isBefore ? "#722F37" : "#8B7340" }}
         >
           {label}
         </span>
       </div>
       <div
-        className={`rounded-xl border p-5 min-h-[180px] flex flex-col gap-2.5 ${
-          isBefore
-            ? "bg-charcoal/[0.03] border-charcoal-100"
-            : "bg-ivory border-gold-200 shadow-sm shadow-gold-100/50"
-        }`}
+        className="rounded-xl border p-5 min-h-[180px] flex flex-col gap-2.5"
+        style={{
+          backgroundColor: isBefore
+            ? "rgba(45,45,45,0.03)"
+            : "rgba(255,255,240,1)",
+          borderColor: isBefore
+            ? "rgba(45,45,45,0.12)"
+            : "rgba(201,169,110,0.3)",
+          boxShadow: isBefore
+            ? "none"
+            : "0 1px 3px rgba(201,169,110,0.08)",
+        }}
       >
         {items.map((item, i) => (
           <div
             key={i}
-            className={`text-sm flex items-start gap-2 ${
-              isBefore ? "text-charcoal-400" : "text-charcoal-600"
-            }`}
+            className="text-[13px] flex items-start gap-2.5 leading-relaxed"
+            style={{
+              color: isBefore
+                ? "rgba(45,45,45,0.5)"
+                : "rgba(45,45,45,0.75)",
+            }}
           >
             {isBefore ? (
               <svg
-                className="w-4 h-4 mt-0.5 flex-shrink-0 text-burgundy/40"
+                className="w-4 h-4 mt-0.5 flex-shrink-0"
+                style={{ color: "rgba(114,47,55,0.4)" }}
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={2}
@@ -177,7 +247,8 @@ function StateBlock({
               </svg>
             ) : (
               <svg
-                className="w-4 h-4 mt-0.5 flex-shrink-0 text-gold"
+                className="w-4 h-4 mt-0.5 flex-shrink-0"
+                style={{ color: "#C9A96E" }}
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={2.5}
@@ -207,24 +278,41 @@ export default function InsightsPage() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-ivory">
+    <div className="min-h-screen" style={{ backgroundColor: "#FFFFF0" }}>
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-charcoal-100 bg-ivory/80 backdrop-blur-xl">
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl"
+        style={{
+          borderColor: "rgba(45,45,45,0.1)",
+          backgroundColor: "rgba(255,255,240,0.85)",
+        }}
+      >
         <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
-            className="font-heading text-xl font-bold tracking-tight text-charcoal"
+            className="text-xl font-bold tracking-tight"
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              color: "#2D2D2D",
+            }}
           >
             Uncle Inc.
           </Link>
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="text-sm text-charcoal-400 hover:text-charcoal transition-colors"
+              className="text-sm transition-colors hover:opacity-80"
+              style={{ color: "rgba(45,45,45,0.5)" }}
             >
               Back to Landing
             </Link>
-            <span className="text-xs px-3 py-1.5 rounded-full bg-charcoal text-ivory font-mono font-semibold tracking-wider uppercase">
+            <span
+              className="text-[11px] px-3 py-1.5 rounded-full font-mono font-semibold tracking-[0.1em] uppercase"
+              style={{
+                backgroundColor: "#2D2D2D",
+                color: "#FFFFF0",
+              }}
+            >
               Internal
             </span>
           </div>
@@ -234,66 +322,166 @@ export default function InsightsPage() {
       {/* Spacer */}
       <div className="h-[73px]" />
 
-      {/* Header + Health Summary */}
+      {/* Header + Summary Stats */}
       <section className="pt-16 pb-6 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-charcoal text-ivory text-xs font-mono font-semibold tracking-widest uppercase mb-6">
-            <span className="w-2 h-2 rounded-full bg-gold" />
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-mono font-semibold tracking-[0.15em] uppercase mb-6"
+            style={{ backgroundColor: "#2D2D2D", color: "#FFFFF0" }}
+          >
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: "#C9A96E" }}
+            />
             Product Insights
           </div>
-          <h1 className="font-heading text-4xl sm:text-5xl font-bold text-charcoal leading-tight mb-4">
+          <h1
+            className="text-4xl sm:text-5xl font-bold leading-tight mb-4"
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              color: "#2D2D2D",
+            }}
+          >
             Onboarding Friction Analysis
           </h1>
-          <p className="text-lg text-charcoal-400 max-w-2xl leading-relaxed mb-10">
+          <p
+            className="text-lg max-w-2xl leading-relaxed mb-10"
+            style={{ color: "rgba(45,45,45,0.55)" }}
+          >
             Top 3 friction points identified from ops analysis sessions, with
-            before/after comparisons, implementation status, and success
-            targets.
+            before/after comparisons, severity indicators, implementation status,
+            and success targets.
           </p>
 
-          {/* Health Status Cards */}
-          <div className="grid sm:grid-cols-4 gap-4">
-            <div className="p-5 rounded-xl border border-charcoal-100 bg-white">
-              <div className="text-xs text-charcoal-400 uppercase tracking-wider font-semibold mb-2">
-                Overall Status
+          {/* Summary Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {/* Fixes Implemented */}
+            <div
+              className="p-5 rounded-xl border"
+              style={{
+                borderColor: "rgba(201,169,110,0.3)",
+                backgroundColor: "rgba(201,169,110,0.06)",
+              }}
+            >
+              <div
+                className="text-[11px] uppercase tracking-[0.12em] font-semibold mb-2"
+                style={{ color: "#8B7340" }}
+              >
+                Fixes Implemented
               </div>
-              <div className="font-heading text-2xl font-bold text-charcoal">
-                {implemented}/{frictionPoints.length}
-              </div>
-              <div className="text-xs text-charcoal-300 mt-1">
-                Friction points addressed
-              </div>
-            </div>
-            <div className="p-5 rounded-xl border border-gold-200 bg-gold-50/50">
-              <div className="text-xs text-gold-700 uppercase tracking-wider font-semibold mb-2">
-                Implemented
-              </div>
-              <div className="font-heading text-2xl font-bold text-gold">
+              <div
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  color: "#C9A96E",
+                }}
+              >
                 {implemented}
+                <span
+                  className="text-base font-normal"
+                  style={{ color: "rgba(45,45,45,0.3)" }}
+                >
+                  /{frictionPoints.length}
+                </span>
               </div>
-              <div className="text-xs text-charcoal-400 mt-1">
+              <div
+                className="text-[11px] mt-1"
+                style={{ color: "rgba(45,45,45,0.35)" }}
+              >
                 Phases shipped
               </div>
             </div>
-            <div className="p-5 rounded-xl border border-charcoal-100 bg-white">
-              <div className="text-xs text-charcoal-400 uppercase tracking-wider font-semibold mb-2">
+
+            {/* Planned */}
+            <div
+              className="p-5 rounded-xl border"
+              style={{
+                borderColor: "rgba(45,45,45,0.1)",
+                backgroundColor: "rgba(255,255,255,0.6)",
+              }}
+            >
+              <div
+                className="text-[11px] uppercase tracking-[0.12em] font-semibold mb-2"
+                style={{ color: "rgba(45,45,45,0.45)" }}
+              >
                 Planned
               </div>
-              <div className="font-heading text-2xl font-bold text-charcoal-500">
+              <div
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  color: "rgba(45,45,45,0.4)",
+                }}
+              >
                 {planned}
               </div>
-              <div className="text-xs text-charcoal-300 mt-1">
+              <div
+                className="text-[11px] mt-1"
+                style={{ color: "rgba(45,45,45,0.3)" }}
+              >
                 Awaiting implementation
               </div>
             </div>
-            <div className="p-5 rounded-xl border border-charcoal-100 bg-white">
-              <div className="text-xs text-charcoal-400 uppercase tracking-wider font-semibold mb-2">
-                Health
+
+            {/* Target: Bounce Rate */}
+            <div
+              className="p-5 rounded-xl border"
+              style={{
+                borderColor: "rgba(45,45,45,0.1)",
+                backgroundColor: "rgba(255,255,255,0.6)",
+              }}
+            >
+              <div
+                className="text-[11px] uppercase tracking-[0.12em] font-semibold mb-2"
+                style={{ color: "rgba(45,45,45,0.45)" }}
+              >
+                Target: Bounce Rate
               </div>
-              <div className="font-heading text-2xl font-bold text-gold">
-                Improving
+              <div
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  color: "#2D2D2D",
+                }}
+              >
+                &lt;15%
               </div>
-              <div className="text-xs text-charcoal-300 mt-1">
-                2 of 3 fixes live
+              <div
+                className="text-[11px] mt-1"
+                style={{ color: "rgba(45,45,45,0.3)" }}
+              >
+                Down from &gt;50%
+              </div>
+            </div>
+
+            {/* Target: First Value */}
+            <div
+              className="p-5 rounded-xl border"
+              style={{
+                borderColor: "rgba(45,45,45,0.1)",
+                backgroundColor: "rgba(255,255,255,0.6)",
+              }}
+            >
+              <div
+                className="text-[11px] uppercase tracking-[0.12em] font-semibold mb-2"
+                style={{ color: "rgba(45,45,45,0.45)" }}
+              >
+                Target: Time to Value
+              </div>
+              <div
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  color: "#2D2D2D",
+                }}
+              >
+                &lt;90s
+              </div>
+              <div
+                className="text-[11px] mt-1"
+                style={{ color: "rgba(45,45,45,0.3)" }}
+              >
+                Down from 30+ min
               </div>
             </div>
           </div>
@@ -302,119 +490,251 @@ export default function InsightsPage() {
 
       {/* Friction Point Cards */}
       <section className="py-12 px-6">
-        <div className="max-w-5xl mx-auto space-y-16">
-          {frictionPoints.map((fp) => (
-            <article
-              key={fp.number}
-              className="rounded-2xl border border-charcoal-100 bg-white p-6 sm:p-8"
-            >
-              {/* Card Header */}
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                <div className="flex items-start gap-4">
-                  <span className="font-mono text-sm font-semibold text-gold bg-gold/10 rounded-lg px-3 py-1.5 flex-shrink-0">
-                    {fp.number}
-                  </span>
-                  <div>
-                    <h2 className="font-heading text-2xl font-bold text-charcoal mb-1">
-                      {fp.title}
-                    </h2>
-                    <div className="flex items-center gap-3 mt-2">
-                      <StatusBadge status={fp.status} />
-                      <span className="text-xs text-charcoal-300 font-mono">
-                        {fp.phase}
+        <div className="max-w-5xl mx-auto space-y-12">
+          {frictionPoints.map((fp) => {
+            const sev = severityConfig[fp.severity];
+            return (
+              <article
+                key={fp.number}
+                className="rounded-2xl border overflow-hidden"
+                style={{
+                  borderColor: "rgba(45,45,45,0.1)",
+                  backgroundColor: "rgba(255,255,255,0.7)",
+                }}
+              >
+                {/* Severity stripe */}
+                <div
+                  className="h-1"
+                  style={{
+                    backgroundColor:
+                      fp.severity === "critical"
+                        ? "#722F37"
+                        : fp.severity === "high"
+                          ? "#C9A96E"
+                          : "rgba(45,45,45,0.2)",
+                  }}
+                />
+
+                <div className="p-6 sm:p-8">
+                  {/* Card Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+                    <div className="flex items-start gap-4">
+                      <span
+                        className="text-sm font-mono font-semibold rounded-lg px-3 py-1.5 flex-shrink-0"
+                        style={{
+                          color: "#C9A96E",
+                          backgroundColor: "rgba(201,169,110,0.1)",
+                        }}
+                      >
+                        {fp.number}
+                      </span>
+                      <div>
+                        <h2
+                          className="text-2xl font-bold mb-1"
+                          style={{
+                            fontFamily: "'Playfair Display', Georgia, serif",
+                            color: "#2D2D2D",
+                          }}
+                        >
+                          {fp.title}
+                        </h2>
+                        <div className="flex items-center gap-3 mt-2 flex-wrap">
+                          <StatusBadge status={fp.status} />
+                          <SeverityBadge severity={fp.severity} />
+                          <span
+                            className="text-[11px] font-mono"
+                            style={{ color: "rgba(45,45,45,0.35)" }}
+                          >
+                            {fp.phase}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Problem Statement */}
+                  <div
+                    className="mb-8 p-4 rounded-xl border"
+                    style={{
+                      borderColor: "rgba(114,47,55,0.15)",
+                      backgroundColor: "rgba(114,47,55,0.04)",
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="#722F37"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                        />
+                      </svg>
+                      <span
+                        className="text-sm font-semibold"
+                        style={{ color: "#722F37" }}
+                      >
+                        Problem
                       </span>
                     </div>
+                    <p
+                      className="text-[13px] leading-relaxed"
+                      style={{ color: "rgba(45,45,45,0.6)" }}
+                    >
+                      {fp.problem}
+                    </p>
                   </div>
-                </div>
-              </div>
 
-              {/* Problem Statement */}
-              <div className="mb-8 p-4 rounded-xl border border-burgundy-100 bg-burgundy-50/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <svg
-                    className="w-4 h-4 text-burgundy"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                  {/* Before / After */}
+                  <div className="grid sm:grid-cols-2 gap-6 mb-8">
+                    <StateBlock
+                      items={fp.before.items}
+                      variant="before"
+                      label={fp.before.label}
                     />
-                  </svg>
-                  <span className="text-sm font-semibold text-burgundy">
-                    Problem
-                  </span>
-                </div>
-                <p className="text-sm text-charcoal-500 leading-relaxed">
-                  {fp.problem}
-                </p>
-              </div>
+                    <StateBlock
+                      items={fp.after.items}
+                      variant="after"
+                      label={fp.after.label}
+                    />
+                  </div>
 
-              {/* Before / After */}
-              <div className="grid sm:grid-cols-2 gap-6 mb-8">
-                <StateBlock
-                  items={fp.before.items}
-                  variant="before"
-                  label={fp.before.label}
-                />
-                <StateBlock
-                  items={fp.after.items}
-                  variant="after"
-                  label={fp.after.label}
-                />
-              </div>
-
-              {/* Metrics */}
-              <div className="flex flex-wrap gap-3">
-                {fp.metrics.map((m, i) => (
+                  {/* Target Metrics Comparison */}
                   <div
-                    key={i}
-                    className="px-4 py-2.5 rounded-lg border border-charcoal-100 bg-charcoal/[0.02]"
+                    className="mb-6 p-4 rounded-xl border"
+                    style={{
+                      borderColor: "rgba(45,45,45,0.08)",
+                      backgroundColor: "rgba(45,45,45,0.02)",
+                    }}
                   >
-                    <div className="text-xs text-charcoal-300 mb-0.5">
-                      {m.label}
+                    <div
+                      className="text-[11px] uppercase tracking-[0.12em] font-semibold mb-3"
+                      style={{ color: "rgba(45,45,45,0.4)" }}
+                    >
+                      Success Metrics
                     </div>
-                    <div className="text-sm font-semibold text-charcoal">
-                      {m.value}
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      {fp.targetMetrics.map((m, i) => (
+                        <div key={i} className="text-center">
+                          <div
+                            className="text-[11px] mb-2"
+                            style={{ color: "rgba(45,45,45,0.4)" }}
+                          >
+                            {m.label}
+                          </div>
+                          <div className="flex items-center justify-center gap-2">
+                            <span
+                              className="text-sm font-semibold line-through"
+                              style={{ color: "rgba(114,47,55,0.5)" }}
+                            >
+                              {m.before}
+                            </span>
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="#C9A96E"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                              />
+                            </svg>
+                            <span
+                              className="text-sm font-bold"
+                              style={{ color: "#2D2D2D" }}
+                            >
+                              {m.after}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </article>
-          ))}
+
+                  {/* Phase Metrics */}
+                  <div className="flex flex-wrap gap-3">
+                    {fp.metrics.map((m, i) => (
+                      <div
+                        key={i}
+                        className="px-4 py-2.5 rounded-lg border"
+                        style={{
+                          borderColor: "rgba(45,45,45,0.1)",
+                          backgroundColor: "rgba(45,45,45,0.02)",
+                        }}
+                      >
+                        <div
+                          className="text-[11px] mb-0.5"
+                          style={{ color: "rgba(45,45,45,0.35)" }}
+                        >
+                          {m.label}
+                        </div>
+                        <div
+                          className="text-sm font-semibold"
+                          style={{ color: "#2D2D2D" }}
+                        >
+                          {m.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-charcoal-100 py-12 px-6">
+      <footer
+        className="border-t py-12 px-6"
+        style={{ borderColor: "rgba(45,45,45,0.1)" }}
+      >
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
-              <span className="font-heading text-lg font-bold tracking-tight text-charcoal">
+              <span
+                className="text-lg font-bold tracking-tight"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  color: "#2D2D2D",
+                }}
+              >
                 Uncle Inc.
               </span>
-              <span className="text-xs text-charcoal-300 font-mono tracking-wider">
+              <span
+                className="text-[11px] font-mono tracking-[0.1em]"
+                style={{ color: "rgba(45,45,45,0.3)" }}
+              >
                 INTERNAL
               </span>
             </div>
             <div className="flex items-center gap-6">
               <Link
                 href="/"
-                className="text-sm text-charcoal-400 hover:text-charcoal transition-colors"
+                className="text-sm transition-colors hover:opacity-80"
+                style={{ color: "rgba(45,45,45,0.45)" }}
               >
                 Home
               </Link>
               <Link
                 href="/onboarding-fixes"
-                className="text-sm text-charcoal-400 hover:text-charcoal transition-colors"
+                className="text-sm transition-colors hover:opacity-80"
+                style={{ color: "rgba(45,45,45,0.45)" }}
               >
                 Onboarding Fixes
               </Link>
             </div>
-            <p className="text-sm text-charcoal-300">
+            <p
+              className="text-sm"
+              style={{ color: "rgba(45,45,45,0.3)" }}
+            >
               &copy; {new Date().getFullYear()} Uncle Inc. Internal use only.
             </p>
           </div>
