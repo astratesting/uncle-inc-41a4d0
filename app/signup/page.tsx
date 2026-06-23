@@ -8,6 +8,7 @@ function SignupContent() {
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
   const [error, setError] = useState("");
   const [verifyUrl, setVerifyUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ function SignupContent() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, company }),
       });
       const data = await res.json();
 
@@ -139,6 +140,20 @@ function SignupContent() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
+                className="w-full px-4 py-2.5 rounded-lg border border-charcoal-200 bg-ivory-50 text-charcoal placeholder:text-charcoal-300 focus:outline-none focus:ring-2 focus:ring-burgundy/20 focus:border-burgundy transition-all text-sm"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="company" className="block text-sm font-medium text-charcoal-600 mb-1.5">
+                Company Name
+              </label>
+              <input
+                id="company"
+                type="text"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="Your startup"
                 className="w-full px-4 py-2.5 rounded-lg border border-charcoal-200 bg-ivory-50 text-charcoal placeholder:text-charcoal-300 focus:outline-none focus:ring-2 focus:ring-burgundy/20 focus:border-burgundy transition-all text-sm"
               />
             </div>

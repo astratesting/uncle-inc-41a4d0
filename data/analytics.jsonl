@@ -6,3 +6,11 @@
 {"event":"signup_submitted","distinctId":"concurrent2@example.com","timestamp":"2026-06-23T08:22:27.246Z"}
 {"event":"signup_verified","distinctId":"concurrent1@example.com","timestamp":"2026-06-23T08:22:27.387Z"}
 {"event":"user_created_from_signup","distinctId":"concurrent1@example.com","timestamp":"2026-06-23T08:22:27.390Z"}
+{"event":"signup_submitted","distinctId":"verify-test-2@example.com","timestamp":"2026-06-23T09:09:02.944Z"}
+{"event":"signup_verification_resent","distinctId":"verify-test-2@example.com","timestamp":"2026-06-23T09:09:14.018Z"}
+{"event":"signup_submitted","distinctId":"nocompany@example.com","timestamp":"2026-06-23T09:09:14.066Z"}
+{"event":"signup_submitted","distinctId":"noname@example.com","timestamp":"2026-06-23T09:09:14.109Z"}
+{"event":"signup_submitted","distinctId":"longco@example.com","timestamp":"2026-06-23T09:09:14.164Z"}
+{"event":"signup_submitted","distinctId":"unicode@example.com","timestamp":"2026-06-23T09:09:14.213Z"}
+{"event":"signup_verified","distinctId":"verify-test-2@example.com","timestamp":"2026-06-23T09:09:24.291Z"}
+{"event":"signup_submitted","distinctId":"prodtest@example.com","timestamp":"2026-06-23T09:10:55.691Z"}

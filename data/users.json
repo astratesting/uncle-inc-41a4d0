@@ -7,5 +7,13 @@
     "emailVerified": false,
     "verificationToken": "4850b4fea4b35fcad0a774a79d72dbf75ae8c10463d05e0cefe5a01d91d35d20",
     "createdAt": "2026-06-23T07:25:11.691Z"
+  },
+  {
+    "id": "e8d43099-4e6e-4c2a-85b9-c115fdba2461",
+    "name": "VerifyTest",
+    "email": "verify-test-2@example.com",
+    "passwordHash": "f7eb279c0b2c86855d88c2a7fd672cc95195fb879eda7fb80120a5c744978baa",
+    "emailVerified": true,
+    "createdAt": "2026-06-23T09:09:24.294Z"
   }
 ]

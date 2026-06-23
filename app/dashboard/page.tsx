@@ -64,6 +64,9 @@ export default function DashboardPage() {
             Uncle Inc.
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/dashboard/analytics" className="text-sm font-medium text-charcoal-400 hover:text-charcoal transition-colors">
+              Analytics
+            </Link>
             {user.isAdmin && (
               <Link href="/admin" className="text-sm font-medium text-charcoal-400 hover:text-charcoal transition-colors">
                 Admin
