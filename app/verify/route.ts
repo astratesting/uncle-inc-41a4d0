@@ -64,7 +64,9 @@ export async function GET(request: NextRequest) {
       passwordHash: generateToken(32), // random placeholder — no password for waitlist signups
       companyName: "",
       verified: true,
+      verificationToken: "",
       createdAt: new Date().toISOString(),
+      verifiedAt: new Date().toISOString(),
     };
     users.push(user as User);
     await saveUsers(users);
@@ -75,8 +77,8 @@ export async function GET(request: NextRequest) {
   }
 
   // Create session and set cookie
-  const sessionToken = await createSession(user.id);
-  await setSessionCookie(sessionToken);
+  const session = await createSession(user.id);
+  await setSessionCookie(session.token);
 
   return NextResponse.redirect(new URL("/dashboard", baseUrl));
 }
