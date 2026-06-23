@@ -7,11 +7,17 @@ export const dynamic = 'force-dynamic';
 
 const SIGNUPS_PATH = path.join(process.cwd(), 'data', 'signups.json');
 
-async function getWaitlistCount(): Promise<number> {
+interface WaitlistEntry {
+  verified?: boolean;
+  [key: string]: unknown;
+}
+
+async function getVerifiedWaitlistCount(): Promise<number> {
   try {
     const data = await fs.readFile(SIGNUPS_PATH, 'utf-8');
     const signups = JSON.parse(data);
-    return Array.isArray(signups) ? signups.length : 0;
+    if (!Array.isArray(signups)) return 0;
+    return signups.filter((s: WaitlistEntry) => s.verified === true).length;
   } catch {
     return 0;
   }
@@ -19,9 +25,9 @@ async function getWaitlistCount(): Promise<number> {
 
 export async function GET() {
   const totalUsers = getTotalUserCount();
-  const verified = getVerifiedUserCount();
-  const waitlistCount = await getWaitlistCount();
-  // Count is the sum of user accounts and waitlist signups (deduped by total users being a superset)
-  const count = totalUsers + waitlistCount;
-  return NextResponse.json({ count, verified, target: 10 });
+  const verifiedUsers = getVerifiedUserCount();
+  const verifiedWaitlist = await getVerifiedWaitlistCount();
+  // Verified count = verified account users + verified waitlist entries
+  const count = verifiedUsers + verifiedWaitlist;
+  return NextResponse.json({ count, verified: count, target: 10 });
 }

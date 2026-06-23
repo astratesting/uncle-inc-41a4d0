@@ -1,16 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export function SignupCounter() {
   const [count, setCount] = useState<number | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     fetch('/api/signup-count')
       .then((res) => res.json())
       .then((data) => setCount(data.count))
       .catch(() => {});
-  }, []);
+  }, [searchParams]);
 
   if (count === null || count === 0) return null;
 
