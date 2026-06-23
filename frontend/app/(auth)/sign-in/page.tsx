@@ -30,6 +30,13 @@ export default function SignInPage() {
       return;
     }
 
+    // Track login event
+    fetch("/api/analytics/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eventType: "login", path: "/sign-in" }),
+    }).catch(() => {});
+
     router.push("/dashboard");
     router.refresh();
   }

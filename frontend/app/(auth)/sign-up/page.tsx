@@ -32,11 +32,19 @@ export default function SignUpPage() {
 
     setLoading(true);
 
+    // Track signup started
+    fetch("/api/analytics/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eventType: "signup_started", path: "/sign-up" }),
+    }).catch(() => {});
+
     const { error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { name },
+        emailRedirectTo: `${window.location.origin}/verify`,
       },
     });
 
@@ -45,6 +53,13 @@ export default function SignUpPage() {
       setLoading(false);
       return;
     }
+
+    // Track signup completed
+    fetch("/api/analytics/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eventType: "signup_completed", path: "/sign-up" }),
+    }).catch(() => {});
 
     router.push("/sign-up/confirm");
   }
