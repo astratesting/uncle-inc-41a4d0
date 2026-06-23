@@ -14,3 +14,4 @@
 {"event":"signup_submitted","distinctId":"unicode@example.com","timestamp":"2026-06-23T09:09:14.213Z"}
 {"event":"signup_verified","distinctId":"verify-test-2@example.com","timestamp":"2026-06-23T09:09:24.291Z"}
 {"event":"signup_submitted","distinctId":"prodtest@example.com","timestamp":"2026-06-23T09:10:55.691Z"}
+{"event":"waitlist_signup_submitted","distinctId":"test-verify@example.com","timestamp":"2026-06-23T10:03:47.934Z"}

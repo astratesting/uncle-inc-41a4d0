@@ -44,5 +44,13 @@
     "token": "b01cd423e88a7c05e57f834816205a5b328d19a0cb238740a784a248fa5270aa",
     "verified": false,
     "createdAt": "2026-06-23T09:10:55.689Z"
+  },
+  {
+    "name": "Test User",
+    "email": "test-verify@example.com",
+    "company": "Test Co",
+    "token": "420805f16a9c3d2ee0a50b9fe991030b8c41301b5853b0a6ac25f46c9d7832f0",
+    "verified": false,
+    "createdAt": "2026-06-23T10:03:47.931Z"
   }
 ]
