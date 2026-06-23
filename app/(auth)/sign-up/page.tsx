@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { UserPlus } from "lucide-react";
@@ -33,36 +32,18 @@ export default function SignUpPage() {
 
     setLoading(true);
 
-    const supabase = createClient();
-
-    const params = new URLSearchParams(window.location.search);
-    const signupSource = params.get("source") || "organic";
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: name,
-          company,
-        },
-      },
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, name, company }),
     });
 
-    if (error) {
-      setError(error.message);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.message || "Something went wrong");
       setLoading(false);
       return;
-    }
-
-    if (data.user) {
-      await supabase.from("signups").insert({
-        email,
-        name,
-        company,
-        signup_source: signupSource,
-        verified: data.user.email_confirmed_at !== null,
-      });
     }
 
     setSuccess(true);
@@ -124,7 +105,6 @@ export default function SignUpPage() {
           placeholder="Acme Inc."
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          required
         />
         <Input
           label="Password"

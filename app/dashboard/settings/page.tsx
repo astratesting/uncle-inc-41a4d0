@@ -1,23 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { auth } from "@/lib/auth";
 import { Card } from "@/components/ui/Card";
 import { User, Mail, Calendar } from "lucide-react";
 
 export default async function SettingsPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const session = await auth();
 
-  const displayName =
-    user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? "User";
-  const email = user?.email ?? "";
-  const joinedDate = user?.created_at
-    ? new Date(user.created_at).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "Unknown";
+  const displayName = session?.user?.name ?? session?.user?.email?.split("@")[0] ?? "User";
+  const email = session?.user?.email ?? "";
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -45,13 +34,6 @@ export default async function SettingsPage() {
             <div>
               <p className="text-xs text-gray-400">Email</p>
               <p className="text-sm text-gray-900 font-medium">{email}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 bg-gray-50">
-            <Calendar className="h-4 w-4 text-gray-400" />
-            <div>
-              <p className="text-xs text-gray-400">Joined</p>
-              <p className="text-sm text-gray-900 font-medium">{joinedDate}</p>
             </div>
           </div>
         </div>

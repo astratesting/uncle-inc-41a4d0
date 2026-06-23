@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { auth } from "@/lib/auth";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
@@ -9,17 +9,13 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const session = await auth();
 
-  if (!user) {
-    redirect("/sign-in");
+  if (!session?.user) {
+    redirect("/login");
   }
 
-  const displayName =
-    user.user_metadata?.full_name ?? user.email?.split("@")[0] ?? "User";
+  const displayName = session.user.name ?? session.user.email?.split("@")[0] ?? "User";
 
   return (
     <div className="min-h-screen bg-gray-50">

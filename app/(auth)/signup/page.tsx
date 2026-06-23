@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { UserPlus } from "lucide-react";
@@ -33,39 +32,18 @@ export default function SignUpPage() {
 
     setLoading(true);
 
-    const supabase = createClient();
-
-    // Capture signup source from URL or default
-    const params = new URLSearchParams(window.location.search);
-    const signupSource = params.get("source") || "organic";
-
-    // 1. Sign up with Supabase Auth
-    const { data, error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: name,
-          company,
-        },
-      },
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, name, company }),
     });
 
-    if (authError) {
-      setError(authError.message);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.message || "Something went wrong");
       setLoading(false);
       return;
-    }
-
-    // 2. Insert into signups table for analytics tracking
-    if (data.user) {
-      await supabase.from("signups").insert({
-        email,
-        name,
-        company,
-        signup_source: signupSource,
-        verified: data.user.email_confirmed_at !== null,
-      });
     }
 
     setSuccess(true);
@@ -127,7 +105,6 @@ export default function SignUpPage() {
           placeholder="Acme Inc."
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          required
         />
         <Input
           label="Password"

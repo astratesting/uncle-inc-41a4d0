@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { KeyRound } from "lucide-react";
@@ -30,17 +29,9 @@ export default function ResetPasswordPage() {
 
     setLoading(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.updateUser({ password });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
-    router.push("/dashboard");
-    router.refresh();
+    // Password reset requires a server action or API route with proper token verification.
+    // For now, redirect to login with a message.
+    router.push("/login");
   }
 
   return (

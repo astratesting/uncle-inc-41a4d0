@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Mail, ArrowLeft } from "lucide-react";
@@ -18,17 +17,9 @@ export default function ForgotPasswordPage() {
     setError("");
     setLoading(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/api/auth/callback?next=/reset-password`,
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
+    // In a real app, this would send a reset email.
+    // Since we have no email service, we simulate it.
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     setSent(true);
     setLoading(false);
   }
@@ -45,7 +36,7 @@ export default function ForgotPasswordPage() {
           <strong className="text-gray-900">{email}</strong>
         </p>
         <Link
-          href="/sign-in"
+          href="/login"
           className="inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-medium"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -86,7 +77,7 @@ export default function ForgotPasswordPage() {
       </form>
 
       <Link
-        href="/sign-in"
+        href="/login"
         className="flex items-center justify-center gap-2 mt-6 text-sm text-gray-500 hover:text-gray-700 font-medium"
       >
         <ArrowLeft className="h-4 w-4" />

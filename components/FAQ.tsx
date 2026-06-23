@@ -1,23 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "What does Uncle Inc. build?",
-    a: "We develop digital products and platforms that help businesses and consumers solve modern challenges.",
+    q: "What is Uncle Inc.?",
+    a: "Uncle Inc. is a software development company building digital products and platforms for businesses and consumers. We provide technological solutions to modern problems — from web applications to enterprise platforms.",
   },
   {
-    q: "When will the product launch?",
-    a: "We're actively building and will share updates with early access members first.",
+    q: "When will you launch?",
+    a: "We're actively building and will launch when we're confident in delivering exceptional quality. Join the waitlist to be the first to know.",
   },
   {
-    q: "How can I stay updated?",
-    a: "Join the waitlist above and we'll notify you when we're ready to launch.",
+    q: "What kind of products do you build?",
+    a: "We build digital products and platforms that serve both businesses and consumers — web apps, mobile experiences, automation tools, and scalable infrastructure. Our focus is precision engineering for real-world problems.",
   },
   {
-    q: "Who is behind Uncle Inc.?",
-    a: "Uncle Inc. is a software development company focused on creating meaningful technology solutions.",
+    q: "How can I get involved early?",
+    a: "Join the waitlist on this page and verify your email. Early supporters will get priority access when we launch and a direct line to shape what we build first.",
   },
 ];
 
@@ -25,58 +26,60 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="relative py-28 px-6 bg-soft-white">
-      {/* Beam accent divider */}
-      <div className="beam-accent absolute top-0 left-0 right-0 h-px" />
+    <section id="faq" className="relative py-28 px-6 bg-navy">
+      <div className="absolute inset-0 lattice-overlay-navy opacity-30" />
 
       <div className="relative z-10 mx-auto max-w-3xl">
         {/* Section header */}
-        <div className="text-center mb-16">
-          <p className="text-xs font-heading font-semibold tracking-[0.25em] uppercase text-sky-400 mb-4">
+        <div className="text-center mb-20">
+          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-cobalt mb-4">
             Questions
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-dark-text mb-6">
+          <h2 className="text-4xl sm:text-5xl font-display font-black text-white mb-6">
             Frequently Asked
           </h2>
+          <div className="mx-auto flex items-center justify-center gap-3">
+            <div className="h-px w-12 bg-cobalt/40" />
+            <div className="h-1 w-1 rotate-45 bg-cobalt" />
+            <div className="h-px w-12 bg-cobalt/40" />
+          </div>
         </div>
 
-        {/* FAQ items */}
-        <div className="space-y-3">
-          {faqs.map((item, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div key={i} className="calm-card overflow-hidden">
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 p-6 text-left hover:bg-sky-50/30 transition-colors duration-200"
-                >
-                  <span className="text-base font-heading font-semibold text-dark-text pr-4">
-                    {item.q}
-                  </span>
-                  <svg
-                    className={`w-5 h-5 flex-shrink-0 text-sky-400 transition-transform duration-300 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+        {/* Accordion */}
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="border border-white/10 bg-navy-600/30 overflow-hidden"
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/5 transition-colors"
+              >
+                <span className="font-heading text-base font-semibold text-white pr-4">
+                  {faq.q}
+                </span>
+                <ChevronDown
+                  className={`h-5 w-5 text-cobalt shrink-0 transition-transform duration-300 ${
+                    openIndex === i ? "rotate-180" : ""
                   }`}
-                >
-                  <p className="px-6 pb-6 text-dark-text/50 font-body leading-relaxed text-[15px]">
-                    {item.a}
+                />
+              </button>
+              <div
+                className={`transition-all duration-300 ${
+                  openIndex === i
+                    ? "max-h-40 opacity-100"
+                    : "max-h-0 opacity-0"
+                } overflow-hidden`}
+              >
+                <div className="px-6 pb-5">
+                  <p className="text-sm text-white/50 font-body leading-relaxed">
+                    {faq.a}
                   </p>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
