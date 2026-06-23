@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 export function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [signupCount, setSignupCount] = useState<number | null>(null);
@@ -24,10 +25,10 @@ export function SignupForm() {
     setStatus("loading");
 
     try {
-      const res = await fetch("/api/waitlist", {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email, name, company }),
       });
 
       const data = await res.json();
@@ -38,6 +39,12 @@ export function SignupForm() {
         if (data.verifyUrl) setVerifyUrl(data.verifyUrl);
         setEmail("");
         setName("");
+        setCompany("");
+        // Refresh count
+        fetch("/api/signup-count")
+          .then((r) => r.json())
+          .then((d) => setSignupCount(d.count))
+          .catch(() => {});
       } else {
         setStatus("error");
         setMessage(data.error || "Something went wrong.");
@@ -87,12 +94,34 @@ export function SignupForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
+      {/* Prominent signup count */}
+      {signupCount !== null && (
+        <div className="mb-6 text-center">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-charcoal/5 border border-charcoal-100">
+            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+            <span className="font-heading text-2xl font-bold text-charcoal">
+              {signupCount}
+            </span>
+            <span className="text-sm text-charcoal-400">
+              {signupCount === 1 ? "person has" : "people have"} joined the waitlist
+            </span>
+          </span>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
+          className="w-full px-5 py-3.5 rounded-xl bg-white border border-charcoal-100 text-charcoal placeholder-charcoal-300 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all text-base"
+        />
+        <input
+          type="text"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          placeholder="Company name"
           className="w-full px-5 py-3.5 rounded-xl bg-white border border-charcoal-100 text-charcoal placeholder-charcoal-300 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all text-base"
         />
         <div className="flex flex-col sm:flex-row gap-3">
@@ -116,12 +145,6 @@ export function SignupForm() {
 
       {status === "error" && (
         <p className="mt-3 text-sm text-burgundy text-center">{message}</p>
-      )}
-
-      {signupCount !== null && signupCount > 0 && (
-        <p className="mt-4 text-xs text-charcoal-300 text-center">
-          {signupCount} {signupCount === 1 ? "person has" : "people have"} joined the waitlist
-        </p>
       )}
     </div>
   );

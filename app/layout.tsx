@@ -7,9 +7,12 @@ import { SessionRecorder } from "@/components/SessionRecorder";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: "Uncle Inc. — AI-Assisted MVP Development for Startup Founders",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://uncle-inc.com"
+  ),
+  title: "Uncle Inc. — Validate Startup Ideas Without a Technical Co-Founder",
   description:
-    "Validate startup ideas and build MVPs faster using AI-assisted prototyping, built-in user testing, and launch analytics — no technical co-founder required.",
+    "Uncle Inc. helps early-stage founders validate startup ideas and ship working MVPs using AI-assisted prototyping, built-in user testing, and launch analytics — no code required.",
   keywords: [
     "MVP development",
     "startup founders",
@@ -17,12 +20,27 @@ export const metadata: Metadata = {
     "user testing",
     "launch analytics",
     "no-code MVP",
+    "startup validation",
+    "early-stage founders",
   ],
+  authors: [{ name: "Uncle Inc." }],
   openGraph: {
-    title: "Uncle Inc. — AI-Assisted MVP Development for Startup Founders",
+    title: "Uncle Inc. — Validate Startup Ideas Without a Technical Co-Founder",
     description:
-      "Validate startup ideas and build MVPs faster — no technical co-founder required.",
+      "AI-assisted prototyping, built-in user testing, and launch analytics. Go from idea to validated MVP — no code required.",
     type: "website",
+    siteName: "Uncle Inc.",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Uncle Inc. — AI-Assisted MVP Development",
+    description:
+      "Validate startup ideas and ship MVPs faster. AI prototyping, user testing, and analytics — no technical co-founder needed.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
