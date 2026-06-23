@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Mail } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { ArrowRight, Check } from "lucide-react";
 
 export function Waitlist() {
   const [email, setEmail] = useState("");
@@ -23,11 +21,11 @@ export function Waitlist() {
       const data = await res.json();
       if (res.ok) {
         setStatus("success");
-        setMessage(data.message || "You're on the list! We'll be in touch.");
+        setMessage(data.message || "You're on the list. We'll be in touch.");
         setEmail("");
       } else {
         setStatus("error");
-        setMessage(data.message || "Something went wrong. Try again.");
+        setMessage(data.message || "Something went wrong. Please try again.");
       }
     } catch {
       setStatus("error");
@@ -38,55 +36,74 @@ export function Waitlist() {
   return (
     <section
       id="waitlist"
-      className="py-24 px-4 bg-gradient-to-br from-violet-600 via-violet-700 to-violet-900 relative overflow-hidden"
+      className="relative py-28 px-6 bg-charcoal overflow-hidden"
     >
-      {/* Decorative circles */}
-      <div className="absolute top-10 right-10 h-64 w-64 rounded-full bg-coral-400/10 blur-[80px]" />
-      <div className="absolute bottom-10 left-10 h-48 w-48 rounded-full bg-honey-400/10 blur-[60px]" />
+      {/* Lattice pattern on dark */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(201,169,110,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(201,169,110,0.07) 1px, transparent 1px)",
+          backgroundSize: "50px 50px",
+        }}
+      />
 
-      <div className="mx-auto max-w-2xl text-center relative z-10">
-        <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 border border-white/20 mb-6">
-          <Mail className="h-7 w-7 text-white" />
+      {/* Radial accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,169,110,0.08),transparent_70%)]" />
+
+      <div className="relative z-10 mx-auto max-w-2xl text-center">
+        {/* Decorative top element */}
+        <div className="mb-8 flex items-center justify-center gap-3">
+          <div className="h-px w-16 bg-gold-500/30" />
+          <div className="h-1.5 w-1.5 rotate-45 bg-gold-400/60" />
+          <div className="h-px w-16 bg-gold-500/30" />
         </div>
-        <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-4">
+
+        <h2 className="text-4xl sm:text-5xl font-heading font-bold text-ivory mb-6">
           Join the Waitlist
         </h2>
-        <p className="text-violet-200 mb-10 text-lg leading-relaxed">
+        <p className="text-charcoal-300 text-lg leading-relaxed font-light mb-12 max-w-lg mx-auto">
           Be the first to know when Uncle Inc. launches. No spam — just
-          early access and product updates.
+          early access and thoughtful updates.
         </p>
 
         {status === "success" ? (
-          <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/20 px-6 py-5 text-emerald-200 font-medium">
-            {message}
+          <div className="inline-flex items-center gap-3 border border-gold-500/30 bg-gold-500/10 px-8 py-5 text-gold-300 font-medium">
+            <Check className="h-5 w-5" />
+            <span>{message}</span>
           </div>
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            className="flex flex-col sm:flex-row gap-0 max-w-lg mx-auto"
           >
-            <Input
+            <input
               type="email"
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="flex-1 !bg-white/10 !border-white/20 !text-white !placeholder-violet-300 focus:!ring-white/30 focus:!border-white/40"
+              className="flex-1 bg-white/5 border border-white/15 text-ivory placeholder-charcoal-400 px-6 py-4 font-body text-base focus:outline-none focus:border-gold-400/60 focus:ring-1 focus:ring-gold-400/30 transition-all"
             />
-            <Button
+            <button
               type="submit"
-              variant="coral"
-              size="lg"
               disabled={status === "loading"}
-              className="whitespace-nowrap"
+              className="group inline-flex items-center justify-center gap-2 bg-gold-400 text-charcoal px-8 py-4 font-body text-sm font-semibold tracking-wide uppercase hover:bg-gold-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
-              {status === "loading" ? "Joining..." : "Get Early Access"}
-            </Button>
+              {status === "loading" ? (
+                "Sending..."
+              ) : (
+                <>
+                  Get Early Access
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </>
+              )}
+            </button>
           </form>
         )}
 
         {status === "error" && (
-          <p className="mt-3 text-sm text-red-300">{message}</p>
+          <p className="mt-4 text-sm text-burgundy-400">{message}</p>
         )}
       </div>
     </section>

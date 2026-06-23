@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap");
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-warm-offwhite text-gray-800 antialiased font-body;
+    @apply bg-ivory text-charcoal antialiased font-body;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
@@ -17,7 +17,39 @@
 }
 
 @layer components {
-  .gradient-violet {
-    @apply bg-gradient-to-r from-violet-600 via-violet-500 to-coral-500 bg-clip-text text-transparent;
+  .lattice-bg {
+    @apply bg-lattice bg-lattice;
+  }
+
+  .lattice-overlay {
+    background-image:
+      linear-gradient(to right, rgba(201, 169, 110, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(201, 169, 110, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .lattice-overlay-dense {
+    background-image:
+      linear-gradient(to right, rgba(201, 169, 110, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(201, 169, 110, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-400 via-gold-300 to-gold-500 bg-clip-text text-transparent;
+  }
+
+  .premium-shadow {
+    box-shadow:
+      0 4px 6px -1px rgba(45, 45, 45, 0.05),
+      0 10px 15px -3px rgba(45, 45, 45, 0.05),
+      0 20px 40px -8px rgba(45, 45, 45, 0.08);
+  }
+
+  .premium-shadow-lg {
+    box-shadow:
+      0 10px 15px -3px rgba(45, 45, 45, 0.06),
+      0 20px 40px -8px rgba(45, 45, 45, 0.1),
+      0 40px 80px -16px rgba(45, 45, 45, 0.12);
   }
 }

@@ -1,63 +1,83 @@
-import { ArrowRight, Hammer } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* Background gradients */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-20 right-10 h-[500px] w-[500px] rounded-full bg-violet-200/30 blur-[120px]" />
-        <div className="absolute bottom-20 left-10 h-[400px] w-[400px] rounded-full bg-coral-200/20 blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[300px] rounded-full bg-honey-200/20 blur-[80px]" />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Lattice background */}
+      <div className="absolute inset-0 lattice-overlay" />
 
-      <div className="mx-auto max-w-4xl px-4 text-center">
-        {/* Coming Soon badge */}
-        <div className="mb-8 inline-flex items-center gap-2.5 rounded-full bg-violet-100 border border-violet-200 px-5 py-2 animate-fade-in">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-violet-600" />
-          </span>
-          <span className="text-sm font-heading font-semibold text-violet-700 tracking-wide uppercase">
-            Coming Soon
-          </span>
+      {/* Subtle radial gradient overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,169,110,0.08),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(114,47,55,0.05),transparent_60%)]" />
+
+      {/* Decorative geometric elements */}
+      <div className="absolute top-20 left-10 h-32 w-32 border border-gold-200/30 rotate-45 animate-fade-in" />
+      <div className="absolute bottom-32 right-16 h-24 w-24 border border-burgundy-200/20 rotate-12 animate-fade-in" style={{ animationDelay: "0.3s" }} />
+      <div className="absolute top-1/3 right-1/4 h-16 w-16 border border-gold-200/20 rounded-full animate-fade-in" style={{ animationDelay: "0.5s" }} />
+
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+        {/* COMING SOON badge / ribbon */}
+        <div className="mb-10 inline-flex animate-slide-up">
+          <div className="relative">
+            <div className="bg-charcoal text-ivory px-8 py-3 font-body text-xs font-semibold tracking-[0.3em] uppercase">
+              Coming Soon
+            </div>
+            {/* Ribbon tails */}
+            <div className="absolute -left-3 top-0 h-full w-3 bg-charcoal-800" style={{ clipPath: "polygon(100% 0, 0 50%, 100% 100%)" }} />
+            <div className="absolute -right-3 top-0 h-full w-3 bg-charcoal-800" style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }} />
+          </div>
         </div>
 
         {/* Company name */}
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-extrabold tracking-tight text-gray-900 animate-slide-up">
+        <h1
+          className="font-heading text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-charcoal animate-slide-up"
+          style={{ animationDelay: "0.1s" }}
+        >
           Uncle Inc.
         </h1>
 
         {/* Tagline */}
-        <p className="mt-4 text-2xl sm:text-3xl font-heading font-bold gradient-violet animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          Building Digital Solutions for Modern Problems
+        <p
+          className="mt-6 text-2xl sm:text-3xl lg:text-4xl font-heading font-light text-gold-500 italic animate-slide-up"
+          style={{ animationDelay: "0.2s" }}
+        >
+          Where Ideas Meet Execution
         </p>
 
-        {/* Value prop */}
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          We are a software development company crafting digital products and
-          platforms that help businesses operate smarter and consumers live
-          easier. From concept to launch, we turn ambitious ideas into
-          real-world solutions.
-        </p>
-
-        {/* Forge motif icon */}
-        <div className="mt-10 flex justify-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-coral-500 shadow-lg shadow-violet-500/20">
-            <Hammer className="h-8 w-8 text-white" />
-          </div>
+        {/* Decorative divider */}
+        <div
+          className="mx-auto mt-8 mb-8 flex items-center justify-center gap-3 animate-slide-up"
+          style={{ animationDelay: "0.3s" }}
+        >
+          <div className="h-px w-16 bg-gold-300/50" />
+          <div className="h-1.5 w-1.5 rotate-45 bg-gold-400" />
+          <div className="h-px w-16 bg-gold-300/50" />
         </div>
 
-        {/* CTA arrow to waitlist */}
-        <div className="mt-10 animate-slide-up" style={{ animationDelay: "0.4s" }}>
+        {/* Value proposition */}
+        <p
+          className="mx-auto max-w-2xl text-lg sm:text-xl text-charcoal-400 leading-relaxed font-body font-light animate-slide-up"
+          style={{ animationDelay: "0.4s" }}
+        >
+          We build digital products and platforms designed for modern businesses.
+          From concept to launch, we bridge the gap between ambitious ideas and
+          real-world execution — crafting technology solutions with precision and purpose.
+        </p>
+
+        {/* CTA */}
+        <div className="mt-12 animate-slide-up" style={{ animationDelay: "0.5s" }}>
           <a
             href="#waitlist"
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-8 py-4 text-lg font-heading font-semibold text-white shadow-lg shadow-violet-600/25 hover:bg-violet-700 hover:shadow-xl transition-all duration-200"
+            className="group inline-flex items-center gap-3 bg-charcoal text-ivory px-10 py-4 font-body text-sm font-semibold tracking-wide uppercase hover:bg-charcoal-800 transition-all duration-300 premium-shadow hover:premium-shadow-lg"
           >
-            Get Early Access
-            <ArrowRight className="h-5 w-5" />
+            Join the Waitlist
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </a>
         </div>
       </div>
+
+      {/* Bottom fade to next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
     </section>
   );
 }

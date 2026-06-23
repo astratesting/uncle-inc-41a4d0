@@ -1,29 +1,35 @@
 export function Footer() {
   return (
-    <footer className="border-t border-gray-200 py-12 px-4 bg-white">
-      <div className="mx-auto max-w-7xl">
+    <footer className="bg-charcoal border-t border-charcoal-600">
+      <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-sm font-heading font-bold text-gray-900">
+          <span className="text-sm font-heading font-semibold text-ivory tracking-wide">
             Uncle Inc.
           </span>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <a
-              href="mailto:hello@uncleinc.com"
-              className="text-sm text-gray-500 hover:text-violet-600 transition-colors"
+              href="#what-we-build"
+              className="text-xs text-charcoal-300 hover:text-gold-400 transition-colors font-body tracking-wide uppercase"
             >
-              Contact
+              What We Build
             </a>
             <a
               href="#faq"
-              className="text-sm text-gray-500 hover:text-violet-600 transition-colors"
+              className="text-xs text-charcoal-300 hover:text-gold-400 transition-colors font-body tracking-wide uppercase"
             >
               FAQ
             </a>
+            <a
+              href="#waitlist"
+              className="text-xs text-charcoal-300 hover:text-gold-400 transition-colors font-body tracking-wide uppercase"
+            >
+              Waitlist
+            </a>
           </div>
 
-          <p className="text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} Uncle Inc. All rights reserved.
+          <p className="text-xs text-charcoal-400 font-body">
+            &copy; 2026 Uncle Inc. All rights reserved.
           </p>
         </div>
       </div>

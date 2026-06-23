@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import { MessageSquare, X, Star } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 
 export function FeedbackWidget() {
   const [open, setOpen] = useState(false);
@@ -54,47 +53,47 @@ export function FeedbackWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-white shadow-lg shadow-violet-600/25 hover:bg-violet-700 transition-colors"
-          aria-label="Open feedback"
+          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center bg-charcoal text-ivory shadow-lg hover:bg-charcoal-600 transition-colors premium-shadow"
+          aria-label="Send feedback"
         >
           <MessageSquare className="h-5 w-5" />
         </button>
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 w-80 rounded-2xl border border-gray-200 bg-white shadow-xl animate-slide-up">
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h3 className="text-sm font-heading font-semibold text-gray-900">
+        <div className="fixed bottom-6 right-6 z-50 w-80 bg-white border border-gold-200/40 shadow-xl premium-shadow-lg animate-slide-up">
+          <div className="flex items-center justify-between p-5 border-b border-gold-200/30">
+            <h3 className="text-sm font-heading font-semibold text-charcoal">
               Send Feedback
             </h3>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-charcoal-300 hover:text-charcoal transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          <div className="p-4">
+          <div className="p-5">
             {submitted ? (
-              <div className="text-center py-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 border border-emerald-200 mx-auto mb-3">
-                  <Star className="h-6 w-6 text-emerald-600" />
+              <div className="text-center py-8">
+                <div className="flex h-12 w-12 items-center justify-center border border-gold-300 bg-gold-50 mx-auto mb-4">
+                  <Star className="h-5 w-5 text-gold-500 fill-gold-500" />
                 </div>
-                <p className="text-sm font-heading font-semibold text-gray-900 mb-1">
-                  Thank you!
+                <p className="text-sm font-heading font-semibold text-charcoal mb-1">
+                  Thank you
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-charcoal-400 font-light">
                   Your feedback helps us improve.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="text-xs font-medium text-gray-600 mb-2 block">
+                  <label className="text-xs font-body font-medium text-charcoal-400 mb-2.5 block tracking-wide uppercase">
                     How would you rate your experience?
                   </label>
-                  <div className="flex gap-1">
+                  <div className="flex gap-1.5">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
@@ -105,10 +104,10 @@ export function FeedbackWidget() {
                         className="p-0.5"
                       >
                         <Star
-                          className={`h-6 w-6 transition-colors ${
+                          className={`h-5 w-5 transition-colors ${
                             star <= (hoveredStar || rating)
-                              ? "text-honey-500 fill-honey-500"
-                              : "text-gray-300"
+                              ? "text-gold-400 fill-gold-400"
+                              : "text-charcoal-200"
                           }`}
                         />
                       </button>
@@ -117,7 +116,7 @@ export function FeedbackWidget() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-medium text-gray-600 mb-1.5 block">
+                  <label className="text-xs font-body font-medium text-charcoal-400 mb-2 block tracking-wide uppercase">
                     Your feedback
                   </label>
                   <textarea
@@ -125,22 +124,21 @@ export function FeedbackWidget() {
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Tell us what you think..."
                     rows={3}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400/50 focus:border-violet-500 resize-none"
+                    className="w-full border border-gold-200/50 bg-ivory px-4 py-3 text-sm text-charcoal placeholder-charcoal-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 resize-none font-body"
                   />
                 </div>
 
                 {error && (
-                  <p className="text-xs text-red-500">{error}</p>
+                  <p className="text-xs text-burgundy-500">{error}</p>
                 )}
 
-                <Button
+                <button
                   type="submit"
-                  size="md"
-                  className="w-full"
                   disabled={loading}
+                  className="w-full bg-charcoal text-ivory py-3 text-sm font-body font-semibold tracking-wide uppercase hover:bg-charcoal-800 transition-colors disabled:opacity-50"
                 >
                   {loading ? "Sending..." : "Send Feedback"}
-                </Button>
+                </button>
               </form>
             )}
           </div>
