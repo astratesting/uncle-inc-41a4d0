@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "What does it cost?",
-    a: "We're launching with a free tier that lets you validate one idea with up to 10 testers. Pro and Team plans will be available for founders who want unlimited projects and advanced features. See the pricing section above for details.",
+    a: "We're launching with a free tier that lets you validate one idea with up to 10 testers. Paid plans for founders who need unlimited projects and advanced features will follow. Join the waitlist to be notified when we launch.",
   },
 ];
 
