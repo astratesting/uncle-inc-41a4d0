@@ -11,8 +11,9 @@ export function Card({ className, glow, children, ...props }: CardProps) {
     <div
       className={twMerge(
         clsx(
-          "rounded-xl border border-gray-800 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-200",
-          glow && "hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(79,70,229,0.1)]",
+          "rounded-xl border border-charcoal-700 bg-charcoal-800/50 p-6 backdrop-blur-sm transition-all duration-200",
+          glow &&
+            "hover:border-gold/30 hover:shadow-[0_0_20px_rgba(184,168,138,0.08)]"
         ),
         className
       )}

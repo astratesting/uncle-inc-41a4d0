@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-gray-300 mb-1.5"
+            className="block text-sm font-medium text-charcoal-300 mb-1.5"
           >
             {label}
           </label>
@@ -25,11 +25,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={twMerge(
             clsx(
-              "w-full rounded-lg border bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all duration-200",
-              "focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500",
+              "w-full rounded-lg border bg-charcoal-800/50 px-4 py-2.5 text-sm text-ivory placeholder-charcoal-500 transition-all duration-200",
+              "focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold",
               error
                 ? "border-red-500 focus:ring-red-500/50"
-                : "border-gray-700 hover:border-gray-600"
+                : "border-charcoal-700 hover:border-charcoal-600"
             ),
             className
           )}

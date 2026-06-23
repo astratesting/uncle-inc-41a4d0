@@ -1,57 +1,63 @@
-import Link from "next/link";
-import { Compass } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+
+const benefits = [
+  "AI-powered market analysis in minutes",
+  "Real user testing with structured feedback",
+  "Interactive prototypes without code",
+  "Data-driven decisions on what to build next",
+];
 
 export function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
-      {/* Background decorations */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <Compass className="h-[500px] w-[500px] text-indigo-500/5" strokeWidth={0.5} />
-        </div>
-        <div className="absolute top-0 right-0 h-[600px] w-[600px] rounded-full bg-indigo-600/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-cyan-500/5 blur-[100px]" />
+        <div className="absolute top-0 right-0 h-[600px] w-[600px] rounded-full bg-burgundy/5 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-gold/5 blur-[100px]" />
       </div>
 
       <div className="mx-auto max-w-4xl px-4 text-center">
-        {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5">
-          <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-          <span className="text-xs font-medium text-indigo-300 font-mono">
-            AI-POWERED MVP VALIDATION
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5">
+          <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
+          <span className="text-xs font-medium text-gold tracking-wider uppercase">
+            Coming Soon
           </span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white">
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-ivory">
           Validate Before
           <br />
-          <span className="gradient-text">You Build</span>
+          <span className="text-gradient-gold">You Build</span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400 leading-relaxed">
-          Uncle Inc. is the AI-assisted MVP platform that helps founders test ideas
-          with real users before writing a single line of code. Stop building what
-          nobody wants.
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-charcoal-300 leading-relaxed">
+          Uncle Inc. is the AI-assisted platform that helps founders test startup
+          ideas with real users — before writing a single line of code.
         </p>
 
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">
+          {benefits.map((benefit) => (
+            <div key={benefit} className="flex items-start gap-3">
+              <div className="mt-1 h-5 w-5 flex-shrink-0 rounded-full bg-gold/20 flex items-center justify-center">
+                <div className="h-1.5 w-1.5 rounded-full bg-gold" />
+              </div>
+              <span className="text-sm text-charcoal-300">{benefit}</span>
+            </div>
+          ))}
+        </div>
+
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/sign-up">
-            <Button size="lg" className="min-w-[200px]">
-              Start Validating
+          <a href="/api/auth/demo-signin">
+            <Button size="lg" className="min-w-[200px] gap-2">
+              View Live Demo <ArrowRight className="h-4 w-4" />
             </Button>
-          </Link>
-          <a href="#how-it-works">
+          </a>
+          <a href="#waitlist">
             <Button variant="outline" size="lg" className="min-w-[200px]">
-              See How It Works
+              Join the Waitlist
             </Button>
           </a>
         </div>
-
-        {/* Sub-metric */}
-        <p className="mt-8 text-xs text-gray-600 font-mono">
-          Join early-access founders shaping the future of startup validation
-        </p>
       </div>
     </section>
   );

@@ -4,10 +4,10 @@ import { twMerge } from "tailwind-merge";
 
 const variants = {
   primary:
-    "bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/25 active:bg-indigo-700",
+    "bg-burgundy text-white hover:bg-burgundy-light shadow-lg shadow-burgundy/25 active:bg-burgundy-dark",
   outline:
-    "border border-gray-700 text-gray-200 hover:border-indigo-500 hover:text-indigo-400 bg-transparent",
-  ghost: "text-gray-400 hover:text-white hover:bg-white/5",
+    "border border-charcoal-600 text-charcoal-200 hover:border-gold hover:text-gold bg-transparent",
+  ghost: "text-charcoal-400 hover:text-ivory hover:bg-charcoal-800",
   danger: "bg-red-600 text-white hover:bg-red-500",
 } as const;
 
@@ -33,7 +33,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled}
         className={twMerge(
           clsx(
-            "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:ring-offset-2 focus:ring-offset-ink disabled:opacity-50 disabled:cursor-not-allowed",
+            "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:ring-offset-2 focus:ring-offset-charcoal-900 disabled:opacity-50 disabled:cursor-not-allowed",
             variants[variant],
             sizes[size]
           ),
