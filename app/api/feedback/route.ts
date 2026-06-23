@@ -7,6 +7,29 @@ const feedbackSchema = z.object({
   message: z.string().min(1).max(1000),
 });
 
+export async function GET() {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("feedback")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    if (error) {
+      console.error("Feedback fetch error:", error.message);
+      return NextResponse.json({ feedback: [] });
+    }
+
+    return NextResponse.json({ feedback: data ?? [] });
+  } catch {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
