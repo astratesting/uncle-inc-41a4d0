@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser, clearSessionCookie } from "@/lib/auth";
-import { trackServerEvent } from "@/lib/analytics-server";
+import { trackServerEvent } from "@/lib/analytics";
 
 export async function POST() {
   const user = await getSessionUser();

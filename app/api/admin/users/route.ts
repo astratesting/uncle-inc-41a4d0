@@ -8,17 +8,17 @@ export async function GET() {
   }
 
   const users = await getUsers();
-  const allUsers = users.map((u) => ({
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    emailVerified: u.emailVerified,
-    createdAt: u.createdAt,
-  }));
+  const verifiedUsers = users
+    .filter((u) => u.emailVerified)
+    .map((u) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      createdAt: u.createdAt,
+    }));
 
   return NextResponse.json({
-    users: allUsers,
-    count: allUsers.length,
-    verifiedCount: allUsers.filter((u) => u.emailVerified).length,
+    users: verifiedUsers,
+    count: verifiedUsers.length,
   });
 }

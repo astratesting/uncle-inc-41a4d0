@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUsers, createSession, setSessionCookie } from "@/lib/auth";
 import { verifyPassword } from "@/lib/password";
-import { trackServerEvent } from "@/lib/analytics-server";
+import { trackServerEvent } from "@/lib/analytics";
 
 export async function POST(request: NextRequest) {
   try {

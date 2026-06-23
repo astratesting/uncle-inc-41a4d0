@@ -33,6 +33,12 @@ export function Nav() {
             <a href="#pricing" className="text-sm text-gray-400 hover:text-white transition-colors">
               Pricing
             </a>
+            <Link href="/feedback" className="text-sm text-gray-400 hover:text-white transition-colors">
+              Feedback
+            </Link>
+            <Link href="/dashboard/friction" className="text-sm text-gray-400 hover:text-white transition-colors">
+              Dashboard
+            </Link>
             <Link href="/sign-in">
               <Button variant="ghost" size="sm">
                 Sign In
@@ -66,6 +72,12 @@ export function Nav() {
               <a href="#pricing" onClick={() => setOpen(false)} className="text-sm text-gray-400 hover:text-white py-1">
                 Pricing
               </a>
+              <Link href="/feedback" onClick={() => setOpen(false)} className="text-sm text-gray-400 hover:text-white py-1">
+                Feedback
+              </Link>
+              <Link href="/dashboard/friction" onClick={() => setOpen(false)} className="text-sm text-gray-400 hover:text-white py-1">
+                Dashboard
+              </Link>
               <Link href="/sign-in" onClick={() => setOpen(false)}>
                 <Button variant="ghost" size="sm" className="w-full">Sign In</Button>
               </Link>

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import crypto from "crypto";
-import { trackServerEvent } from "@/lib/analytics-server";
+import { trackServerEvent } from "@/lib/analytics";
 
 const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
 

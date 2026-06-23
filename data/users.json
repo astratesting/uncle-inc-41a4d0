@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "f91c9b0b-8dfe-4ec3-85a1-bff982fc7e60",
+    "name": "Test User",
+    "email": "testuser456@example.com",
+    "passwordHash": "645a871f320ca8a09bbf8c923bf1447a:e9fcf5a032e257679cae856edc7f45537fbceafc1ddc73f033c65324b7dcd80cad5a26bc28682c8b16d1328ed985ed6315f6c82ff2e49f7597e54004d3f718be",
+    "emailVerified": false,
+    "verificationToken": "4850b4fea4b35fcad0a774a79d72dbf75ae8c10463d05e0cefe5a01d91d35d20",
+    "createdAt": "2026-06-23T07:25:11.691Z"
+  }
+]
