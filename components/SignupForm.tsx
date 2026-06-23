@@ -8,8 +8,6 @@ export function SignupForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [signupCount, setSignupCount] = useState<number | null>(null);
-  const [verifiedCount, setVerifiedCount] = useState<number>(0);
-  const [target, setTarget] = useState<number>(10);
   const [verifyUrl, setVerifyUrl] = useState<string>("");
 
   useEffect(() => {
@@ -17,8 +15,6 @@ export function SignupForm() {
       .then((res) => res.json())
       .then((data) => {
         setSignupCount(data.count);
-        setVerifiedCount(data.verified ?? 0);
-        setTarget(data.target ?? 10);
       })
       .catch(() => {});
   }, []);
@@ -124,7 +120,7 @@ export function SignupForm() {
 
       {signupCount !== null && signupCount > 0 && (
         <p className="mt-4 text-xs text-charcoal-300 text-center">
-          {verifiedCount} of {target} verified users &middot; {signupCount} {signupCount === 1 ? "signup" : "signups"} total
+          {signupCount} {signupCount === 1 ? "person has" : "people have"} joined the waitlist
         </p>
       )}
     </div>
