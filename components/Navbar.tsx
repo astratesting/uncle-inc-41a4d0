@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Play } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export function Navbar() {
@@ -31,10 +31,9 @@ export function Navbar() {
             >
               FAQ
             </a>
-            <a href="/api/auth/demo-signin">
+            <a href="/sign-in">
               <Button variant="outline" size="sm">
-                <Play className="h-3.5 w-3.5" />
-                View Live Demo
+                Sign In
               </Button>
             </a>
             <a href="#waitlist">
@@ -70,10 +69,9 @@ export function Navbar() {
               >
                 FAQ
               </a>
-              <a href="/api/auth/demo-signin" onClick={() => setOpen(false)}>
+              <a href="/sign-in" onClick={() => setOpen(false)}>
                 <Button variant="outline" size="sm" className="w-full">
-                  <Play className="h-3.5 w-3.5" />
-                  View Live Demo
+                  Sign In
                 </Button>
               </a>
               <a href="#waitlist" onClick={() => setOpen(false)}>

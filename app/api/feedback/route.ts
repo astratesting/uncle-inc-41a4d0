@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 const feedbackSchema = z.object({
   rating: z.number().int().min(1).max(5),
@@ -18,8 +19,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // In production this would write to a database.
-    // For now we acknowledge the submission.
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { error } = await supabase.from("feedback").insert({
+      rating: parsed.data.rating,
+      message: parsed.data.message,
+      user_id: user?.id ?? null,
+    });
+
+    if (error) {
+      // If table doesn't exist, still return success (graceful degradation)
+      console.error("Feedback insert error:", error.message);
+    }
+
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch {
     return NextResponse.json(

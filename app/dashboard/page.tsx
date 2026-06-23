@@ -1,14 +1,13 @@
 import { Card } from "@/components/ui/Card";
-import { Users, TrendingUp, Activity, Zap, Lightbulb, ArrowRight } from "lucide-react";
+import { Users, TrendingUp, Activity, Lightbulb, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { projects, stats, recentActivity } from "@/lib/demo-data";
 
 export default function DashboardPage() {
   const statCards = [
     {
-      label: "Active Projects",
-      value: stats[0].value,
-      change: stats[0].change,
+      label: "Getting Started",
+      value: "1",
+      change: "Set up your first project",
       icon: Lightbulb,
       color: "text-violet-600",
       bg: "bg-violet-50",
@@ -16,8 +15,8 @@ export default function DashboardPage() {
     },
     {
       label: "In Development",
-      value: stats[1].value,
-      change: stats[1].change,
+      value: "0",
+      change: "No active builds yet",
       icon: Activity,
       color: "text-blue-600",
       bg: "bg-blue-50",
@@ -25,8 +24,8 @@ export default function DashboardPage() {
     },
     {
       label: "Completed",
-      value: stats[2].value,
-      change: stats[2].change,
+      value: "0",
+      change: "Launch your first MVP",
       icon: TrendingUp,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
@@ -34,16 +33,14 @@ export default function DashboardPage() {
     },
     {
       label: "Team Members",
-      value: stats[3].value,
-      change: stats[3].change,
+      value: "1",
+      change: "Invite collaborators",
       icon: Users,
-      color: "text-coral-600",
+      color: "text-orange-600",
       bg: "bg-orange-50",
       border: "border-orange-200",
     },
   ];
-
-  const recentProjects = projects.slice(0, 3);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -66,125 +63,103 @@ export default function DashboardPage() {
                 <p className="text-2xl font-heading font-bold text-gray-900 mt-1">
                   {stat.value}
                 </p>
+                <p className="text-xs text-gray-400 mt-1">{stat.change}</p>
               </div>
-              <div className={`${stat.bg} ${stat.border} border rounded-xl p-2.5`}>
+              <div className={`${stat.bg} rounded-xl p-2.5`}>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
-            </div>
-            <div className="flex items-center gap-1 mt-3">
-              <Zap className="h-3 w-3 text-honey-500" />
-              <span className="text-xs text-gray-500">{stat.change}</span>
             </div>
           </Card>
         ))}
       </div>
 
-      {/* Recent Projects */}
+      {/* Getting Started */}
       <Card>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-heading font-semibold text-gray-900">
-            Recent Projects
-          </h3>
-          <Link
-            href="/dashboard/projects"
-            className="text-sm text-violet-600 hover:text-violet-700 font-medium flex items-center gap-1"
-          >
-            View all
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-
+        <h3 className="text-lg font-heading font-semibold text-gray-900 mb-4">
+          Getting Started
+        </h3>
         <div className="space-y-3">
-          {recentProjects.map((project) => (
+          {[
+            { step: "Complete your profile", done: true },
+            { step: "Submit your first project brief", done: false },
+            { step: "Invite a team member", done: false },
+            { step: "Review your first build", done: false },
+          ].map((item) => (
             <div
-              key={project.id}
-              className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 hover:border-violet-200 hover:bg-violet-50/30 transition-all duration-200"
+              key={item.step}
+              className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 bg-gray-50/50"
             >
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h4 className="text-sm font-semibold text-gray-900 truncate">
-                    {project.name}
-                  </h4>
-                  <span className="inline-flex items-center rounded-full bg-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700 border border-violet-200">
-                    {project.status}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500 truncate">
-                  {project.description}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 flex-shrink-0">
-                <div className="w-24">
-                  <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-violet-500 to-coral-400"
-                      style={{ width: `${project.progress}%` }}
-                    />
-                  </div>
-                </div>
-                <span className="text-xs text-gray-500 w-8 text-right">
-                  {project.progress}%
-                </span>
-              </div>
-
-              <div className="flex -space-x-1 flex-shrink-0">
-                {project.team.map((member) => (
-                  <span
-                    key={member}
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-violet-100 text-xs font-medium text-violet-700 ring-2 ring-white"
+              <div
+                className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${
+                  item.done
+                    ? "border-emerald-400 bg-emerald-50"
+                    : "border-gray-300 bg-white"
+                }`}
+              >
+                {item.done && (
+                  <svg
+                    className="h-3.5 w-3.5 text-emerald-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
                   >
-                    {member}
-                  </span>
-                ))}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                )}
               </div>
-
-              <span className="text-xs text-gray-400 flex-shrink-0">
-                {project.updatedAt}
+              <span
+                className={`text-sm ${
+                  item.done
+                    ? "text-gray-500 line-through"
+                    : "text-gray-800 font-medium"
+                }`}
+              >
+                {item.step}
               </span>
             </div>
           ))}
         </div>
       </Card>
 
-      {/* Recent Activity */}
+      {/* Quick Actions */}
       <Card>
         <h3 className="text-lg font-heading font-semibold text-gray-900 mb-4">
-          Recent Activity
+          Quick Actions
         </h3>
-        <div className="space-y-3">
-          {recentActivity.map((activity) => {
-            const typeColors = {
-              milestone: "bg-violet-100 text-violet-600",
-              deploy: "bg-emerald-100 text-emerald-600",
-              feedback: "bg-honey-100 text-honey-600",
-              update: "bg-blue-100 text-blue-600",
-            };
-            return (
-              <div
-                key={activity.id}
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
-              >
-                <div
-                  className={`mt-0.5 h-2 w-2 rounded-full flex-shrink-0 ${
-                    typeColors[activity.type]?.split(" ")[0] || "bg-gray-200"
-                  }`}
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-700">{activity.message}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-gray-400">
-                      {activity.project}
-                    </span>
-                    <span className="text-xs text-gray-300">·</span>
-                    <span className="text-xs text-gray-400">
-                      {activity.time}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Link
+            href="/dashboard/projects"
+            className="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-violet-300 hover:bg-violet-50/50 transition-all group"
+          >
+            <div>
+              <p className="font-medium text-gray-900 text-sm">
+                View Projects
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Manage your development projects
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-violet-600 transition-colors" />
+          </Link>
+          <Link
+            href="/dashboard/analytics"
+            className="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-violet-300 hover:bg-violet-50/50 transition-all group"
+          >
+            <div>
+              <p className="font-medium text-gray-900 text-sm">
+                View Analytics
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Signup metrics and feedback data
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-violet-600 transition-colors" />
+          </Link>
         </div>
       </Card>
     </div>

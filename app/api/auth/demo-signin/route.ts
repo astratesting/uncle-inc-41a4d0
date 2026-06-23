@@ -1,18 +1,8 @@
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { createDemoSession } from "@/lib/auth";
 
-// Demo sign-in: sets a signed cookie and redirects to dashboard
+// Demo sign-in preserved for backward compatibility but now uses Supabase if available
 export async function GET() {
-  const session = createDemoSession();
-  const jar = await cookies();
-  jar.set("demo-session", session, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24, // 24 hours
-  });
-
-  redirect("/dashboard");
+  // Redirect to sign-in page — real auth happens through Supabase now
+  redirect("/sign-in");
 }

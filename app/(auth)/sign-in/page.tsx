@@ -2,11 +2,14 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { LogIn, Play } from "lucide-react";
+import { LogIn } from "lucide-react";
 
 export default function SignInPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,15 +20,19 @@ export default function SignInPage() {
     setError("");
     setLoading(true);
 
-    // Local demo fallback — works without real credentials
-    if (email === "demo@demo.app" && password === "demo123") {
-      window.location.href = "/api/auth/demo-signin";
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
       return;
     }
 
-    // For real auth, this would connect to a backend
-    setError("Invalid credentials. Try the demo account: demo@demo.app / demo123");
-    setLoading(false);
+    router.push("/dashboard");
   }
 
   return (
@@ -36,23 +43,6 @@ export default function SignInPage() {
       <p className="text-gray-500 text-sm text-center mb-6">
         Sign in to your Uncle Inc. account
       </p>
-
-      {/* Demo Sign-in Button */}
-      <a href="/api/auth/demo-signin" className="block mb-6">
-        <Button variant="outline" size="lg" className="w-full">
-          <Play className="h-4 w-4" />
-          Try Live Demo
-        </Button>
-      </a>
-
-      <div className="relative mb-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200" />
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-white px-3 text-gray-400">or sign in with email</span>
-        </div>
-      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
@@ -84,12 +74,23 @@ export default function SignInPage() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-gray-500 mt-6">
-        Don&apos;t have an account?{" "}
-        <Link href="/sign-up" className="text-violet-600 hover:text-violet-700 font-medium">
-          Sign up
+      <div className="flex items-center justify-between mt-6 text-sm">
+        <Link
+          href="/forgot-password"
+          className="text-violet-600 hover:text-violet-700 font-medium"
+        >
+          Forgot password?
         </Link>
-      </p>
+        <span className="text-gray-400">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/sign-up"
+            className="text-violet-600 hover:text-violet-700 font-medium"
+          >
+            Sign up
+          </Link>
+        </span>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Mail, ArrowLeft } from "lucide-react";
@@ -10,16 +11,26 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setError("");
     setLoading(true);
 
-    // Simulate sending reset email
-    setTimeout(() => {
-      setSent(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/api/auth/callback?next=/reset-password`,
+    });
+
+    if (error) {
+      setError(error.message);
       setLoading(false);
-    }, 1000);
+      return;
+    }
+
+    setSent(true);
+    setLoading(false);
   }
 
   if (sent) {
@@ -62,6 +73,13 @@ export default function ForgotPasswordPage() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+
         <Button type="submit" size="lg" className="w-full" disabled={loading}>
           {loading ? "Sending..." : "Send Reset Link"}
         </Button>

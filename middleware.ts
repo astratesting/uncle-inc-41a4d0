@@ -1,18 +1,12 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { verifyDemoSession } from "@/lib/auth";
+import { updateSession } from "@/lib/supabase/middleware";
+import { type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const session = request.cookies.get("demo-session")?.value;
-
-  if (request.nextUrl.pathname.startsWith("/dashboard")) {
-    if (!session || !verifyDemoSession(session)) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-  }
-
-  return NextResponse.next();
+  return await updateSession(request);
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
