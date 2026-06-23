@@ -8,11 +8,18 @@ export function SignupForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [signupCount, setSignupCount] = useState<number | null>(null);
+  const [verifiedCount, setVerifiedCount] = useState<number>(0);
+  const [target, setTarget] = useState<number>(10);
+  const [verifyUrl, setVerifyUrl] = useState<string>("");
 
   useEffect(() => {
     fetch("/api/signup-count")
       .then((res) => res.json())
-      .then((data) => setSignupCount(data.count))
+      .then((data) => {
+        setSignupCount(data.count);
+        setVerifiedCount(data.verified ?? 0);
+        setTarget(data.target ?? 10);
+      })
       .catch(() => {});
   }, []);
 
@@ -32,6 +39,7 @@ export function SignupForm() {
       if (res.ok) {
         setStatus("success");
         setMessage(data.message);
+        if (data.verifyUrl) setVerifyUrl(data.verifyUrl);
         setEmail("");
         setName("");
       } else {
@@ -62,7 +70,20 @@ export function SignupForm() {
             />
           </svg>
           <p className="font-semibold text-charcoal mb-1">Check your inbox</p>
-          <p className="text-sm text-charcoal-400">{message}</p>
+          <p className="text-sm text-charcoal-400 mb-3">{message}</p>
+          {verifyUrl && (
+            <div className="mt-3 p-3 rounded-lg bg-ivory border border-charcoal-100">
+              <p className="text-xs text-charcoal-400 mb-1">
+                Since we can&apos;t send real emails yet, use this verification link:
+              </p>
+              <a
+                href={verifyUrl}
+                className="text-sm font-medium text-burgundy hover:text-burgundy-800 break-all underline"
+              >
+                {verifyUrl}
+              </a>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -103,8 +124,7 @@ export function SignupForm() {
 
       {signupCount !== null && signupCount > 0 && (
         <p className="mt-4 text-xs text-charcoal-300 text-center">
-          {signupCount} {signupCount === 1 ? "person has" : "people have"} already
-          joined the waitlist
+          {verifiedCount} of {target} verified users &middot; {signupCount} {signupCount === 1 ? "signup" : "signups"} total
         </p>
       )}
     </div>

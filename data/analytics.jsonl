@@ -1,1 +1,8 @@
 {"event":"user_registered","distinctId":"testuser456@example.com","properties":{"name":"Test User"},"timestamp":"2026-06-23T07:25:11.694Z"}
+{"event":"signup_submitted","distinctId":"verifytest@example.com","timestamp":"2026-06-23T08:21:39.859Z"}
+{"event":"signup_verified","distinctId":"verifytest@example.com","timestamp":"2026-06-23T08:21:47.194Z"}
+{"event":"user_created_from_signup","distinctId":"verifytest@example.com","timestamp":"2026-06-23T08:21:47.197Z"}
+{"event":"signup_submitted","distinctId":"concurrent1@example.com","timestamp":"2026-06-23T08:22:27.235Z"}
+{"event":"signup_submitted","distinctId":"concurrent2@example.com","timestamp":"2026-06-23T08:22:27.246Z"}
+{"event":"signup_verified","distinctId":"concurrent1@example.com","timestamp":"2026-06-23T08:22:27.387Z"}
+{"event":"user_created_from_signup","distinctId":"concurrent1@example.com","timestamp":"2026-06-23T08:22:27.390Z"}

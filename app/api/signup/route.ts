@@ -57,13 +57,14 @@ export async function POST(request: NextRequest) {
       await writeSignups(signups);
 
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
-      const verifyUrl = `${baseUrl}/api/signup/verify?token=${existing.token}`;
+      const verifyUrl = `${baseUrl}/verify?token=${existing.token}`;
 
       console.log(`[VERIFY LINK] ${normalizedEmail}: ${verifyUrl}`);
       await trackServerEvent("signup_verification_resent", normalizedEmail);
 
       return NextResponse.json({
         message: "Verification email resent. Check your inbox.",
+        verifyUrl,
       });
     }
 
@@ -78,13 +79,14 @@ export async function POST(request: NextRequest) {
     await writeSignups(signups);
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
-    const verifyUrl = `${baseUrl}/api/signup/verify?token=${token}`;
+    const verifyUrl = `${baseUrl}/verify?token=${token}`;
 
     console.log(`[VERIFY LINK] ${normalizedEmail}: ${verifyUrl}`);
     await trackServerEvent("signup_submitted", normalizedEmail);
 
     return NextResponse.json({
       message: "Check your email to verify your signup.",
+      verifyUrl,
     });
   } catch (error) {
     console.error("Signup error:", error);
