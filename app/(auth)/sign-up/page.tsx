@@ -153,7 +153,11 @@ export default function SignUpPage() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-charcoal-400">
+      <p className="mt-4 text-center text-xs text-charcoal-500">
+        Try the demo first: <span className="text-charcoal-400">demo@demo.app</span> / <span className="text-charcoal-400">demo123</span>
+      </p>
+
+      <p className="mt-4 text-center text-sm text-charcoal-400">
         Already have an account?{" "}
         <Link
           href="/sign-in"

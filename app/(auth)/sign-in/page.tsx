@@ -20,6 +20,12 @@ export default function SignInPage() {
     setError("");
     setLoading(true);
 
+    // Local demo fallback — works without real Supabase credentials
+    if (email === "demo@demo.app" && password === "demo123") {
+      window.location.href = "/api/auth/demo-signin";
+      return;
+    }
+
     try {
       const supabase = createClient();
       const { error: authError } = await supabase.auth.signInWithPassword({
@@ -36,17 +42,17 @@ export default function SignInPage() {
       router.push("/dashboard");
       router.refresh();
     } catch {
-      setError("Authentication service unavailable. Try the demo instead.");
+      setError("Authentication service unavailable. Try demo@demo.app / demo123");
       setLoading(false);
     }
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white text-center mb-1">
+      <h1 className="text-2xl font-bold text-ivory text-center mb-1">
         Welcome Back
       </h1>
-      <p className="text-gray-400 text-sm text-center mb-6">
+      <p className="text-charcoal-400 text-sm text-center mb-6">
         Sign in to your Uncle Inc. account
       </p>
 
@@ -60,10 +66,10 @@ export default function SignInPage() {
 
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-800" />
+          <div className="w-full border-t border-charcoal-700" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-charcoal-900 px-3 text-gray-500">or sign in with email</span>
+          <span className="bg-charcoal-800 px-3 text-charcoal-500">or sign in with email</span>
         </div>
       </div>
 
@@ -99,18 +105,22 @@ export default function SignInPage() {
         </Button>
       </form>
 
+      <p className="mt-4 text-center text-xs text-charcoal-500">
+        Demo credentials: <span className="text-charcoal-400">demo@demo.app</span> / <span className="text-charcoal-400">demo123</span>
+      </p>
+
       <div className="mt-6 space-y-3 text-center">
         <Link
           href="/forgot-password"
-          className="block text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+          className="block text-sm text-gold hover:text-gold-light transition-colors"
         >
           Forgot your password?
         </Link>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-charcoal-400">
           Don&apos;t have an account?{" "}
           <Link
             href="/sign-up"
-            className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="text-gold hover:text-gold-light font-medium transition-colors"
           >
             Sign up
           </Link>
