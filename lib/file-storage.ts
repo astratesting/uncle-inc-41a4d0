@@ -3,6 +3,9 @@ import path from "path";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
+// Per-file mutex to serialize concurrent writes and prevent data loss
+const locks = new Map<string, Promise<void>>();
+
 async function ensureDir() {
   await fs.mkdir(DATA_DIR, { recursive: true });
 }
@@ -23,11 +26,18 @@ export async function readStore<T>(name: string): Promise<T[]> {
 
 export async function writeStore<T>(name: string, data: T[]): Promise<void> {
   await ensureDir();
-  await fs.writeFile(filePath(name), JSON.stringify(data, null, 2));
+  const tmp = filePath(name) + ".tmp";
+  await fs.writeFile(tmp, JSON.stringify(data, null, 2));
+  await fs.rename(tmp, filePath(name));
 }
 
 export async function appendToStore<T>(name: string, entry: T): Promise<void> {
-  const store = await readStore<T>(name);
-  store.push(entry);
-  await writeStore(name, store);
+  const previous = locks.get(name) ?? Promise.resolve();
+  const current = previous.then(async () => {
+    const store = await readStore<T>(name);
+    store.push(entry);
+    await writeStore(name, store);
+  });
+  locks.set(name, current);
+  await current;
 }
