@@ -8,7 +8,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Signal Lab palette
+        // Bold Frontier palette
+        flame: {
+          DEFAULT: "#FF4500",
+          50: "#FFF3EE",
+          100: "#FFE0D2",
+          200: "#FFB899",
+          300: "#FF8C5C",
+          400: "#FF6A2E",
+          500: "#FF4500",
+          600: "#CC3700",
+          700: "#992900",
+          800: "#661C00",
+          900: "#330E00",
+        },
+        magenta: {
+          DEFAULT: "#E91E8C",
+          50: "#FDF2F8",
+          100: "#FCE7F3",
+          200: "#FBCFE8",
+          300: "#F9A8D4",
+          400: "#F472B6",
+          500: "#E91E8C",
+          600: "#DB2777",
+          700: "#BE185D",
+          800: "#9D174D",
+          900: "#831843",
+        },
+        acid: {
+          DEFAULT: "#39FF14",
+          50: "#F0FFF0",
+          100: "#D4FFD4",
+          200: "#A8FFA8",
+          300: "#6BFF6B",
+          400: "#52FF3E",
+          500: "#39FF14",
+          600: "#2DCC10",
+          700: "#21990C",
+          800: "#166608",
+          900: "#0B3304",
+        },
+        // Signal Lab palette (kept for backward compat)
         ink: {
           DEFAULT: "#0a0a0f",
           50: "#1a1a2e",
@@ -110,9 +150,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["Space Grotesk", "system-ui", "sans-serif"],
+        heading: ["Satoshi", "Space Grotesk", "system-ui", "sans-serif"],
+        display: ["'Archivo Black'", "Satoshi", "Impact", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
-        body: ["Space Grotesk", "system-ui", "sans-serif"],
+        body: ["Satoshi", "Space Grotesk", "system-ui", "sans-serif"],
       },
       animation: {
         "fade-in": "fade-in 0.8s ease-out forwards",
@@ -120,6 +161,7 @@ const config: Config = {
         float: "float 6s ease-in-out infinite",
         "spin-slow": "spin 20s linear infinite",
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        "pulse-flame": "pulse-flame 2s ease-in-out infinite",
       },
       keyframes: {
         "fade-in": {
@@ -137,6 +179,10 @@ const config: Config = {
         "pulse-glow": {
           "0%, 100%": { opacity: "0.4" },
           "50%": { opacity: "1" },
+        },
+        "pulse-flame": {
+          "0%, 100%": { boxShadow: "0 0 8px rgba(255,69,0,0.3), 0 0 24px rgba(233,30,140,0.15)" },
+          "50%": { boxShadow: "0 0 16px rgba(255,69,0,0.5), 0 0 48px rgba(233,30,140,0.25)" },
         },
       },
       backgroundSize: {

@@ -1,29 +1,23 @@
-import { Globe, Layers, Cpu, Shield } from "lucide-react";
-
-const features = [
+const capabilities = [
   {
-    icon: Globe,
-    title: "Web & Mobile Platforms",
+    title: "Digital Products",
     description:
-      "We design and build responsive web applications and mobile experiences that reach users wherever they are.",
+      "Full-cycle product development — from ideation and prototyping through design, engineering, and launch. We build web and mobile platforms that users actually want.",
   },
   {
-    icon: Layers,
-    title: "End-to-End Product Development",
+    title: "Platform Engineering",
     description:
-      "From initial concept through design, development, and launch — we handle the full product lifecycle so you can focus on your business.",
+      "Scalable, reliable infrastructure and architecture designed to grow with your business. Every platform we ship is built for performance under real-world pressure.",
   },
   {
-    icon: Cpu,
-    title: "Intelligent Automation",
+    title: "Technological Solutions",
     description:
-      "We integrate modern AI and automation tools into business workflows, reducing manual effort and unlocking new capabilities.",
+      "We integrate modern AI, automation, and data tools into business workflows — reducing manual effort and unlocking capabilities that weren't possible before.",
   },
   {
-    icon: Shield,
-    title: "Scalable Architecture",
+    title: "End-to-End Delivery",
     description:
-      "Every platform we build is designed to grow with your needs — reliable infrastructure that performs under pressure.",
+      "From first conversation to production release, we own the full lifecycle. No handoffs, no gaps — just a single team accountable for the outcome.",
   },
 ];
 
@@ -32,44 +26,45 @@ export function Features() {
     <section id="what-we-build" className="relative py-28 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-ink" />
-      <div className="absolute inset-0 lattice-overlay opacity-30" />
+      <div className="absolute inset-0 lattice-overlay-flame opacity-30" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         {/* Section header */}
         <div className="text-center mb-20">
-          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-cyan-400 mb-4">
-            Capabilities
+          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-acid mb-4">
+            What We Do
           </p>
-          <h2 className="text-4xl sm:text-5xl font-heading font-bold text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl font-display font-black text-white mb-6">
             What We&apos;re Building
           </h2>
           <div className="mx-auto flex items-center justify-center gap-3">
-            <div className="h-px w-12 bg-indigo-500/40" />
-            <div className="h-1 w-1 rotate-45 bg-indigo-500" />
-            <div className="h-px w-12 bg-indigo-500/40" />
+            <div className="h-px w-12 bg-flame/40" />
+            <div className="h-1 w-1 rotate-45 bg-flame" />
+            <div className="h-px w-12 bg-flame/40" />
           </div>
         </div>
 
+        {/* Capability cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={feature.title}
-                className="group rounded-lg border border-white/5 bg-ink-100/50 p-8 hover:border-indigo-500/20 transition-all duration-300 backdrop-blur-sm"
-              >
-                <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-indigo-500/10 group-hover:bg-indigo-500/20 transition-colors mb-5">
-                  <Icon className="h-7 w-7 text-indigo-400" />
-                </div>
-                <h3 className="text-xl font-heading font-bold text-white mb-3">
-                  {feature.title}
+          {capabilities.map((cap, i) => (
+            <div
+              key={cap.title}
+              className="group relative bg-ink-50/50 border border-white/5 p-8 transition-all duration-300 hover:border-flame/30 animate-fade-in"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              {/* Accent bar */}
+              <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-flame to-magenta opacity-0 group-hover:opacity-100 transition-opacity" />
+
+              <div className="relative">
+                <h3 className="font-heading text-xl font-bold text-white mb-3 group-hover:text-flame transition-colors">
+                  {cap.title}
                 </h3>
-                <p className="text-white/50 font-body leading-relaxed">
-                  {feature.description}
+                <p className="text-white/50 leading-relaxed text-sm">
+                  {cap.description}
                 </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>

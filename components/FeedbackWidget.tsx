@@ -1,21 +1,19 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { MessageSquare, X, Star } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 
 export function FeedbackWidget() {
-  const [open, setOpen] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [hoveredStar, setHoveredStar] = useState(0);
   const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (rating === 0) {
-      setError("Please select a rating");
+    if (!message.trim()) {
+      setError("Please share your feedback");
       return;
     }
     setError("");
@@ -24,7 +22,7 @@ export function FeedbackWidget() {
     const res = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rating, message }),
+      body: JSON.stringify({ message, email: email || undefined }),
     });
 
     if (!res.ok) {
@@ -38,112 +36,123 @@ export function FeedbackWidget() {
     setLoading(false);
   }
 
-  function handleClose() {
-    setOpen(false);
-    setTimeout(() => {
-      setSubmitted(false);
-      setRating(0);
-      setMessage("");
-      setError("");
-    }, 300);
+  function handleReset() {
+    setSubmitted(false);
+    setMessage("");
+    setEmail("");
+    setError("");
   }
 
   return (
-    <>
-      {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center bg-charcoal text-ivory shadow-lg hover:bg-charcoal-600 transition-colors premium-shadow"
-          aria-label="Send feedback"
-        >
-          <MessageSquare className="h-5 w-5" />
-        </button>
-      )}
+    <section id="feedback" className="relative py-28 px-6 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink-100 to-ink" />
+      <div className="absolute inset-0 lattice-overlay-flame" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(233,30,140,0.06),transparent_70%)]" />
 
-      {open && (
-        <div className="fixed bottom-6 right-6 z-50 w-80 bg-white border border-gold-200/40 shadow-xl premium-shadow-lg animate-slide-up">
-          <div className="flex items-center justify-between p-5 border-b border-gold-200/30">
-            <h3 className="text-sm font-heading font-semibold text-charcoal">
-              Send Feedback
-            </h3>
-            <button
-              onClick={handleClose}
-              className="text-charcoal-300 hover:text-charcoal transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-
-          <div className="p-5">
-            {submitted ? (
-              <div className="text-center py-8">
-                <div className="flex h-12 w-12 items-center justify-center border border-gold-300 bg-gold-50 mx-auto mb-4">
-                  <Star className="h-5 w-5 text-gold-500 fill-gold-500" />
-                </div>
-                <p className="text-sm font-heading font-semibold text-charcoal mb-1">
-                  Thank you
-                </p>
-                <p className="text-xs text-charcoal-400 font-light">
-                  Your feedback helps us improve.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="text-xs font-body font-medium text-charcoal-400 mb-2.5 block tracking-wide uppercase">
-                    How would you rate your experience?
-                  </label>
-                  <div className="flex gap-1.5">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onMouseEnter={() => setHoveredStar(star)}
-                        onMouseLeave={() => setHoveredStar(0)}
-                        onClick={() => setRating(star)}
-                        className="p-0.5"
-                      >
-                        <Star
-                          className={`h-5 w-5 transition-colors ${
-                            star <= (hoveredStar || rating)
-                              ? "text-gold-400 fill-gold-400"
-                              : "text-charcoal-200"
-                          }`}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-body font-medium text-charcoal-400 mb-2 block tracking-wide uppercase">
-                    Your feedback
-                  </label>
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Tell us what you think..."
-                    rows={3}
-                    className="w-full border border-gold-200/50 bg-ivory px-4 py-3 text-sm text-charcoal placeholder-charcoal-300 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 resize-none font-body"
-                  />
-                </div>
-
-                {error && (
-                  <p className="text-xs text-burgundy-500">{error}</p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-charcoal text-ivory py-3 text-sm font-body font-semibold tracking-wide uppercase hover:bg-charcoal-800 transition-colors disabled:opacity-50"
-                >
-                  {loading ? "Sending..." : "Send Feedback"}
-                </button>
-              </form>
-            )}
+      <div className="relative z-10 mx-auto max-w-2xl">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-acid mb-4">
+            We Want to Hear From You
+          </p>
+          <h2 className="text-4xl sm:text-5xl font-display font-black text-white mb-6">
+            Shape What We Build
+          </h2>
+          <div className="mx-auto flex items-center justify-center gap-3 mb-6">
+            <div className="h-px w-12 bg-magenta/40" />
+            <div className="h-1 w-1 rotate-45 bg-magenta" />
+            <div className="h-px w-12 bg-magenta/40" />
           </div>
         </div>
-      )}
-    </>
+
+        {/* Card */}
+        <div className="bg-ink-50/50 border border-white/10 p-8 sm:p-10">
+          {submitted ? (
+            /* Thank you state */
+            <div className="text-center py-8 animate-fade-in">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center bg-acid/10">
+                <Check className="h-7 w-7 text-acid" />
+              </div>
+              <p className="font-display text-2xl font-black text-white mb-3">
+                Thank you
+              </p>
+              <p className="text-sm text-white/50 mb-6">
+                Your feedback has been recorded. We read every submission and
+                it directly shapes what we build.
+              </p>
+              <button
+                onClick={handleReset}
+                className="text-xs font-mono text-flame hover:text-flame-400 tracking-wide uppercase transition-colors"
+              >
+                Submit another response
+              </button>
+            </div>
+          ) : (
+            /* Micro-survey form */
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="feedback-message"
+                  className="block text-base font-heading font-bold text-white mb-3"
+                >
+                  What digital product challenge should we solve for you?
+                </label>
+                <textarea
+                  id="feedback-message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Tell us about a problem you wish technology could solve..."
+                  rows={5}
+                  className="w-full bg-ink border border-white/10 px-5 py-4 text-sm text-white placeholder:text-white/25 focus:border-flame/50 focus:outline-none transition-colors resize-none font-body"
+                  maxLength={2000}
+                />
+                <p className="mt-2 text-xs text-white/25 font-mono text-right">
+                  {message.length}/2000
+                </p>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="feedback-email"
+                  className="block text-sm font-heading font-bold text-white/70 mb-2"
+                >
+                  Email{" "}
+                  <span className="text-white/30 font-normal">(optional)</span>
+                </label>
+                <input
+                  id="feedback-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full bg-ink border border-white/10 px-5 py-4 text-sm text-white placeholder:text-white/25 focus:border-flame/50 focus:outline-none transition-colors font-mono"
+                />
+                <p className="mt-2 text-xs text-white/25">
+                  Only if you&apos;d like us to follow up.
+                </p>
+              </div>
+
+              {error && <p className="text-sm text-flame">{error}</p>}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-flame hover:bg-flame-600 disabled:opacity-50 text-white py-4 px-6 font-mono text-sm font-semibold tracking-wide uppercase transition-colors flex items-center justify-center gap-2 glow-flame"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Feedback"
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

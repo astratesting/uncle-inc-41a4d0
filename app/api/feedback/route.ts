@@ -1,27 +1,17 @@
-import { z } from "zod";
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { readStore, appendToStore } from "@/lib/file-storage";
 
-const feedbackSchema = z.object({
-  rating: z.number().int().min(1).max(5),
-  message: z.string().min(1).max(1000),
-});
+interface FeedbackEntry {
+  id: string;
+  message: string;
+  email?: string;
+  createdAt: string;
+}
 
 export async function GET() {
   try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("feedback")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
-
-    if (error) {
-      console.error("Feedback fetch error:", error.message);
-      return NextResponse.json({ feedback: [] });
-    }
-
-    return NextResponse.json({ feedback: data ?? [] });
+    const feedback = await readStore<FeedbackEntry>("feedback");
+    return NextResponse.json({ feedback, count: feedback.length });
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },
@@ -33,30 +23,30 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const parsed = feedbackSchema.safeParse(body);
+    const { message, email } = body as { message?: string; email?: string };
 
-    if (!parsed.success) {
+    if (!message || typeof message !== "string" || message.trim().length === 0) {
       return NextResponse.json(
-        { error: "Invalid input", details: parsed.error.flatten() },
+        { error: "Feedback message is required." },
         { status: 400 }
       );
     }
 
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const { error } = await supabase.from("feedback").insert({
-      rating: parsed.data.rating,
-      message: parsed.data.message,
-      user_id: user?.id ?? null,
-    });
-
-    if (error) {
-      // If table doesn't exist, still return success (graceful degradation)
-      console.error("Feedback insert error:", error.message);
+    if (message.length > 2000) {
+      return NextResponse.json(
+        { error: "Feedback must be under 2000 characters." },
+        { status: 400 }
+      );
     }
+
+    const entry: FeedbackEntry = {
+      id: crypto.randomUUID(),
+      message: message.trim(),
+      email: email?.trim() || undefined,
+      createdAt: new Date().toISOString(),
+    };
+
+    await appendToStore<FeedbackEntry>("feedback", entry);
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch {

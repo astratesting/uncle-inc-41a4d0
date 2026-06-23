@@ -1,10 +1,10 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
+import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { Waitlist } from "@/components/Waitlist";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
-import { FeedbackWidget } from "@/components/FeedbackWidget";
 
 export default function HomePage() {
   return (
@@ -13,11 +13,11 @@ export default function HomePage() {
       <main>
         <Hero />
         <Features />
+        <FeedbackWidget />
         <Waitlist />
         <FAQ />
       </main>
       <Footer />
-      <FeedbackWidget />
     </>
   );
 }
