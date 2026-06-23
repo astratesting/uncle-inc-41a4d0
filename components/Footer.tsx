@@ -1,34 +1,34 @@
 export function Footer() {
   return (
-    <footer className="bg-navy-700 border-t border-white/5">
+    <footer className="relative bg-dark-text">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-sm font-display font-black text-white tracking-wide">
+          <span className="text-lg font-heading font-bold text-soft-white tracking-tight">
             Uncle Inc.
           </span>
 
           <div className="flex items-center gap-8">
             <a
               href="#what-we-build"
-              className="text-xs text-white/40 hover:text-cobalt transition-colors font-mono tracking-wide uppercase"
+              className="text-xs text-white/40 hover:text-sky-300 transition-colors font-heading tracking-wide uppercase"
             >
               What We Build
             </a>
             <a
               href="#faq"
-              className="text-xs text-white/40 hover:text-cobalt transition-colors font-mono tracking-wide uppercase"
+              className="text-xs text-white/40 hover:text-sky-300 transition-colors font-heading tracking-wide uppercase"
             >
               FAQ
             </a>
             <a
               href="#waitlist"
-              className="text-xs text-white/40 hover:text-cobalt transition-colors font-mono tracking-wide uppercase"
+              className="text-xs text-white/40 hover:text-sky-300 transition-colors font-heading tracking-wide uppercase"
             >
               Waitlist
             </a>
           </div>
 
-          <p className="text-xs text-white/25 font-mono">
+          <p className="text-xs text-white/25 font-body">
             &copy; 2026 Uncle Inc. All rights reserved.
           </p>
         </div>

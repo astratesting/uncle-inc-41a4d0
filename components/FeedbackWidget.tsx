@@ -1,1 +1,5 @@
-<<ccr:af42760e8429,html,5.7KB>>
+"use client";
+
+export function FeedbackWidget() {
+  return null;
+}
