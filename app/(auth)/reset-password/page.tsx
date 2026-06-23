@@ -1,28 +1,36 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { LogIn } from "lucide-react";
+import { KeyRound } from "lucide-react";
 
-export default function SignInPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email,
+    const { error: authError } = await supabase.auth.updateUser({
       password,
     });
 
@@ -39,30 +47,30 @@ export default function SignInPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-white text-center mb-1">
-        Welcome Back
+        New Password
       </h1>
       <p className="text-gray-400 text-sm text-center mb-6">
-        Sign in to your Uncle Inc. account
+        Choose a strong password for your account
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          label="Email"
-          type="email"
-          placeholder="you@company.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-        />
-        <Input
-          label="Password"
+          label="New Password"
           type="password"
           placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          autoComplete="current-password"
+          autoComplete="new-password"
+        />
+        <Input
+          label="Confirm Password"
+          type="password"
+          placeholder="••••••••"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          autoComplete="new-password"
         />
 
         {error && (
@@ -72,28 +80,10 @@ export default function SignInPage() {
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          <LogIn className="h-4 w-4" />
-          {loading ? "Signing in..." : "Sign In"}
+          <KeyRound className="h-4 w-4" />
+          {loading ? "Updating..." : "Update Password"}
         </Button>
       </form>
-
-      <div className="flex items-center justify-between mt-6">
-        <Link
-          href="/forgot-password"
-          className="text-xs text-indigo-400 hover:text-indigo-300 font-medium"
-        >
-          Forgot password?
-        </Link>
-        <p className="text-sm text-gray-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/sign-up"
-            className="text-indigo-400 hover:text-indigo-300 font-medium"
-          >
-            Sign up
-          </Link>
-        </p>
-      </div>
     </div>
   );
 }

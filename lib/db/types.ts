@@ -22,3 +22,11 @@ export interface ProjectStats {
   totalTesters: number;
   avgScore: number;
 }
+
+export interface Feedback {
+  id: string;
+  user_id: string;
+  rating: number;
+  message: string;
+  created_at: string;
+}
