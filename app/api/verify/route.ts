@@ -1,60 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyUser, getUser } from "@/lib/store";
-import { createToken } from "@/lib/auth";
-import { trackServerEvent } from "@/lib/analytics";
+import { promises as fs } from "fs";
+import path from "path";
 
-export async function POST(request: NextRequest) {
+const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
+
+interface Signup {
+  name?: string;
+  email: string;
+  token: string;
+  verified: boolean;
+  createdAt: string;
+}
+
+async function readSignups(): Promise<Signup[]> {
   try {
-    const { email, code } = await request.json();
+    const data = await fs.readFile(SIGNUPS_PATH, "utf-8");
+    return JSON.parse(data);
+  } catch {
+    return [];
+  }
+}
 
-    if (!email || typeof email !== "string") {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
-    }
+async function writeSignups(signups: Signup[]) {
+  await fs.writeFile(SIGNUPS_PATH, JSON.stringify(signups, null, 2));
+}
 
-    if (!code || typeof code !== "string") {
-      return NextResponse.json(
-        { error: "Verification code is required" },
-        { status: 400 }
-      );
-    }
+export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get("token");
 
-    const isValid = await verifyUser(email, code);
-    if (!isValid) {
-      return NextResponse.json(
-        { error: "Invalid or expired verification code" },
-        { status: 400 }
-      );
-    }
-
-    const user = await getUser(email);
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const token = await createToken({ userId: user.id, email: user.email });
-
-    await trackServerEvent("verification", email.toLowerCase().trim());
-
-    const response = NextResponse.json({
-      success: true,
-      message: "Email verified successfully",
-      user: { id: user.id, name: user.name, email: user.email },
-    });
-
-    response.cookies.set("auth_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60,
-      path: "/",
-    });
-
-    return response;
-  } catch (error) {
-    console.error("Verify error:", error);
+  if (!token) {
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      { error: "Verification token is required" },
+      { status: 400 }
     );
   }
+
+  const signups = await readSignups();
+  const signup = signups.find((s) => s.token === token);
+
+  if (!signup) {
+    return NextResponse.json(
+      { error: "Invalid or expired verification token" },
+      { status: 404 }
+    );
+  }
+
+  if (signup.verified) {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
+    return NextResponse.redirect(new URL("/?verified=already", baseUrl));
+  }
+
+  signup.verified = true;
+  await writeSignups(signups);
+
+  console.log(
+    `[ANALYTICS] signup_verified | email=${signup.email} | ${new Date().toISOString()}`
+  );
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
+  return NextResponse.redirect(new URL("/?verified=true", baseUrl));
 }

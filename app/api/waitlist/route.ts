@@ -51,7 +51,6 @@ export async function POST(request: NextRequest) {
           { status: 409 }
         );
       }
-      // Re-send verification
       existing.token = crypto.randomBytes(32).toString("hex");
       existing.createdAt = new Date().toISOString();
       await writeSignups(signups);
@@ -60,7 +59,7 @@ export async function POST(request: NextRequest) {
       const verifyUrl = `${baseUrl}/verify?token=${existing.token}`;
 
       console.log(`[VERIFY LINK] ${normalizedEmail}: ${verifyUrl}`);
-      await trackServerEvent("signup_verification_resent", normalizedEmail);
+      await trackServerEvent("waitlist_verification_resent", normalizedEmail);
 
       return NextResponse.json({
         message: "Verification email resent. Check your inbox.",
@@ -82,14 +81,14 @@ export async function POST(request: NextRequest) {
     const verifyUrl = `${baseUrl}/verify?token=${token}`;
 
     console.log(`[VERIFY LINK] ${normalizedEmail}: ${verifyUrl}`);
-    await trackServerEvent("signup_submitted", normalizedEmail);
+    await trackServerEvent("waitlist_signup_submitted", normalizedEmail);
 
     return NextResponse.json({
       message: "Check your email to verify your signup.",
       verifyUrl,
     });
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("Waitlist error:", error);
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
       { status: 500 }

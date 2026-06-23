@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
-import { getUserCount } from "@/lib/store";
+import { promises as fs } from "fs";
+import path from "path";
+
+const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
 
 export async function GET() {
-  const count = await getUserCount();
-  const target = 10;
-  return NextResponse.json({
-    count,
-    target,
-    percentage: Math.min(Math.round((count / target) * 100), 100),
-  });
+  try {
+    const data = await fs.readFile(SIGNUPS_PATH, "utf-8");
+    const signups = JSON.parse(data) as { verified: boolean }[];
+    const verified = signups.filter((s) => s.verified).length;
+    return NextResponse.json({ count: signups.length, verified, target: 10 });
+  } catch {
+    return NextResponse.json({ count: 0, verified: 0, target: 10 });
+  }
 }

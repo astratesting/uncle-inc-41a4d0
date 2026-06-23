@@ -28,7 +28,7 @@ export function SignupForm() {
     setStatus("loading");
 
     try {
-      const res = await fetch("/api/signup", {
+      const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name }),
@@ -113,7 +113,7 @@ export function SignupForm() {
             disabled={status === "loading"}
             className="px-6 py-3.5 rounded-xl bg-charcoal text-ivory font-semibold hover:bg-charcoal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-base whitespace-nowrap"
           >
-            {status === "loading" ? "Joining..." : "Get Early Access"}
+            {status === "loading" ? "Joining..." : "Join the Waitlist"}
           </button>
         </div>
       </form>
