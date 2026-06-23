@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // In production, store this in Supabase or your email provider.
+    // Store in your preferred data store.
     // For now, we accept all valid emails.
     console.log("[waitlist] New signup:", email);
 

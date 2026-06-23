@@ -1,70 +1,73 @@
-const capabilities = [
+import { Rocket, Users, BarChart3, Brain, RefreshCw, LayoutDashboard } from "lucide-react";
+import { Card } from "@/components/ui/Card";
+
+const features = [
   {
-    title: "Digital Products",
+    icon: Rocket,
+    title: "AI Prototyping",
     description:
-      "Full-cycle product development — from ideation and prototyping through design, engineering, and launch. We build web and mobile platforms that users actually want.",
+      "Turn your idea into a clickable prototype in minutes, not months. Our AI generates interactive UI from natural language.",
   },
   {
-    title: "Platform Engineering",
+    icon: Users,
+    title: "User Testing",
     description:
-      "Scalable, reliable infrastructure and architecture designed to grow with your business. Every platform we ship is built for performance under real-world pressure.",
+      "Get real feedback from your target audience with built-in testing panels and structured feedback collection.",
   },
   {
-    title: "Technological Solutions",
+    icon: BarChart3,
+    title: "Launch Analytics",
     description:
-      "We integrate modern AI, automation, and data tools into business workflows — reducing manual effort and unlocking capabilities that weren't possible before.",
+      "Track engagement, drop-offs, and conversion with actionable dashboards that tell you what to fix next.",
   },
   {
-    title: "End-to-End Delivery",
+    icon: Brain,
+    title: "Smart Validation",
     description:
-      "From first conversation to production release, we own the full lifecycle. No handoffs, no gaps — just a single team accountable for the outcome.",
+      "AI-powered market analysis helps you validate assumptions before building, using real market signals.",
+  },
+  {
+    icon: RefreshCw,
+    title: "Rapid Iteration",
+    description:
+      "Pivot fast with instant prototype updates based on user feedback. Ship changes in hours, not weeks.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Founder Dashboard",
+    description:
+      "One place to manage your entire validation workflow. From idea to validated MVP, all in one view.",
   },
 ];
 
 export function Features() {
   return (
-    <section id="what-we-build" className="relative py-28 px-6 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-ink" />
-      <div className="absolute inset-0 lattice-overlay-flame opacity-30" />
-
-      <div className="relative z-10 mx-auto max-w-6xl">
-        {/* Section header */}
-        <div className="text-center mb-20">
-          <p className="text-xs font-mono font-semibold tracking-[0.25em] uppercase text-acid mb-4">
-            What We Do
-          </p>
-          <h2 className="text-4xl sm:text-5xl font-display font-black text-white mb-6">
-            What We&apos;re Building
+    <section id="features" className="py-24 px-4">
+      <div className="mx-auto max-w-7xl">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Everything You Need to{" "}
+            <span className="gradient-text">Validate</span> Your Startup
           </h2>
-          <div className="mx-auto flex items-center justify-center gap-3">
-            <div className="h-px w-12 bg-flame/40" />
-            <div className="h-1 w-1 rotate-45 bg-flame" />
-            <div className="h-px w-12 bg-flame/40" />
-          </div>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            From idea to validated prototype, Uncle Inc. provides every tool you need
+            to make sure you&apos;re building something people actually want.
+          </p>
         </div>
 
-        {/* Capability cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {capabilities.map((cap, i) => (
-            <div
-              key={cap.title}
-              className="group relative bg-ink-50/50 border border-white/5 p-8 transition-all duration-300 hover:border-flame/30 animate-fade-in"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            >
-              {/* Accent bar */}
-              <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-flame to-magenta opacity-0 group-hover:opacity-100 transition-opacity" />
-
-              <div className="relative">
-                <h3 className="font-heading text-xl font-bold text-white mb-3 group-hover:text-flame transition-colors">
-                  {cap.title}
-                </h3>
-                <p className="text-white/50 leading-relaxed text-sm">
-                  {cap.description}
-                </p>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <Card key={feature.title} glow className="group">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-500/10 border border-indigo-500/20 mb-4 group-hover:bg-indigo-500/20 transition-colors">
+                  <Icon className="h-6 w-6 text-indigo-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

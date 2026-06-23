@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { PostHogProvider } from "@/components/providers/PostHogProvider";
+import { PostHogPageView } from "@/components/providers/PostHogPageView";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,7 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen bg-ink text-[#e4e4ec] antialiased">
-        {children}
+        <PostHogProvider>
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          {children}
+        </PostHogProvider>
       </body>
     </html>
   );

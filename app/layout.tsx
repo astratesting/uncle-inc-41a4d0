@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Uncle Inc. — Coming Soon",
+  title: "Uncle Inc. — Validate Before You Build",
   description:
-    "Uncle Inc. is a software development company building digital products and platforms for businesses and consumers.",
-  keywords: ["software development", "digital products", "technology solutions", "Uncle Inc."],
+    "AI-assisted MVP platform that helps founders test ideas with real users before writing a single line of code.",
+  keywords: ["MVP", "startup", "validation", "AI", "prototyping", "user testing"],
   openGraph: {
-    title: "Uncle Inc. — Coming Soon",
-    description: "Building digital solutions for modern problems.",
+    title: "Uncle Inc. — Validate Before You Build",
+    description:
+      "AI-assisted MVP platform that helps founders test ideas with real users before writing code.",
     type: "website",
   },
 };
@@ -20,22 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="min-h-screen bg-soft-white text-dark-text antialiased font-body">
+    <html lang="en" className="dark">
+      <body className="min-h-screen bg-ink text-gray-100 antialiased font-sans">
         {children}
-        <Analytics />
       </body>
     </html>
   );

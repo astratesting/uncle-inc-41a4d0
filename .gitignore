@@ -10,8 +10,8 @@ node_modules/
 .next/
 dist/
 
-# Data store (file-based API storage)
-data/
+# Data
+frontend/data/
 
 # Misc
 .DS_Store

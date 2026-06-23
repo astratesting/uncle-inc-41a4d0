@@ -1,17 +1,21 @@
+import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { WhatWereBuilding } from "@/components/WhatWereBuilding";
-import { Waitlist } from "@/components/Waitlist";
-import { FAQ } from "@/components/FAQ";
+import { Features } from "@/components/Features";
+import { HowItWorks } from "@/components/HowItWorks";
+import { Pricing } from "@/components/Pricing";
+import { WaitlistCTA } from "@/components/WaitlistCTA";
 import { Footer } from "@/components/Footer";
 
 export default function HomePage() {
   return (
     <>
+      <Nav />
       <main>
         <Hero />
-        <WhatWereBuilding />
-        <Waitlist />
-        <FAQ />
+        <Features />
+        <HowItWorks />
+        <Pricing />
+        <WaitlistCTA />
       </main>
       <Footer />
     </>

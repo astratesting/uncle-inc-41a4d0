@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
-  FolderKanban,
   BarChart3,
   Settings,
   LogOut,
@@ -13,7 +13,6 @@ import {
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Projects", href: "/dashboard/projects", icon: FolderKanban },
   { label: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
@@ -58,15 +57,13 @@ export function Sidebar() {
 
       {/* Sign out */}
       <div className="p-3 border-t border-[#1e1e2e]">
-        <form action="/api/auth/sign-out" method="POST">
-          <button
-            type="submit"
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-[#8888a0] hover:text-red-400 hover:bg-red-500/5 transition-colors"
-          >
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </button>
-        </form>
+        <button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-[#8888a0] hover:text-red-400 hover:bg-red-500/5 transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          Sign Out
+        </button>
       </div>
     </aside>
   );

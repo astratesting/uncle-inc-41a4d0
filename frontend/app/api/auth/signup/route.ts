@@ -1,16 +1,14 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { trackEvent, parseRequestMetadata } from "@/lib/analytics";
+import { createUser, getUserByEmail } from "@/lib/store";
+import { hashPassword } from "@/lib/password";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { email, password, name } = body;
+    const { name, email, password } = await request.json();
 
-    if (!email || !password || !name) {
+    if (!name || !email || !password) {
       return NextResponse.json(
-        { error: "Email, password, and name are required" },
+        { error: "Name, email, and password are required" },
         { status: 400 }
       );
     }
@@ -22,66 +20,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const cookieStore = await cookies();
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options as Parameters<typeof cookieStore.set>[2])
-            );
-          },
-        },
-      }
-    );
-
-    const { userAgent, referrer } = parseRequestMetadata(request);
-
-    // Track signup started
-    await trackEvent({
-      eventType: "signup_started",
-      path: "/sign-up",
-      userAgent,
-      referrer,
-    });
-
-    // Create user via Supabase Auth — automatically sends verification email
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { name },
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/verify`,
-      },
-    });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+    const existing = getUserByEmail(email);
+    if (existing) {
+      return NextResponse.json(
+        { error: "A user with this email already exists" },
+        { status: 409 }
+      );
     }
 
-    // Track signup completed
-    await trackEvent({
-      eventType: "signup_completed",
-      userId: data.user?.id,
-      path: "/sign-up",
-      userAgent,
-      referrer,
-    });
+    const passwordHash = await hashPassword(password);
+    const { code } = createUser(name, email, "", passwordHash);
 
-    return NextResponse.json(
-      { message: "Account created. Please check your email to verify.", userId: data.user?.id },
-      { status: 201 }
-    );
-  } catch {
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    // In production, send code via email (Resend/SendGrid).
+    // For now, return it in the response so the user can enter it.
+    return NextResponse.json({ ok: true, verificationCode: code });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Signup failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

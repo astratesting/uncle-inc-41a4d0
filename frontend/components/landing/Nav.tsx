@@ -29,12 +29,6 @@ export function Nav() {
             Join Waitlist
           </Link>
           <Link
-            href="/sign-up"
-            className="text-sm text-[#8888a0] hover:text-[#e4e4ec] transition-colors"
-          >
-            Sign Up
-          </Link>
-          <Link
             href="/sign-in"
             className="text-sm text-[#8888a0] hover:text-[#e4e4ec] transition-colors"
           >
@@ -74,13 +68,6 @@ export function Nav() {
             onClick={() => setOpen(false)}
           >
             Join Waitlist
-          </Link>
-          <Link
-            href="/sign-up"
-            className="block text-sm text-[#8888a0] hover:text-[#e4e4ec] transition-colors"
-            onClick={() => setOpen(false)}
-          >
-            Sign Up
           </Link>
           <Link
             href="/sign-in"

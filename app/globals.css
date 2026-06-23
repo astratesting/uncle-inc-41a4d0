@@ -2,83 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
+  * {
+    @apply border-gray-800;
   }
   body {
-    @apply bg-soft-white text-dark-text antialiased font-body;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading tracking-tight;
+    @apply bg-ink text-gray-100 antialiased;
   }
 }
 
 @layer components {
-  .calm-gradient {
-    background: linear-gradient(
-      180deg,
-      #FAFAF9 0%,
-      #F0F9FF 30%,
-      #ECFDF5 60%,
-      #FFFBEB 100%
-    );
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyan-400 via-indigo-400 to-teal-400 bg-clip-text text-transparent;
   }
-
-  .beam-accent {
-    position: relative;
+  .glow-border {
+    @apply border border-indigo-500/30 shadow-[0_0_15px_rgba(79,70,229,0.15)];
   }
+}
 
-  .beam-accent::before {
-    content: "";
-    position: absolute;
-    top: -1px;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      #7DD3FC 30%,
-      #6EE7B7 50%,
-      #FDE68A 70%,
-      transparent 100%
-    );
-    opacity: 0.6;
+@layer utilities {
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-
-  .beam-glow {
-    background: radial-gradient(
-      ellipse at center,
-      rgba(125, 211, 252, 0.08) 0%,
-      transparent 70%
-    );
+  ::-webkit-scrollbar-track {
+    background: #0a0a0f;
   }
-
-  .soft-shadow {
-    box-shadow:
-      0 1px 3px rgba(30, 41, 59, 0.04),
-      0 4px 12px rgba(30, 41, 59, 0.06);
+  ::-webkit-scrollbar-thumb {
+    background: #4f46e5;
+    border-radius: 3px;
   }
-
-  .soft-shadow-lg {
-    box-shadow:
-      0 2px 8px rgba(30, 41, 59, 0.06),
-      0 8px 24px rgba(30, 41, 59, 0.08);
-  }
-
-  .calm-card {
-    @apply bg-white/80 backdrop-blur-sm border border-sky-100/60 rounded-2xl;
-    box-shadow:
-      0 1px 3px rgba(125, 211, 252, 0.06),
-      0 4px 16px rgba(125, 211, 252, 0.04);
-  }
-
-  .text-calm-gradient {
-    @apply bg-gradient-to-r from-sky-300 via-mint-300 to-sand-300 bg-clip-text text-transparent;
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6366f1;
   }
 }

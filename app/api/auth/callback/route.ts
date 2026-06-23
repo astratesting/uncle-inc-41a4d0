@@ -1,5 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -8,17 +8,12 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error && data.user) {
-      // Mark the signup as verified in our analytics table
-      await supabase
-        .from("signups")
-        .update({ verified: true })
-        .eq("email", data.user.email ?? "");
-
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_error`);
+  // If something went wrong, redirect to sign-in with error
+  return NextResponse.redirect(`${origin}/sign-in?error=auth_callback_error`);
 }

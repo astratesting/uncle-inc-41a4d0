@@ -1,35 +1,42 @@
+import Link from "next/link";
+import { Compass } from "lucide-react";
+
 export function Footer() {
   return (
-    <footer className="relative bg-dark-text">
-      <div className="mx-auto max-w-7xl px-6 py-12">
+    <footer className="border-t border-gray-800/50 py-12 px-4">
+      <div className="mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-lg font-heading font-bold text-soft-white tracking-tight">
-            Uncle Inc.
-          </span>
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Compass className="h-5 w-5 text-indigo-400" />
+            <span className="text-sm font-semibold text-white">Uncle Inc.</span>
+          </div>
 
-          <div className="flex items-center gap-8">
-            <a
-              href="#what-we-build"
-              className="text-xs text-white/40 hover:text-sky-300 transition-colors font-heading tracking-wide uppercase"
+          {/* Links */}
+          <div className="flex items-center gap-6">
+            <Link
+              href="/privacy"
+              className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
             >
-              What We Build
-            </a>
-            <a
-              href="#faq"
-              className="text-xs text-white/40 hover:text-sky-300 transition-colors font-heading tracking-wide uppercase"
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
             >
-              FAQ
-            </a>
+              Terms of Service
+            </Link>
             <a
-              href="#waitlist"
-              className="text-xs text-white/40 hover:text-sky-300 transition-colors font-heading tracking-wide uppercase"
+              href="mailto:hello@uncleinc.com"
+              className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
             >
-              Waitlist
+              Contact
             </a>
           </div>
 
-          <p className="text-xs text-white/25 font-body">
-            &copy; 2026 Uncle Inc. All rights reserved.
+          {/* Copyright */}
+          <p className="text-sm text-gray-600">
+            &copy; {new Date().getFullYear()} Uncle Inc. All rights reserved.
           </p>
         </div>
       </div>

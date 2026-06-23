@@ -21,26 +21,27 @@ export default function SignInPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      setError(error.message);
+    if (authError) {
+      setError(authError.message);
       setLoading(false);
       return;
     }
 
     router.push("/dashboard");
+    router.refresh();
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-heading font-bold text-gray-900 text-center mb-1">
+      <h1 className="text-2xl font-bold text-white text-center mb-1">
         Welcome Back
       </h1>
-      <p className="text-gray-500 text-sm text-center mb-6">
+      <p className="text-gray-400 text-sm text-center mb-6">
         Sign in to your Uncle Inc. account
       </p>
 
@@ -52,6 +53,7 @@ export default function SignInPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="email"
         />
         <Input
           label="Password"
@@ -60,37 +62,30 @@ export default function SignInPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoComplete="current-password"
         />
 
         {error && (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+          <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
             {error}
           </div>
         )}
 
-        <Button type="submit" size="lg" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full" disabled={loading}>
           <LogIn className="h-4 w-4" />
           {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
 
-      <div className="flex items-center justify-between mt-6 text-sm">
+      <p className="text-sm text-gray-400 text-center mt-6">
+        Don&apos;t have an account?{" "}
         <Link
-          href="/forgot-password"
-          className="text-violet-600 hover:text-violet-700 font-medium"
+          href="/sign-up"
+          className="text-indigo-400 hover:text-indigo-300 font-medium"
         >
-          Forgot password?
+          Sign up
         </Link>
-        <span className="text-gray-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-violet-600 hover:text-violet-700 font-medium"
-          >
-            Sign up
-          </Link>
-        </span>
-      </div>
+      </p>
     </div>
   );
 }
