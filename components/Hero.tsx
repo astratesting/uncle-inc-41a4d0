@@ -1,57 +1,71 @@
-import Link from "next/link";
-import { Compass } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+"use client";
+
+import { Suspense } from "react";
+import { SignupForm } from "@/components/SignupForm";
+import { useSearchParams } from "next/navigation";
+
+function VerificationBanner() {
+  const searchParams = useSearchParams();
+  const verified = searchParams.get("verified");
+
+  if (verified === "true") {
+    return (
+      <div className="mt-8 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm">
+        Your email has been verified! You&rsquo;re on the list.
+      </div>
+    );
+  }
+  if (verified === "already") {
+    return (
+      <div className="mt-8 p-4 rounded-xl bg-gold-50 border border-gold-200 text-gold-700 text-sm">
+        You&rsquo;re already verified and on the list!
+      </div>
+    );
+  }
+  return null;
+}
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
-      {/* Background decorations */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <Compass className="h-[500px] w-[500px] text-indigo-500/5" strokeWidth={0.5} />
-        </div>
-        <div className="absolute top-0 right-0 h-[600px] w-[600px] rounded-full bg-indigo-600/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-cyan-500/5 blur-[100px]" />
+    <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+      {/* Decorative keystone shape */}
+      <div className="absolute top-20 right-0 translate-x-1/3 -translate-y-1/4 opacity-[0.04] pointer-events-none">
+        <svg width="500" height="500" viewBox="0 0 200 200" fill="none">
+          <path
+            d="M100 10 L170 50 L190 140 L140 190 L60 190 L10 140 L30 50 Z"
+            fill="currentColor"
+            className="text-charcoal"
+          />
+        </svg>
       </div>
 
-      <div className="mx-auto max-w-4xl px-4 text-center">
-        {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5">
-          <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-          <span className="text-xs font-medium text-indigo-300 font-mono">
-            AI-POWERED MVP VALIDATION
-          </span>
+      <div className="relative max-w-3xl mx-auto text-center">
+        {/* COMING SOON badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-charcoal text-ivory text-xs font-mono font-semibold tracking-widest uppercase mb-8">
+          <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+          Coming Soon
         </div>
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-          Validate Before
-          <br />
-          <span className="gradient-text">You Build</span>
+        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-charcoal leading-[1.1] mb-6">
+          Uncle Inc.
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400 leading-relaxed">
-          Uncle Inc. is the AI-assisted MVP platform that helps founders test ideas
-          with real users before writing a single line of code. Stop building what
-          nobody wants.
+        <p className="font-heading text-xl sm:text-2xl text-charcoal-500 font-medium mb-4">
+          Build your MVP without a technical co-founder.
         </p>
 
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/sign-up">
-            <Button size="lg" className="min-w-[200px]">
-              Start Validating
-            </Button>
-          </Link>
-          <a href="#how-it-works">
-            <Button variant="outline" size="lg" className="min-w-[200px]">
-              See How It Works
-            </Button>
-          </a>
+        <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-10 leading-relaxed">
+          We help early-stage founders validate startup ideas and ship working
+          MVPs using AI-assisted prototyping, built-in user testing, and launch
+          analytics — so you can go from concept to market-ready product, fast.
+        </p>
+
+        <div id="signup">
+          <Suspense fallback={null}>
+            <SignupForm />
+          </Suspense>
+          <VerificationBanner />
         </div>
-
-        {/* Sub-metric */}
-        <p className="mt-8 text-xs text-gray-600 font-mono">
-          Join early-access founders shaping the future of startup validation
-        </p>
       </div>
     </section>
   );

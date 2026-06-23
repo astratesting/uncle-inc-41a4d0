@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import posthog from "posthog-js";
 
 export function SignupForm() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -24,7 +24,7 @@ export function SignupForm() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, name }),
       });
 
       const data = await res.json();
@@ -32,8 +32,8 @@ export function SignupForm() {
       if (res.ok) {
         setStatus("success");
         setMessage(data.message);
-        posthog.capture("signup_email_submitted", { email });
         setEmail("");
+        setName("");
       } else {
         setStatus("error");
         setMessage(data.error || "Something went wrong.");
@@ -44,40 +44,67 @@ export function SignupForm() {
     }
   }
 
+  if (status === "success") {
+    return (
+      <div className="w-full max-w-md mx-auto text-center">
+        <div className="p-6 rounded-2xl bg-gold-50 border border-gold-200">
+          <svg
+            className="w-10 h-10 text-gold mx-auto mb-3"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+            />
+          </svg>
+          <p className="font-semibold text-charcoal mb-1">Check your inbox</p>
+          <p className="text-sm text-charcoal-400">{message}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-md mx-auto">
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@startup.com"
-          required
-          className="flex-1 px-5 py-3.5 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-all text-base"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Your name"
+          className="w-full px-5 py-3.5 rounded-xl bg-white border border-charcoal-100 text-charcoal placeholder-charcoal-300 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all text-base"
         />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="px-7 py-3.5 rounded-xl bg-violet-500 text-white font-semibold font-heading hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
-        >
-          {status === "loading" ? "Joining..." : "Join the Waitlist"}
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@startup.com"
+            required
+            className="flex-1 px-5 py-3.5 rounded-xl bg-white border border-charcoal-100 text-charcoal placeholder-charcoal-300 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all text-base"
+          />
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="px-6 py-3.5 rounded-xl bg-charcoal text-ivory font-semibold hover:bg-charcoal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-base whitespace-nowrap"
+          >
+            {status === "loading" ? "Joining..." : "Get Early Access"}
+          </button>
+        </div>
       </form>
 
-      {status === "success" && (
-        <p className="mt-3 text-sm text-green-700 bg-green-50 rounded-lg px-4 py-2 text-center">
-          {message}
-        </p>
-      )}
       {status === "error" && (
-        <p className="mt-3 text-sm text-red-700 bg-red-50 rounded-lg px-4 py-2 text-center">
-          {message}
-        </p>
+        <p className="mt-3 text-sm text-burgundy text-center">{message}</p>
       )}
 
       {signupCount !== null && signupCount > 0 && (
-        <p className="mt-4 text-sm text-gray-500 text-center">
-          {signupCount} {signupCount === 1 ? "founder has" : "founders have"} already joined
+        <p className="mt-4 text-xs text-charcoal-300 text-center">
+          {signupCount} {signupCount === 1 ? "person has" : "people have"} already
+          joined the waitlist
         </p>
       )}
     </div>

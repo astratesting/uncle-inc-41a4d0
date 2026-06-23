@@ -3,6 +3,7 @@ import { getUserByEmail, getStats, getVerifiedUsers, getFeedback } from "@/lib/s
 import { Users, UserCheck, Shield, Zap, MessageSquare } from "lucide-react";
 import { FeedbackWidget } from "@/components/dashboard/FeedbackWidget";
 import { FeedbackDashboard } from "@/components/dashboard/FeedbackDashboard";
+import { DashboardShell } from "@/components/DashboardShell";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,10 @@ export default async function DashboardPage() {
   const feedback = getFeedback();
 
   return (
+    <DashboardShell
+      userName={user?.name || ""}
+      userEmail={user?.email || ""}
+    >
     <div className="space-y-8">
       {/* Profile card */}
       <div className="rounded-2xl border border-[#1e1e2e] bg-[#12121a]/80 p-6">
@@ -48,25 +53,25 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={<Users className="w-5 h-5 text-indigo-400" />}
-          label="Total Signups"
+          label="Founders Joined"
           value={stats.totalSignups}
           color="indigo"
         />
         <StatCard
           icon={<UserCheck className="w-5 h-5 text-teal-400" />}
-          label="Verified Users"
+          label="Verified Founders"
           value={stats.verifiedUsers}
           color="teal"
         />
         <StatCard
           icon={<MessageSquare className="w-5 h-5 text-cyan-400" />}
-          label="Feedback"
+          label="Feedback Received"
           value={feedback.length}
           color="cyan"
         />
         <StatCard
           icon={<Shield className="w-5 h-5 text-yellow-400" />}
-          label="Conversion"
+          label="Activation Rate"
           value={stats.totalSignups > 0 ? `${Math.round((stats.verifiedUsers / stats.totalSignups) * 100)}%` : "0%"}
           color="yellow"
         />
@@ -157,6 +162,7 @@ export default async function DashboardPage() {
         )}
       </div>
     </div>
+    </DashboardShell>
   );
 }
 

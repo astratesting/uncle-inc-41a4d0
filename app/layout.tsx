@@ -3,22 +3,24 @@ import "./globals.css";
 import { Suspense } from "react";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import PostHogPageView from "@/components/PostHogPageView";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: "Uncle Inc. — Data-Driven Marketing for Startup Founders",
+  title: "Uncle Inc. — AI-Assisted MVP Development for Startup Founders",
   description:
-    "Data-driven marketing strategy for early-stage startup founders who struggle with inconsistent customer acquisition and wasted ad spend.",
+    "Validate startup ideas and build MVPs faster using AI-assisted prototyping, built-in user testing, and launch analytics — no technical co-founder required.",
   keywords: [
-    "startup marketing",
-    "data-driven marketing",
-    "customer acquisition",
+    "MVP development",
     "startup founders",
-    "marketing strategy",
+    "AI prototyping",
+    "user testing",
+    "launch analytics",
+    "no-code MVP",
   ],
   openGraph: {
-    title: "Uncle Inc. — Data-Driven Marketing for Startup Founders",
+    title: "Uncle Inc. — AI-Assisted MVP Development for Startup Founders",
     description:
-      "Data-driven marketing strategy for early-stage startup founders.",
+      "Validate startup ideas and build MVPs faster — no technical co-founder required.",
     type: "website",
   },
 };
@@ -36,6 +38,7 @@ export default function RootLayout({
             <PostHogPageView />
           </Suspense>
           {children}
+          <Analytics />
         </PostHogProvider>
       </body>
     </html>

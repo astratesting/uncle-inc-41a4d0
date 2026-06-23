@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import crypto from "crypto";
-import { trackServerEvent } from "@/lib/posthog";
+import { trackServerEvent } from "@/lib/analytics";
 
 const SIGNUPS_PATH = path.join(process.cwd(), "data", "signups.json");
 
 interface Signup {
+  name?: string;
   email: string;
   token: string;
   verified: boolean;
@@ -28,7 +29,7 @@ async function writeSignups(signups: Signup[]) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json();
+    const { email, name } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -68,6 +69,7 @@ export async function POST(request: NextRequest) {
 
     const token = crypto.randomBytes(32).toString("hex");
     signups.push({
+      name: typeof name === "string" ? name.trim() : undefined,
       email: normalizedEmail,
       token,
       verified: false,
