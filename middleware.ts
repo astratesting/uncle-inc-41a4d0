@@ -1,20 +1,29 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
+const PROTECTED_ROUTES = ['/dashboard'];
+const AUTH_ROUTES = ['/login', '/signup'];
+
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const sessionCookie = request.cookies.get('uncle_session');
+  const isAuthenticated = !!sessionCookie?.value;
 
-  // Protect dashboard and admin routes — check cookie existence only
-  // Full session validation happens in the API routes (/api/auth/me, /api/admin/*)
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) {
-    const token = request.cookies.get("uncle_session")?.value;
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+  // Redirect authenticated users away from auth pages
+  if (isAuthenticated && AUTH_ROUTES.some(route => pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  // Redirect unauthenticated users to login for protected routes
+  if (!isAuthenticated && PROTECTED_ROUTES.some(route => pathname.startsWith(route))) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ['/dashboard/:path*', '/login', '/signup'],
 };
