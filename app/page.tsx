@@ -16,12 +16,20 @@ export default function HomePage() {
           >
             Uncle Inc.
           </Link>
-          <a
-            href="#signup"
-            className="text-sm px-4 py-2 rounded-lg font-semibold bg-gold text-charcoal hover:bg-gold-400 transition-colors"
-          >
-            Get Early Access
-          </a>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/onboarding-fixes"
+              className="text-sm text-charcoal-400 hover:text-charcoal transition-colors"
+            >
+              How We Fixed Onboarding
+            </Link>
+            <a
+              href="#signup"
+              className="text-sm px-4 py-2 rounded-lg font-semibold bg-gold text-charcoal hover:bg-gold-400 transition-colors"
+            >
+              Get Early Access
+            </a>
+          </div>
         </div>
       </nav>
 
