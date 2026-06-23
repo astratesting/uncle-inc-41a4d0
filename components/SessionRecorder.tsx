@@ -51,31 +51,44 @@ export function SessionRecorder() {
     flushTimerRef.current = setInterval(() => {
       if (eventsRef.current.length > 0) {
         const batch = eventsRef.current.splice(0, eventsRef.current.length);
+        // Send to both endpoints for compatibility
+        fetch("/api/analytics/track", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            event: "session_recording",
+            path: window.location.pathname,
+            data: { sessionId: sessionIdRef.current, events: batch },
+          }),
+          keepalive: true,
+        }).catch(() => {});
         fetch("/api/session-recording", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ sessionId: sessionIdRef.current, events: batch }),
+          keepalive: true,
         }).catch(() => {});
       }
-    }, 10000);
-
-    // Flush on page unload
-    const handleUnload = () => {
-      if (eventsRef.current.length > 0) {
-        const batch = eventsRef.current.splice(0);
-        navigator.sendBeacon(
-          "/api/session-recording",
-          JSON.stringify({ sessionId: sessionIdRef.current, events: batch })
-        );
-      }
-    };
-    window.addEventListener("beforeunload", handleUnload);
+    }, 10_000);
 
     return () => {
       document.removeEventListener("click", handleClick);
       document.removeEventListener("input", handleInput);
       if (flushTimerRef.current) clearInterval(flushTimerRef.current);
-      window.removeEventListener("beforeunload", handleUnload);
+      // Final flush
+      if (eventsRef.current.length > 0) {
+        const batch = eventsRef.current.splice(0, eventsRef.current.length);
+        fetch("/api/analytics/track", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            event: "session_recording",
+            path: window.location.pathname,
+            data: { sessionId: sessionIdRef.current, events: batch },
+          }),
+          keepalive: true,
+        }).catch(() => {});
+      }
     };
   }, []);
 

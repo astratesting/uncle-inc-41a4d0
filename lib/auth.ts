@@ -91,4 +91,16 @@ export async function deleteSession(token: string): Promise<void> {
   await saveSessions(filtered);
 }
 
+export async function requireAuth(): Promise<StoredUser> {
+  const user = await getSessionUser();
+  if (!user) {
+    throw new Error("Not authenticated");
+  }
+  return user;
+}
+
+// Aliases for task-required export names
+export const setAuthCookie = setSessionCookie;
+export const getSession = getSessionUser;
+
 export const SESSION_COOKIE_NAME = COOKIE_NAME;
