@@ -2,14 +2,11 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { LogIn, Play } from "lucide-react";
 
 export default function SignInPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,39 +17,23 @@ export default function SignInPage() {
     setError("");
     setLoading(true);
 
-    // Local demo fallback — works without real Supabase credentials
+    // Local demo fallback — works without real credentials
     if (email === "demo@demo.app" && password === "demo123") {
       window.location.href = "/api/auth/demo-signin";
       return;
     }
 
-    try {
-      const supabase = createClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (authError) {
-        setError(authError.message);
-        setLoading(false);
-        return;
-      }
-
-      router.push("/dashboard");
-      router.refresh();
-    } catch {
-      setError("Authentication service unavailable. Try demo@demo.app / demo123");
-      setLoading(false);
-    }
+    // For real auth, this would connect to a backend
+    setError("Invalid credentials. Try the demo account: demo@demo.app / demo123");
+    setLoading(false);
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-ivory text-center mb-1">
+      <h1 className="text-2xl font-heading font-bold text-gray-900 text-center mb-1">
         Welcome Back
       </h1>
-      <p className="text-charcoal-400 text-sm text-center mb-6">
+      <p className="text-gray-500 text-sm text-center mb-6">
         Sign in to your Uncle Inc. account
       </p>
 
@@ -66,10 +47,10 @@ export default function SignInPage() {
 
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-charcoal-700" />
+          <div className="w-full border-t border-gray-200" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-charcoal-800 px-3 text-charcoal-500">or sign in with email</span>
+          <span className="bg-white px-3 text-gray-400">or sign in with email</span>
         </div>
       </div>
 
@@ -81,7 +62,6 @@ export default function SignInPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          autoComplete="email"
         />
         <Input
           label="Password"
@@ -90,42 +70,26 @@ export default function SignInPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          autoComplete="current-password"
         />
 
         {error && (
-          <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-2">
-            <p className="text-xs text-red-400">{error}</p>
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {error}
           </div>
         )}
 
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button type="submit" size="lg" className="w-full" disabled={loading}>
           <LogIn className="h-4 w-4" />
           {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-xs text-charcoal-500">
-        Demo credentials: <span className="text-charcoal-400">demo@demo.app</span> / <span className="text-charcoal-400">demo123</span>
-      </p>
-
-      <div className="mt-6 space-y-3 text-center">
-        <Link
-          href="/forgot-password"
-          className="block text-sm text-gold hover:text-gold-light transition-colors"
-        >
-          Forgot your password?
+      <p className="text-center text-sm text-gray-500 mt-6">
+        Don&apos;t have an account?{" "}
+        <Link href="/sign-up" className="text-violet-600 hover:text-violet-700 font-medium">
+          Sign up
         </Link>
-        <p className="text-sm text-charcoal-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/sign-up"
-            className="text-gold hover:text-gold-light font-medium transition-colors"
-          >
-            Sign up
-          </Link>
-        </p>
-      </div>
+      </p>
     </div>
   );
 }

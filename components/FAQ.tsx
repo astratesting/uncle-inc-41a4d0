@@ -5,28 +5,20 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "What exactly does Uncle Inc. do?",
-    a: "Uncle Inc. helps you validate startup ideas before you commit to building them. Describe your idea, our AI analyzes the market and competition, generates an interactive prototype, and lets you test it with real users. You get concrete data on whether people want what you're planning to build.",
+    q: "What does Uncle Inc. do?",
+    a: "Uncle Inc. is a software development company that builds digital products and platforms. We work with businesses and entrepreneurs to turn ideas into working software — from web and mobile apps to backend systems and automation tools.",
   },
   {
-    q: "Do I need technical skills to use this?",
-    a: "No. You describe your startup idea in plain language, and Uncle Inc. generates a working prototype you can share with potential users. If you decide to build, we can export clean React/Next.js code as a starting point.",
+    q: "What kind of clients do you work with?",
+    a: "We work with startups, growing businesses, and established companies that need custom software solutions. Whether you're launching a new product or modernizing an existing platform, we can help.",
   },
   {
-    q: "How does user testing work?",
-    a: "You can recruit testers from our panel matching your target demographic, or share a link with your own audience. Testers interact with the prototype and provide structured feedback. You see engagement data, completion rates, and direct quotes in your dashboard.",
+    q: "When will your products be available?",
+    a: "We're currently building our first suite of products and platforms. Join the waitlist to be among the first to know when we launch. We'll share updates on our progress and early access opportunities.",
   },
   {
-    q: "Is my idea kept private?",
-    a: "Yes. Your ideas and prototypes are private by default. Testers see only the prototype — not your concept documents, strategy notes, or any other data in your account.",
-  },
-  {
-    q: "How is this different from building an MVP?",
-    a: "Traditional MVPs take weeks or months to build. Uncle Inc. generates interactive prototypes in minutes and connects you with real testers in hours. You get validation signals in days instead of months, at a fraction of the cost.",
-  },
-  {
-    q: "What does it cost?",
-    a: "We're launching with a free tier that lets you validate one idea with up to 10 testers. Paid plans for founders who need unlimited projects and advanced features will follow. Join the waitlist to be notified when we launch.",
+    q: "How can I get in touch?",
+    a: "The best way to stay informed is to join our waitlist — we'll send updates as we get closer to launch. For partnership or business inquiries, you can also reach us at hello@uncleinc.com.",
   },
 ];
 
@@ -34,14 +26,14 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 px-4 bg-charcoal-800/30">
+    <section id="faq" className="py-24 px-4 bg-white">
       <div className="mx-auto max-w-3xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-ivory mb-4">
-            Questions & Answers
+          <h2 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 mb-4">
+            Frequently Asked Questions
           </h2>
-          <p className="text-charcoal-400 max-w-xl mx-auto">
-            Common questions about how Uncle Inc. works.
+          <p className="text-gray-500 text-lg">
+            Everything you need to know about Uncle Inc.
           </p>
         </div>
 
@@ -51,26 +43,28 @@ export function FAQ() {
             return (
               <div
                 key={i}
-                className="rounded-xl border border-charcoal-700 bg-charcoal-800/50 overflow-hidden"
+                className={`rounded-2xl border transition-all duration-200 ${
+                  isOpen
+                    ? "border-violet-200 bg-violet-50/50 shadow-sm"
+                    : "border-gray-200 bg-warm-offwhite hover:border-gray-300"
+                }`}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between px-6 py-4 text-left"
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                 >
-                  <span className="text-sm font-medium text-ivory pr-4">
+                  <span className="text-base font-heading font-semibold text-gray-900">
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 flex-shrink-0 text-charcoal-400 transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
+                    className={`h-5 w-5 flex-shrink-0 text-gray-400 transition-transform duration-200 ${
+                      isOpen ? "rotate-180 text-violet-500" : ""
                     }`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-6 pb-4">
-                    <p className="text-sm text-charcoal-400 leading-relaxed">
-                      {faq.a}
-                    </p>
+                  <div className="px-6 pb-5">
+                    <p className="text-gray-600 leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </div>

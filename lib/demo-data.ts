@@ -78,49 +78,56 @@ export const projects: Project[] = [
     id: "proj-004",
     name: "Crest Dashboard",
     description:
-      "Internal analytics dashboard for business intelligence and operational insights.",
+      "Internal operations dashboard for monitoring system health and team performance.",
     status: "Planning",
-    progress: 30,
+    progress: 15,
     team: ["JL", "SC"],
-    updatedAt: "5 days ago",
+    updatedAt: "5 hours ago",
   },
 ];
 
-export const recentActivity = [
+export interface Activity {
+  id: string;
+  type: "update" | "milestone" | "feedback" | "deploy";
+  message: string;
+  project: string;
+  time: string;
+}
+
+export const recentActivity: Activity[] = [
   {
-    action: "Deployment completed",
-    project: "Forge API",
-    time: "2 hours ago",
-    type: "deploy",
-  },
-  {
-    action: "Design review scheduled",
-    project: "Meridian App",
-    time: "4 hours ago",
-    type: "review",
-  },
-  {
-    action: "Sprint planning completed",
-    project: "Atlas Platform",
-    time: "1 day ago",
-    type: "planning",
-  },
-  {
-    action: "New team member added",
-    project: "Crest Dashboard",
-    time: "2 days ago",
-    type: "team",
-  },
-  {
-    action: "Milestone reached: Beta",
-    project: "Atlas Platform",
-    time: "3 days ago",
+    id: "act-001",
     type: "milestone",
+    message: "Atlas Platform reached 75% completion",
+    project: "Atlas Platform",
+    time: "2 hours ago",
   },
   {
-    action: "Code review approved",
+    id: "act-002",
+    type: "deploy",
+    message: "Forge API v2.3 deployed to staging",
     project: "Forge API",
-    time: "4 days ago",
-    type: "review",
+    time: "3 hours ago",
+  },
+  {
+    id: "act-003",
+    type: "feedback",
+    message: "New design review submitted for Meridian App",
+    project: "Meridian App",
+    time: "1 day ago",
+  },
+  {
+    id: "act-004",
+    type: "update",
+    message: "Sprint planning completed for Crest Dashboard",
+    project: "Crest Dashboard",
+    time: "1 day ago",
+  },
+  {
+    id: "act-005",
+    type: "milestone",
+    message: "Forge API passed all integration tests",
+    project: "Forge API",
+    time: "2 days ago",
   },
 ];

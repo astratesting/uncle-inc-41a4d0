@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-charcoal-950">
+    <div className="min-h-screen bg-gray-50">
       <Sidebar />
       <div className="ml-60">
         <DashboardHeader userName={user.name} />

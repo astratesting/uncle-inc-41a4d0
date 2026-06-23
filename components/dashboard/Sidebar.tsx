@@ -21,11 +21,11 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-60 border-r border-charcoal-800 bg-charcoal-950/80 backdrop-blur-sm flex flex-col z-30">
+    <aside className="fixed left-0 top-0 bottom-0 w-60 border-r border-gray-200 bg-white flex flex-col z-30">
       {/* Logo */}
-      <div className="p-5 border-b border-charcoal-800">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <span className="text-lg font-serif font-semibold tracking-tight text-ivory group-hover:text-gold transition-colors">
+      <div className="p-5 border-b border-gray-200">
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="text-lg font-heading font-bold tracking-tight text-gray-900 group-hover:text-violet-600 transition-colors">
             Uncle Inc.
           </span>
         </Link>
@@ -42,10 +42,10 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? "bg-gold/10 text-gold border border-gold/20"
-                  : "text-charcoal-400 hover:text-ivory hover:bg-charcoal-800/50"
+                  ? "bg-violet-50 text-violet-700 border border-violet-200"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
               <item.icon className="h-4 w-4" />
@@ -56,10 +56,10 @@ export function Sidebar() {
       </nav>
 
       {/* Sign out */}
-      <div className="p-3 border-t border-charcoal-800">
+      <div className="p-3 border-t border-gray-200">
         <a
           href="/api/auth/signout"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-charcoal-400 hover:text-red-400 hover:bg-red-500/5 transition-all duration-200 w-full"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors"
         >
           <LogOut className="h-4 w-4" />
           Sign Out

@@ -54,7 +54,7 @@ export function FeedbackWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gold text-charcoal-950 shadow-lg shadow-gold/20 hover:bg-gold-light transition-colors"
+          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-white shadow-lg shadow-violet-600/25 hover:bg-violet-700 transition-colors"
           aria-label="Open feedback"
         >
           <MessageSquare className="h-5 w-5" />
@@ -62,80 +62,88 @@ export function FeedbackWidget() {
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 w-80 rounded-xl border border-charcoal-700 bg-charcoal-900 shadow-2xl shadow-black/40">
-          <div className="flex items-center justify-between p-4 border-b border-charcoal-800">
-            <h3 className="text-sm font-semibold text-ivory">Send Feedback</h3>
+        <div className="fixed bottom-6 right-6 z-50 w-80 rounded-2xl border border-gray-200 bg-white shadow-xl animate-slide-up">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <h3 className="text-sm font-heading font-semibold text-gray-900">
+              Send Feedback
+            </h3>
             <button
               onClick={handleClose}
-              className="text-charcoal-500 hover:text-ivory transition-colors"
+              className="text-gray-400 hover:text-gray-600"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          {submitted ? (
-            <div className="p-6 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20 mx-auto mb-3">
-                <Star className="h-5 w-5 text-emerald-400" />
-              </div>
-              <p className="text-sm font-medium text-ivory">Thank you!</p>
-              <p className="text-xs text-charcoal-400 mt-1">
-                Your feedback helps us improve.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="p-4 space-y-4">
-              <div>
-                <p className="text-xs text-charcoal-400 mb-2">How would you rate your experience?</p>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setRating(star)}
-                      onMouseEnter={() => setHoveredStar(star)}
-                      onMouseLeave={() => setHoveredStar(0)}
-                      className="p-0.5"
-                    >
-                      <Star
-                        className={`h-6 w-6 transition-colors ${
-                          star <= (hoveredStar || rating)
-                            ? "text-gold fill-gold"
-                            : "text-charcoal-600"
-                        }`}
-                      />
-                    </button>
-                  ))}
+          <div className="p-4">
+            {submitted ? (
+              <div className="text-center py-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 border border-emerald-200 mx-auto mb-3">
+                  <Star className="h-6 w-6 text-emerald-600" />
                 </div>
+                <p className="text-sm font-heading font-semibold text-gray-900 mb-1">
+                  Thank you!
+                </p>
+                <p className="text-xs text-gray-500">
+                  Your feedback helps us improve.
+                </p>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="text-xs font-medium text-gray-600 mb-2 block">
+                    How would you rate your experience?
+                  </label>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onMouseEnter={() => setHoveredStar(star)}
+                        onMouseLeave={() => setHoveredStar(0)}
+                        onClick={() => setRating(star)}
+                        className="p-0.5"
+                      >
+                        <Star
+                          className={`h-6 w-6 transition-colors ${
+                            star <= (hoveredStar || rating)
+                              ? "text-honey-500 fill-honey-500"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-              <div>
-                <label className="text-xs text-charcoal-400 mb-1.5 block">
-                  Your feedback
-                </label>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell us what you think..."
-                  rows={3}
-                  className="w-full rounded-lg border border-charcoal-700 bg-charcoal-800/50 px-3 py-2 text-sm text-ivory placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold resize-none"
-                />
-              </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-600 mb-1.5 block">
+                    Your feedback
+                  </label>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Tell us what you think..."
+                    rows={3}
+                    className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400/50 focus:border-violet-500 resize-none"
+                  />
+                </div>
 
-              {error && (
-                <p className="text-xs text-red-400">{error}</p>
-              )}
+                {error && (
+                  <p className="text-xs text-red-500">{error}</p>
+                )}
 
-              <Button
-                type="submit"
-                size="sm"
-                disabled={loading}
-                className="w-full"
-              >
-                {loading ? "Sending..." : "Send Feedback"}
-              </Button>
-            </form>
-          )}
+                <Button
+                  type="submit"
+                  size="md"
+                  className="w-full"
+                  disabled={loading}
+                >
+                  {loading ? "Sending..." : "Send Feedback"}
+                </Button>
+              </form>
+            )}
+          </div>
         </div>
       )}
     </>

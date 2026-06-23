@@ -1,19 +1,23 @@
-/* Fonts — Canela (serif display) + Neue Haas Grotesk (sans body).
-   These are commercial typefaces. If not installed locally, the browser
-   falls back to the system serif/sans stack defined in tailwind.config.ts. */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@300;400;500;600&display=swap");
+
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    @apply bg-charcoal-900 text-charcoal-200 antialiased font-sans;
+    @apply bg-warm-offwhite text-gray-800 antialiased font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
   }
 }
 
 @layer components {
-  .text-gradient-gold {
-    @apply bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent;
+  .gradient-violet {
+    @apply bg-gradient-to-r from-violet-600 via-violet-500 to-coral-500 bg-clip-text text-transparent;
   }
 }

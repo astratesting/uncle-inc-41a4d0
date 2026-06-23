@@ -36,21 +36,28 @@ export function Waitlist() {
   }
 
   return (
-    <section id="waitlist" className="py-24 px-4">
-      <div className="mx-auto max-w-2xl text-center">
-        <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold/10 border border-gold/20 mb-6">
-          <Mail className="h-6 w-6 text-gold" />
+    <section
+      id="waitlist"
+      className="py-24 px-4 bg-gradient-to-br from-violet-600 via-violet-700 to-violet-900 relative overflow-hidden"
+    >
+      {/* Decorative circles */}
+      <div className="absolute top-10 right-10 h-64 w-64 rounded-full bg-coral-400/10 blur-[80px]" />
+      <div className="absolute bottom-10 left-10 h-48 w-48 rounded-full bg-honey-400/10 blur-[60px]" />
+
+      <div className="mx-auto max-w-2xl text-center relative z-10">
+        <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 border border-white/20 mb-6">
+          <Mail className="h-7 w-7 text-white" />
         </div>
-        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-ivory mb-4">
+        <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-4">
           Join the Waitlist
         </h2>
-        <p className="text-charcoal-400 mb-8 text-lg">
-          Be among the first founders to validate smarter. No spam — just early
-          access and product updates.
+        <p className="text-violet-200 mb-10 text-lg leading-relaxed">
+          Be the first to know when Uncle Inc. launches. No spam — just
+          early access and product updates.
         </p>
 
         {status === "success" ? (
-          <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-6 py-4 text-emerald-300">
+          <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/20 px-6 py-5 text-emerald-200 font-medium">
             {message}
           </div>
         ) : (
@@ -64,16 +71,22 @@ export function Waitlist() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="flex-1"
+              className="flex-1 !bg-white/10 !border-white/20 !text-white !placeholder-violet-300 focus:!ring-white/30 focus:!border-white/40"
             />
-            <Button type="submit" disabled={status === "loading"}>
-              {status === "loading" ? "Joining..." : "Join Waitlist"}
+            <Button
+              type="submit"
+              variant="coral"
+              size="lg"
+              disabled={status === "loading"}
+              className="whitespace-nowrap"
+            >
+              {status === "loading" ? "Joining..." : "Get Early Access"}
             </Button>
           </form>
         )}
 
         {status === "error" && (
-          <p className="mt-3 text-sm text-red-400">{message}</p>
+          <p className="mt-3 text-sm text-red-300">{message}</p>
         )}
       </div>
     </section>

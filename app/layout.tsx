@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Uncle Inc. — Validate Before You Build",
+  title: "Uncle Inc. — Building Digital Solutions for Modern Problems",
   description:
-    "AI-assisted platform that helps founders test startup ideas with real users before writing a single line of code.",
+    "Uncle Inc. is a software development company building digital products and platforms that solve real problems for businesses and consumers.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-charcoal-900 text-charcoal-200 antialiased font-sans">
+      <body className="min-h-screen bg-warm-offwhite text-gray-800 antialiased font-body">
         {children}
       </body>
     </html>
