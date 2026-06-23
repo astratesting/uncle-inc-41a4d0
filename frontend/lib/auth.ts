@@ -17,13 +17,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         // Dynamic imports to avoid Edge Runtime issues in middleware
         const { getUserByEmail } = await import("@/lib/store");
-        const { hashPassword } = await import("@/lib/password");
+        const { verifyPassword } = await import("@/lib/password");
 
         const user = getUserByEmail(email);
         if (!user) return null;
 
-        const hash = await hashPassword(password);
-        if (hash !== user.passwordHash) return null;
+        const valid = await verifyPassword(password, user.passwordHash);
+        if (!valid) return null;
 
         return {
           id: user.id,

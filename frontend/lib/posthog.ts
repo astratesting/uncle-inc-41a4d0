@@ -1,16 +1,22 @@
-import { PostHog } from "posthog-node";
+let posthog: { capture: (args: Record<string, unknown>) => void } | null =
+  null;
 
-let posthogClient: PostHog | null = null;
+function getClient() {
+  if (posthog) return posthog;
 
-export function getPostHogServer(): PostHog | null {
-  const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  if (!key) return null;
-  if (!posthogClient) {
-    posthogClient = new PostHog(key, {
-      host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+  const apiKey = process.env.POSTHOG_API_KEY;
+  if (!apiKey) return null;
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PostHog } = require("posthog-node");
+    posthog = new PostHog(apiKey, {
+      host: process.env.POSTHOG_HOST || "https://app.posthog.com",
     });
+    return posthog;
+  } catch {
+    return null;
   }
-  return posthogClient;
 }
 
 export async function trackServerEvent(
@@ -18,8 +24,7 @@ export async function trackServerEvent(
   distinctId: string,
   properties?: Record<string, unknown>
 ) {
-  const ph = getPostHogServer();
-  if (!ph) return;
-  ph.capture({ event, distinctId, properties });
-  await ph.shutdown();
+  const client = getClient();
+  if (!client) return;
+  client.capture({ event, distinctId, properties });
 }
