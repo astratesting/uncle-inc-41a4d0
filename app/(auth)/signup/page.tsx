@@ -16,6 +16,7 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [honeypot, setHoneypot] = useState('');
 
   const validate = () => {
     const errors: Record<string, string> = {};
@@ -44,7 +45,7 @@ export default function SignupPage() {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), company: company.trim(), password }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), company: company.trim(), password, website: honeypot }),
       });
 
       const data = await res.json();
@@ -136,6 +137,17 @@ export default function SignupPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Honeypot field — invisible to humans, bots will fill it */}
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
             {/* Name */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">

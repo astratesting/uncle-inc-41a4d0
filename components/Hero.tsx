@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import { SignupForm } from "@/components/SignupForm";
+import { SignupCounter } from "@/components/SignupCounter";
 
 export function Hero() {
   return (
@@ -32,11 +33,18 @@ export function Hero() {
           Marketing Strategy, Rebuilt for Founders
         </p>
 
-        <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-10 leading-relaxed animate-slide-up [animation-delay:200ms]">
+        <p className="text-lg text-charcoal-400 max-w-xl mx-auto mb-6 leading-relaxed animate-slide-up [animation-delay:200ms]">
           Uncle Inc. helps early-stage startup founders build data-driven
           marketing strategies using the Narrative Funnel model — turning
           founder stories into measurable growth engines.
         </p>
+
+        {/* Public signup counter badge */}
+        <div className="mb-10 animate-slide-up [animation-delay:250ms]">
+          <Suspense fallback={null}>
+            <SignupCounter />
+          </Suspense>
+        </div>
 
         <div id="signup" className="animate-slide-up [animation-delay:300ms]">
           <Suspense fallback={null}>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { getVerifiedUserCount, getTotalUserCount } from "@/lib/store";
+import { getSessionUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,10 @@ async function readSignups(): Promise<WaitlistEntry[]> {
 }
 
 export async function GET() {
+  const admin = await getSessionUser();
+  if (!admin || !admin.isAdmin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
   const signups = await readSignups();
   const verifiedWaitlist = signups.filter((s) => s.verified).length;
   const totalWaitlist = signups.length;
